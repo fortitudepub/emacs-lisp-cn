@@ -1,0 +1,1604 @@
+@c -*-texinfo-*-
+@c This is part of the GNU Emacs Lisp Reference Manual.
+@c Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1998, 1999, 2001,
+@c   2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011
+@c   Free Software Foundation, Inc.
+@c See the file elisp.texi for copying conditions.
+@setfilename ../../info/objects
+@node Lisp数据类型, Numbers, 介绍, Top
+@chapter Lisp数据类型
+@cindex 对象
+@cindex Lisp对象
+@cindex 类型
+@cindex 数据类型
+
+    Lisp@dfn{对象}是由Lisp程序所使用或操作的一块数据，从Emacs Lisp的角度来讲，一个@dfn{类型}或@dfn{数据类型}是一些对象的集合。
+
+    每一个对象至少属于一个类型。具有相同类型的对象具有相似的数据结构，并经常在相同的上下文环境中被使用。类型可以重叠，对象可以属于两到多个类型，
+因此，我们可以问对象是否属于一个特定类型，但不能说对象的类型是什么。
+
+@cindex 基础类型
+    Emacs集成了一些基础的对象类型。这些类型是其他类型构造的基础，它们称为@dfn{基础类型}。每一个对象只能属于一个基础类型。这些类型包括@dfn{整型}、@dfn{浮点型}、
+@dfn{cons}、@dfn{符号}、@dfn{字符串}、@dfn{容器}、@dfn{哈希表}、@dfn{子函数}、@dfn{字节码函数}以及一些特殊类型，如@dfn{缓冲区}等与编辑相关的类型。(@xref{编辑类型}.)
+
+    每一个基础类型都有一相应的Lisp函数，用来检查对象是否属于该类型。
+
+    Lisp不同于其他语言，它的对象是@dfn{类型自说明}的，也即每个对象的原子类型隐含在对象自身里。例如，如果一个对象是容器类型，则不能将其做为数字进行处理，Lisp知道它属于容器，而非数字。
+
+    在大多数的语言里，程序员必须声明每个变量的类型，编译器知道其类型，该类型并不由数据表示。这种声明方式在Emacs Lisp中并不存在。一个Lisp变量可以具有任何类型的数据，并且记住你存储在
+它里边的任何值及其类型等所有信息。（实际上，少数Emacs Lisp变量仅能存储特定类型的值，请参考@xref{Variables with Restricted Values}.）。
+
+    本章节将描述GNU Emacs Lisp中每个标准类型的作用、打印表示以及读取语法，如何使用这些类型，将在后面的章节进行详述。
+
+@menu
+* 打印表示::         Lisp对象如何以文本形式进行表示。
+* 注释::            注释及其格式惯例。
+* 编程类型::         所有Lisp系统中出现的类型。
+* 编辑类型::         Emacs特定的类型。
+* 循环对象::         循环结构的读取语法。
+* 类型判定::         关于类型的验证函数。
+* 相等判定::         任何两个对象的相等验证函数。
+@end menu
+
+@node 打印表示
+@comment  node-name,  next,  previous,  up
+@section 打印表示和读取语法
+@cindex 打印表示
+@cindex 读取语法
+    
+    对象的@dfn{打印表示}是指Lisp打印器（@code{prin1}函数的功能）对该对象的输出格式。每个数据类型都具有唯一的输出表示。对象的@dfn{读取语法}则指对该对象的Lisp读取器所接受的输入格式，
+读取语法并不需要唯一，许多对象具有一个或多个读取语法（请参考@xref{Read and Print}.）。
+
+@cindex 哈希记法
+    大多情况下，一个对象的打印表示也是其读取语法。然而，某些类型并没有读取语法，这是因为在Lisp程序中并没有必要以常量的形式输入这些类型的对象。这些对象以@dfn{哈希记法}的形式打印，即由
+@samp{#<}、描述字符串（通常是对象名跟上类型名）以及一个终结的@samp{>}组成。例如：
+
+@example
+(current-buffer)
+     @result{} #<buffer objects.texi>
+@end example
+
+@noindent
+    哈希记法不能被读取，所以当Lisp读取器遇到一个@samp{#<}时将会产生一个@code{invalid-read-syntax}错误。
+@kindex 无效读取语法
+
+    在其他语言里，表达式就是文本；没有其他形式。在Lisp中，一个表达式首先是一个Lisp对象，其次则是该对象的读取语法。通常不必做此区分，则你需要在脑中记住这一点，否则你将不时会觉得非常
+迷惑。
+    
+    当你以交互形式对表达式求值时，Lisp解释器将首先读取该表达式的文本表示，产生一个Lisp对象，然后对该对象进行求值（@pxref{Evaluation}）。然而，求值和读取是两项活动，读取返回该文本
+所表示的对象，该对象在后面可能会被求值，也可能不会。请参考@xref{Input Functions}.，了解@code{read}即读取对象的基本函数的描述。
+
+@node 注释
+@comment  node-name,  next,  previous,  up
+@section 注释
+@cindex 注释
+@cindex 注释中的@samp{;}
+
+    @dfn{注释}是那些在程序中为了供人阅读程序的文本，对于程序本身没有任何影响。在Lisp中，不在一个字符串或字符常量中出现的一个分号（@samp{;}），表明注释开始直至行尾。Lisp读取器丢弃注释，
+它们在Lisp系统中并不成为表示程序的Lisp对象的一部分。
+
+    @samp{#@@@var{count}}构造器，跳过后继@var{count}个字符，适用于程序产生的包含二进制数据的注释。Emacs Lisp字节编译器在其输出文件中使用该构造器（参考@pxref{Byte Compilation}），
+但它并非为源文件所设计。
+
+    想要了解格式注释的惯例，请参考@xref{Comment Tips}.一节。
+
+@node 编程类型
+@section 编程类型
+@cindex 编程类型
+
+    在Emacs Lisp中，有两类常见的类型，即用于Lisp编程的类型以及与编辑有关的类型，前者在许多Lisp实现中以各种形式存在，而后者则是Emacs Lisp特有的。
+
+@menu
+* 整数类型::              不包含分数部分的数字。
+* 浮点类型::              包含分数部分的数字，具有更大的值域。
+* 字符类型::              字母、数字以及控制字符的表示。
+* 符号类型::              多用途的对象，用于引用函数、变量或者属性表，具有唯一的标识。
+* 序列类型::              表和数组都被归为序列。
+* Cons Cell类型::        Cons cells,和表(由Cons cell组成)。
+* 数组类型::              数据包括字符串和容器。
+* 字符串类型::            有效的字符数组。
+* 容器类型::              一维数组。
+* 字符表类型::            由字符索引的稀松一维数组。
+* 布尔容器类型::          由@code{t}或@code{nil}组成的一维数组。
+* 哈希表类型::            超快的查找表。
+* 函数类型::              一块被调用的可执行代码。
+* 宏类型::               用于将表达式展开成另外一个更基本但不美观的表达式的方法。
+* 原始函数类型::          由C语言写成的函数，在Lisp程序中调用。
+* 字节码类型::            Lisp写成的函数，编译后的对象。
+* 自动加载类型::          自动加载较少使用的函数。
+@end menu
+
+@node 整数类型
+@subsection 整数类型
+
+    Emacs Lisp中的整数范围为@minus{}536870912至536870911（30位，例如：
+@ifnottex
+-2**29
+@end ifnottex
+@tex
+@math{-2^{29}}
+@end tex
+to
+@ifnottex
+2**29 - 1)
+@end ifnottex
+@tex
+@math{2^{29}-1})
+@end tex
+    在大数机器上（某些机器将提供更宽的范围），需要注意Emacs Lisp算术运算函数并不检查溢出，因此@code{(1+ 536870911)}就是@minus{}536870912。
+
+    整数的读取语法由一系列十进制的数字加上开始的可选符号再加上可选的结束的数点组成。Lisp解释器产生的打印表示，并不会加上前置的@samp{+}或后置的@samp{.}。 
+
+@example
+@group
+-1               ; @r{整数-1。}
+1                ; @r{整数1。}
+1.               ; @r{同样是整数1。}
++1               ; @r{同样是整数1。}
+1073741825       ; @r{在30位实现时，同样是整数1,译注：此处错误，与下段说明也矛盾，不是1,而是浮点数1073741825.0}
+@end group
+@end example
+
+@noindent
+    有个特例则是，如果由一串数字表示的整数太大或者大小，不能成为有效的整数型对象时，Lisp读取器将以浮点数据读取（请参考@pxref{浮点类型}）。比如在大多数
+机器上，@code{536870912}都将被读取成浮点数@code{536870912.0}。
+
+    更详细的信息，请参考@xref{Numbers}.一节。
+
+@node 浮点类型
+@subsection 浮点类型
+
+    浮点数是科学计数法的计算机记法，你可以将浮点数理解为分数加上10的幂值。有效位精度以及指数范围与机器相关;Emacs使用C语言的@code{double}类型来存储浮
+点数值，其内部采用2的幂值而非10的幂值。
+    
+    浮点数的打印表示可以是一个数点（至少有一个数字跟在其后）、一个指数、或者两个都包含。如@samp{1500.0}、@samp{15e2}、@samp{1.5e3}以及@samp{.15e4}
+是表示具有值1500的浮点数的五种表示方法，它们是相等的。
+
+    更详细的信息，请参考@xref{Numbers}.一节。
+
+@node 字符类型
+@subsection 字符类型
+@cindex @acronym{ASCII}字符表
+
+    Emacs Lisp中的@dfn{字符}仅是一个整数而已，换句话说，字符由其字符编码表示。例如 ，字符@kbd{A}由@w{整数65}表示。
+
+    程序中时常会使用到单个字符，但更常见到的则是@emph{字符串}，即由字符组成的序列。请参考@xref{字符串类型}.。
+
+    字符串和缓冲区中的字符当前被限制在0到4194303，也即20位（请参考@pxref{Character Codes}）。编码0到127即@acronym{ASCII}编码；其余的称为
+非@acronym{ASCII}字符。代表键盘输入的字符，具有更宽的范围，它们用来编码Control、Meta、Shift等修饰键。
+
+    为了方便处理消息，Emacs Lisp有一些特殊函数，用于对一些字符产生可读的文本描述。请参考@xref{Describing Characters}.。
+
+@menu
+* 基本字符语法::      一般字符的语法。
+* 一般转义语法::      如何使用编码表示字符。
+* Ctl-字符语法::     Ctl-字符语法。
+* Meta-字符语法::    Meta-字符语法。
+* 其他字符修饰位::       hyper-字符、 super-字符、 以及alt-字符语法。
+@end menu
+
+@node 基本字符语法
+@subsubsection 基本字符语法
+@cindex 字符的读取语法
+@cindex 字符的输出表示
+@cindex 字符语法
+@cindex 字符常量中的@samp{?}
+
+    由于字符实际上就是整数值，字符的打印语法就是一个十进制数值。这也是字符的读取语法之一，但在Lisp程序中用这种方式并不是清晰的编程方式。你应当@emph{总是}
+使用Emacs Lisp提供的字符的特殊读取语法，这些语法用以问号开头。
+
+    字母型字符的通常读取语法是在字母前边前上问号，因此，@samp{?A}表示字符@kbd{A}，@samp{?B}表示字符@kbd{B}，@samp{?a}则表示字符@kbd{a}。
+
+    示例：
+
+@example
+?Q @result{} 81     ?q @result{} 113
+@end example
+
+    你可以使用相同的语法来表示标点字符，但通常在该字符前再加上一个@samp{\}更好一些，以便使Emacs编辑Lisp代码的命令不致于迷惑。例如@samp{?\(}用于表示
+左括号。如果字符是@samp{\}，你则@emph{必须}再在前面添加一个@samp{\}来表示它：@samp{?\\}。
+
+@cindex 空白字符
+@cindex 响铃
+@cindex @samp{\a}
+@cindex 退格
+@cindex @samp{\b}
+@cindex （ASCII字符）表
+@cindex @samp{\t}
+@cindex 垂直制表符
+@cindex @samp{\v}
+@cindex 换页
+@cindex @samp{\f}
+@cindex 换行
+@cindex @samp{\n}
+@cindex 回车（ASCII字符）
+@cindex @samp{\r}
+@cindex 退出（ASCII字符）
+@cindex @samp{\e}
+@cindex 空格 (ASCII字符)
+@cindex @samp{\s}
+    
+    你可以用@samp{?\a}、@samp{?\b}、@samp{?\t}、@samp{?\n}、@samp{?\v}、@samp{?\f}、@samp{?\s}、@samp{?\r}、@samp{?\d}以及@samp{?\e}分别表示
+Control-g、退格、制表、换行、垂直制表、换页、空格、回车、删除以及退出字符。（折线以及跟在其后的@samp{?\s}则具有不同的含义，它表示对此组合后面的字符进行``super''
+修饰。）因此：
+
+@example
+?\a @result{} 7                 ; @r{control-g, @kbd{C-g}}
+?\b @result{} 8                 ; @r{退格, @key{BS}, @kbd{C-h}}
+?\t @result{} 9                 ; @r{制表, @key{TAB}, @kbd{C-i}}
+?\n @result{} 10                ; @r{换行, @kbd{C-j}}
+?\v @result{} 11                ; @r{垂直制表, @kbd{C-k}}
+?\f @result{} 12                ; @r{换页, @kbd{C-l}}
+?\r @result{} 13                ; @r{回车, @key{RET}, @kbd{C-m}}
+?\e @result{} 27                ; @r{退出, @key{ESC}, @kbd{C-[}}
+?\s @result{} 32                ; @r{空格, @key{SPC}}
+?\\ @result{} 92                ; @r{反斜钱, @kbd{\}}
+?\d @result{} 127               ; @r{删除, @key{DEL}}
+@end example
+
+@cindex 转义序列
+
+    由反斜线开始的序列也被称为@dfn{转义序列}，由于反斜线扮演了``转义字符''的角色；此术语与@key{ESC}无关。@samp{\s}则用在字符常量，
+在字符串常量中，则用来表示空格。
+  
+    在不具有特殊转义的字符前插入反斜线是允许的，并且是无害的，因此，@samp{?\+}与@samp{?+}等价。通常对于大多数字符而言，没有必要增加反斜线，但是，
+你需要在@samp{()\|;'`"#.,}前增加反斜线，以避免迷惑编辑Lisp代码的Emacs命令。你也可以在空白字符如空格、制表、换行以及换页符前插入反斜线，但是，最
+好使用易读的转义序列，如@samp{\t}或@samp{\s}来替代实际的如制表、空格等空白字符。（如果你在空格前输入了反斜线，你应当在其后再增加一个空格，以使其
+与后面的文本区分开。译注：这句话较为疑惑，实际上在字符串中插入反斜线+空格会当被忽略，如"\ bbb"与"bbb"的值相等）。
+
+@node 一般转义语法
+@subsubsection 一般转义语法
+
+    除针对特殊控制字符的特殊转义序列外，Emacs提供了针对于非ASCII文本字符的几类转义语法。
+
+@cindex unicode字符转义
+
+    你可以通过字符的Unicode编码来指定它。@code{?\u@var{nnnn}}代表映射到Unicode码点@samp{U+@var{nnnn}}的字符（按照惯例，Unicode码点以十六
+进制数给出）。对于码点高于@code{U+@var{nnnn}}的字行，需要用稍微不同的语法，即@code{\U00@var{nnnnnn}}，它代表码点为@samp{U+@var{nnnnnn}}的
+字符。Unicode标准只定义了最高为@samp{U+@var{10ffff}}的码点，所以如果你定义大于该码点的字符，Emacs将产生一个错误。
+
+    之所以采用这种奇怪和不便的语法，主要是是为了和其他语言兼容。与其他语言不同，Emacs只在字符串常量和字符串中支持此语法。
+
+@cindex 字符常量中的@samp{\}
+@cindex 字符常量中的反斜线
+@cindex 十进制字符码
+    
+    字符最常见的读取语法用10进制或16进制字符码表示。采用10进制时，采用问号跟上一个反斜线加上10进制字符码（用3位10进制数字）的形式，因此@samp{?\101}表示字符
+@kbd{A}，@samp{?\001}表示字符@kbd{C-a}，而@code{?\002}表示@kbd{C-b}。尽管这种语法可表示任意@acronym{ASCII}字符，但除非用精确的10进制数值表示
+比@acronym{ASCII}表示重要时才用这种语法。
+
+@example
+@group
+?\012 @result{} 10         ?\n @result{} 10         ?\C-j @result{} 10
+?\101 @result{} 65         ?A @result{} 65
+@end group
+@end example
+
+    采用16进制时，采用问号跟上一个反斜线加上@samp{x}再加上对应的16进制字符码的形式。你可以使用任意数量的16进制数，所以在这种方式下你可以表示任意字符。因此
+@samp{?\x41}表示@kbd{A}，@samp{?\x1}表示@kbd{C-a}，而@code{?\x8e0}表示Latin-1字符
+@iftex
+@samp{@`a}.
+@end iftex
+@ifnottex
+@samp{a}加上重音符。
+@end ifnottex
+
+@node Ctl-字符语法
+@subsubsection Ctl-字符语法
+
+@cindex control characters
+    控制字符可以采用另外一种读取语法，它由问号跟上一个反斜线加上脱字符再加上相应的非控制字字符（大小写皆可）。例如，@samp{?\^I}有@samp{?\^i}均是控制字符
+@kbd{C-i}的有效读取语法，其相应的整数值是9。
+
+    除了@samp{^}外，你还可以使用@samp{C-}来替代，因此@samp{?\C-i}和@samp{?\^I}以及@samp{?\^i}等效。
+
+@example
+?\^I @result{} 9     ?\C-I @result{} 9
+@end example
+
+    在字符串和缓冲区中，只有在那些@acronym{ASCII}中存在的控制字符才允许出现。但考虑到键盘输入的需求，你可以用@samp{C-}将任意字符转换为控制字符，这些非
+@acronym{ASCII}控制字符的编码除对应的非控制字符外，还包括被设置上的第
+@tex
+@math{2^{26}}
+@end tex
+@ifnottex
+2**26
+@end ifnottex
+位，普通的终闻风而动无法产生非@acronym{ASCII}字符，但在X或者其他窗口系统下，你可以很容易的构造它们。
+
+    由于历史原因，Emacs将@key{DEL}字符与@kbd{?}控制字符（译注：即@samp{?\C-?}）视为等价字符。（译注：感兴趣的朋友不妨试下，在Emacs中,Ctl-?与DEL键的作用是相同的：））
+
+@example
+?\^? @result{} 127     ?\C-? @result{} 127
+@end example
+
+@noindent
+    因此，当前不可能表示在X窗口系统下的有效按键@kbd{Control-?}，由于大量的Lisp文件用这样的方式引用@key{DEL}，因此很难改变这个问题。
+
+    在表示文件或字符串的控制字符时，我们推荐用@samp{^}那样的语法，而在处理键盘输入的控制字符时，我们倾向于使用@samp{C-}语法，无论采用哪种语法，都不会对程序的意义产生任
+何影响，但却可以指导用户更好的理解该程序。
+
+@node Meta-字符语法
+@subsubsection Meta-字符语法
+
+@cindex meta字符
+    @dfn{meta字符}指那些用@key{META}修饰的字符，用于表示这种字符的整数，其第
+@tex
+@math{2^{27}}
+@end tex
+@ifnottex
+2**27
+@end ifnottex
+位被设置成上。我们使用高位来表示此修饰符以及其他修饰符，以便得到更宽的基本字符码。
+
+    在字符串里，当一个@acronym{ASCII}字符第
+@tex
+@math{2^{7}}
+@end tex
+@ifnottex
+2**7
+@end ifnottex
+位被设置上时，表示它是一个meta字符，因此，可以被包含在字符串的meta字符具有128~255的范围，即普通@acronym{ASCII}字符的meta版本。
+（请参考@xref{Strings of Events}.一节，以便了解字符串处理@key{META}的细节。）
+
+    meta字符的读取语法是@samp{\M-}。例如，@samp{?\M-A}代表@kbd{M-A}，你也可以用@samp{\M-}加上字符对应的十进制码，或者加上
+@samp{\C-}以及其他任意字符的读取语法。因此，你可以把@kbd{M-A}写做@samp{?\M-A}或者写做@samp{?\M-\101}，相似地，你可以把@kbd{C-M-b}
+写做@samp{?\M-\C-b}或者写作@samp{?\C-\M-b}或者@samp{?\M-\002}。
+
+@node 其他字符修饰位
+@subsubsection 其他字符修饰位
+
+    图形化字符的大小写由其字符码表示，如@acronym{ASCII}通过@samp{a}和@samp{A}区分大小写，但@acronym{ASCII}却没有办法区分控制字符
+的大小写。Emacs使用第
+@tex
+@math{2^{25}}
+@end tex
+@ifnottex
+2**25
+@end ifnottex
+位来表示在键入控制字符时是否使用了shift键。仅在你使用X终端或者其他特殊终端时才可能做此区分，普通终端并不会上报这种区分。shift位的语法
+为@samp{\S-}，因此@samp{?\C-\S-o}或@samp{?\C-\S-O}代表shifted-control-o字符。
+
+@cindex hyper字符
+@cindex super字符
+@cindex alt字符
+    X窗口系统定义了字符中可以出现的其他三个@anchor{modifier bits}修饰位：@dfn{hyper}、@dfn{super}以及@dfn{alt}，对应的语法为
+@samp{\H-}、@samp{\s-}以及@samp{\A-}。（这些前缀需要区分大小写。）因此，@samp{?\H-\M-\A-x}表示@kbd{Alt-Hyper-Meta-x}。（注意
+不跟@samp{-}的@samp{\s}代表空格字符。）
+@tex
+从数值上来说，alt相应的位为@math{2^{22}}，super相应的位为@math{2^{23}}，而hyper相应的位为@match{2^{24}}。
+@end tex
+@ifnottex
+从数值上来说，alt相应的位为2**22，super相应的位为2**23，而hyper相应的位为2**24。
+@end ifnottex
+
+@node 符号类型
+@subsection 符号类型
+
+    GNU Emacs Lisp中的@dfn{符号}是指具有名字的一个对象，符号名做为符号的打印表示。在常规Lisp应用中，借助于一个obarray（请参考@pxref{Creating Symbols}）
+，符号的名称是唯一的，也即没有两个同名的符号。
+
+    符号可以做为变量、函数名或者维护一个属性表，或者仅仅是为了和所有其他Lisp对象进行区分，以便可以可靠地识别出其在数据结构中的存在。在一个指定的上下文环境中，
+通常符号只具有以上的一种用途， 但你可以独立地以任意以上方式使用该符号。
+
+    名字以冒号（@samp{:}）开始的符号称为@dfn{关键字符号}。这些符号将自动扮演常量的角色，并且通常只用于将未知符号与有限的替代符号进行比较。
+
+@cindex 符号中的@samp{\}
+@cindex 符号中的反斜线
+    符号名可以包含任意字符。大多数符号名由字母、数字以及标点符号@samp{-+=*/}组成。这些名字不需要特殊标记（译注：这里应当指用反斜线括起来），只要符号名看起来
+不像数字，那么就足够使用了。（如果符号名看起来是数字，那就在它前面添加一个@samp{\}，强制使它被解释成符号）。字符@samp{_~!@@$%^&:<>@{@}?}很少在符号名中被使用，
+它们也不需要被特殊标记。所有此外其他可能在符号名中出现的字符，都需要用反斜线进行转义。与字符串中的反斜线应用相比，符号名中的反斜线只是简单的将反斜线后的单个字符括起
+来，例如，在字符串中，@samp{\t}代表一个制表符，而符号名中的@samp{\t}，则仅仅是将字母@samp{t}括起来（译注：根据本段前面的描述，字母t是不需要转义的，因此符号名
+中的\t与t实际上是相同的，可以通过@code{symbol-name '\tb}以及@code{symbol-name 'tb}对比看看。）。为了在符号名中引入制表符，你需要用反斜线加上一个真实的
+制表符来表示，但却很少需要这样做。
+
+@cindex CL注记---字母大小写
+@quotation
+@b{Common Lisp注记:} 在Common Lisp中，小写字符总是被转成大写，除非它们被精确的转义。在Emacs Lisp中，大小写字母是不同的。
+@end quotation
+
+    以下是符号名的几个例子。注意第五个例子中的@samp{+}被转义，以避免该符号被解释成数字，这种方式在第四个例子中并不需要，这里因为该符号名并不能被当做数字解释。
+
+@example
+@group
+foo                 ; @r{名为@samp{foo}的符号。}
+FOO                 ; @r{名为@samp{FOO}的符号, 与@samp{foo}不同。}
+@end group
+@group
+1+                  ; @r{名为@samp{1+}的符号。}
+                    ;   @r{(不是@samp{+1}, 它是一个数字)。}
+@end group
+@group
+\+1                 ; @r{名为@samp{+1}的符号。}
+                    ;   @r{(并不是一个非常可读的名字)。}
+@end group
+@group
+\(*\ 1\ 2\)         ; @r{名为@samp{(* 1 2)的符号} (糟糕的名字)。}
+@c the @'s in this next line use up three characters, hence the
+@c apparent misalignment of the comment.
++-*/_~!@@$%^&=:<>@{@}  ; @r{名为@samp{+-*/_~!@@$%^&=:<>@{@}的符号}。}
+                    ;   @r{这些符号不需要转义。}
+@end group
+@end example
+
+@ifinfo
+@c This uses ``colon'' instead of a literal `:' because Info cannot
+@c cope with a `:' in a menu
+@cindex @samp{#@var{colon}} 读取语法
+@end ifinfo
+@ifnotinfo
+@cindex @samp{#:} 读取语法
+@end ifnotinfo
+    通常Lisp读取器扣留所有符号（译注：英文名为intern，目前暂找不出更好的名字，在Emacs中，intern就是将符号插入obarray中，而避免intern
+就是相当于让符号游离在obarray之外。）。你可以在符号名前添加@samp{#:}来避免扣留发生。
+
+@node 序列类型
+@subsection 序列类型
+
+    @dfn{序列}是一个代表有序元素集的对象。在Emacs Lisp中，有两类序列，即表和数组。因此，表对象或者数组对象都可以认为是序列。
+
+    数组可以继续被细分为字符串、容器、字符表以及布尔容器。容器可以存储任何类型的元素，但字符串必须存储字符，而布尔容器的元素则只能是@code{t}
+或@code{nil}。字符表除了它被任意有效字符索引的特性外，很象容器。字符串里的字符们可以像缓冲区里的字符一样，具有文本属性。（请参考@pxref{Text Properties}），
+但容器即使其元素是字符，也并不支持文本属性。
+
+    表、字符串以及其他的数组类型是不同的，但它们却具有一些相似性。例如，都有一个长度@var{l}，并且其元素可以以0到@var{l}减一的的数值去索引。某些被称为
+序列函数，可以接受各种序列。例如，函数@code{elt}可以通过指定一个索引获取序列中的一个元素。（请参考@xref{Sequences Arrays Vectors}.）
+
+    因为序列总是在读取时被创建，因此通常不可能将同一个序列读取两次，如果你对序列的读取语法读取了两次，你将得到两个具有相同内容的序列（译注：这句话强调的应当是
+将产生两个相同内容但不同的序列对象），但有一个不同，空表@code{()}总是代表相同的对象，即@code{nil}。
+
+@node Cons Cell类型
+@subsection Cons Cell和表类型
+@cindex 寄存器地址域
+@cindex 寄存器剩余域
+@cindex 指针
+
+    @dfn{cons cell}是一个具有两个槽的对象，分别称为@sc{car}槽和@sc{cdr}槽。每个槽都可以@dfn{持有}或@dfn{指向}任意Lisp对象。我们也用
+``这个cons cell的@sc{car}''来指代该对象@sc{car}槽持有的任意对象，对于@sc{cdr}槽持有的对象相似，可做相似称呼。
+
+@quotation
+    C程序员注意：在Lisp中，我们并不区分``持有''一个值和``引用''该值，因为在Lisp中，指针是隐式的。
+@end quotation
+
+    表是一系列的cons cell，依次通过@sc{cdr}链接在一起，每个cons cell的@sc{cdr}槽或者引用下一个cons cell，或者
+引用空表。对于那些操作表的函数，空表实际上是符号@code{nil}。（请参考@xref{Lists}.）因为大部分cons cell都作为表的
+一部分，因此短语@dfn{表结构}被用来指代任何由cons cell组成的结构（译注：这里隐含着半句话，即``以便用来和表做区分''）。
+
+@cindex 原子
+    由于cons cell们对于表如此重要，我们也有这样一个说法，即``不是cons cell的对象''，这些对象被称为@dfn{原子}。
+
+@cindex 括号
+@cindex 表中的括号@samp{(@dots{})}
+    表的读取语法和打印表示是相等的，并且包含一个左括号，任意数量的元素以及一个右括号。以下是表的例子：
+
+@example
+(A 2 "A")            ; @r{具有三个元素的表。}
+()                   ; @r{没有元素的表（空表）。}
+nil                  ; @r{没有元素的表（空表）。}
+("A ()")             ; @r{具有一个元素的表，元素是：@code{"A ()"}。}
+(A ())               ; @r{具有两个元系的空表，元素是：@code{A}和空表。}
+(A nil)              ; @r{同上。}
+((A B C))            ; @r{具有一个元素的表，表的元素是}
+                     ;   @r{一个具有三个元素的表。}
+@end example
+
+    在读取时，括号内的每个对象都变成表的一个元素。也就是说，cons cell由各个元素组成。@sc{car}槽持有一个元素，其@sc{cdr}引用
+表中的下一个cons cell，该cons cell持有表的下一个元素。表中最后个cons cell的@sc{cdr}被设置为@code{nil}。
+
+    @sc{car}和@sc{cdr}从Lisp的历史演变而来。原始的Lisp实现运行在一个@w{IBM 704}计算机上，该计算机被分为两部分，分别叫作``地址''部分和
+``剩余''部分；@sc{car}是用于取得寄存器地址部分对应内容的指令，而@sc{cdr}则是用于取得寄存器剩余部分对应内容的指令。相比之下，``cons cells''用于命名
+创建它的函数@code{cons}，即如其名所识，construction of cells。（译注：这句不翻译，否则不易理解cons cells的意义）
+
+@menu
+* 盒子图解::              对表进行图示。
+* 点对记法::              cons cells的常见语法。
+* 关联表类型::            一种特殊构造的表。
+@end menu
+
+@node 盒子图解
+@subsubsection 将表画成盒子图表
+@cindex 针对表的盒子图解
+@cindex 图解，盒子化，针对表
+
+    可以将cons cells画成盒子对，象多米诺一样的形式对表进行图解。(Lisp读取器不能读取这种描绘方式，不象文本记法，可以被人和计算机读取，盒式描绘方式不能被
+计算机读取：）)此图表示了一个具有三元素的表@code{(rose violet buttercup)}（）：
+
+@example
+@group
+    --- ---      --- ---      --- ---
+   |   |   |--> |   |   |--> |   |   |--> nil
+    --- ---      --- ---      --- ---
+     |            |            |
+     |            |            |
+      --> rose     --> violet   --> buttercup
+@end group
+@end example
+
+    在此图解中，每个盒子代表一个可以持有或者引用任意Lisp对象的槽。每对盒子对代表一个cons cell，每个箭头代表对一个Lisp对象的引用，该对象可以是一个原子，
+也可以是另一个cons cell。
+
+    在这个例子中，第一个盒子，持有着第一个cons cell的@sc{car}部分，引用@code{rose}（一个符号）。第二个盒子,持有第一个cons cell的@sc{cdr}，引用下
+一个cons cell。第二个cons cell的@sc{car}是@code{violet}，它的@sc{cdr}是第三个cons cell。第三个即最后一个cons cell的@sc{cdr}是@code{nil}。
+
+    下面是该表的另一个图解，@code{(rose violet buttercup)}，用另外一个方式进行描绘。
+
+@smallexample
+@group
+ ---------------       ----------------       -------------------
+| car   | cdr   |     | car    | cdr   |     | car       | cdr   |
+| rose  |   o-------->| violet |   o-------->| buttercup |  nil  |
+|       |       |     |        |       |     |           |       |
+ ---------------       ----------------       -------------------
+@end group
+@end smallexample
+
+@cindex 作为表的@code{nil}
+@cindex 空表
+    没有元素的表称为@dfn{空表}；它等同于符号@code{nil}。换句话说，@code{nil}既是一个符号，又是一个表。
+
+    下面是表@code{(A ())}，或者等价的@code{(A nil)}，由盒子和箭头描绘：
+
+@example
+@group
+    --- ---      --- ---
+   |   |   |--> |   |   |--> nil
+    --- ---      --- ---
+     |            |
+     |            |
+      --> A        --> nil
+@end group
+@end example
+
+    下面是一个更为复杂的刻画，显示了一个三元素表@code{((pine needles) oak maple)}，第一个元素是一个具有两个元素的表：
+
+@example
+@group
+    --- ---      --- ---      --- ---
+   |   |   |--> |   |   |--> |   |   |--> nil
+    --- ---      --- ---      --- ---
+     |            |            |
+     |            |            |
+     |             --> oak      --> maple
+     |
+     |     --- ---      --- ---
+      --> |   |   |--> |   |   |--> nil
+           --- ---      --- ---
+            |            |
+            |            |
+             --> pine     --> needles
+@end group
+@end example
+
+    上述表用第二种盒子记法如下：
+
+@example
+@group
+ --------------       --------------       --------------
+| car   | cdr  |     | car   | cdr  |     | car   | cdr  |
+|   o   |   o------->| oak   |   o------->| maple |  nil |
+|   |   |      |     |       |      |     |       |      |
+ -- | ---------       --------------       --------------
+    |
+    |
+    |        --------------       ----------------
+    |       | car   | cdr  |     | car     | cdr  |
+     ------>| pine  |   o------->| needles |  nil |
+            |       |      |     |         |      |
+             --------------       ----------------
+@end group
+@end example
+
+@node 点对记法
+@subsubsection 点对记法
+@cindex 点对记法
+@cindex 表中的@samp{.}
+
+    点对记法是用来显式表示@sc{car}和@sc{cdr}的常见语法。使用这种语法时，@code{(@var{a} .@: @var{b})}表示@sc{car}是对象@var{a}而@sc{cdr}
+是对象@var{b}的cons cell。由于@sc{cdr}不一定需要是表，因此点对记法比表语法更为普遍。然而，在表语法可用时，如果使用点对记法，则显得较为笨拙。
+在点对记法中，@samp{(1 2 3)}写作@samp{(1 .  (2 . (3 . nil)))}。对于由@code{nil}终结的表，两种语法都可以使用，但表语法更为方便。当打印一
+个表时，点对记法仅在cons cell的@sc{cdr}不是一个表时使用。
+
+    下面是用盒子演示点对记法的一个例子。此例子显示点对@code{(rose . violet)}：
+
+@example
+@group
+    --- ---
+   |   |   |--> violet
+    --- ---
+     |
+     |
+      --> rose
+@end group
+@end example
+
+    借助于非@code{nil}终结的@sc{cdr}，你可以组合点对记法和表记法来方便表示一个cons cell链。你在表的最后一个元素后写下一个点，并跟跟上最后一个
+cons cell的@sc{cdr}。例如，@code{(rose violet . buttercup)}和@code{(code . (violet . buttercup))}相等，这个对象看起来是这样的：
+
+@example
+@group
+    --- ---      --- ---
+   |   |   |--> |   |   |--> buttercup
+    --- ---      --- ---
+     |            |
+     |            |
+      --> rose     --> violet
+@end group
+@end example
+ 
+    语法@code{(rose .@: violet .@: buttercup)} 是无效的，这是因为它没有任何意义。如果非要说明其意义的话，可以说将@code{buttercup}放至
+一个cons cell的@sc{cdr}中，而该cons cell的@sc{cdr}已经是@code{violet}了。（译注：这是由于@code{(violet . buttercup)}没有被括起来，
+要好考体会一下上面对点对记法的描述。）
+
+    表@code{(rose violet)}和@code{(rose . (violet)}等价，它看起来是这个样子：
+
+@example
+@group
+    --- ---      --- ---
+   |   |   |--> |   |   |--> nil
+    --- ---      --- ---
+     |            |
+     |            |
+      --> rose     --> violet
+@end group
+@end example
+
+    相似地，三元素表@code{(rose violet buttercup)}与@code{(rose . (violet . buttercup)}等价。
+@ifnottex
+    它看起来是这个样子：
+@example
+@group
+    --- ---      --- ---      --- ---
+   |   |   |--> |   |   |--> |   |   |--> nil
+    --- ---      --- ---      --- ---
+     |            |            |
+     |            |            |
+      --> rose     --> violet   --> buttercup
+@end group
+@end example
+@end ifnottex
+
+@node 关联表类型
+@comment  node-name,  next,  previous,  up
+@subsubsection 关联表类型
+
+    @dfn{关联表}或@dfn{alist}是一种特殊构造的表，其元素是cons cells。在每个元素里，@sc{car}被当作一个@dfn{关键字}，而@sc{cdr}则被
+当作@dfn{关联值}。（在某些情况下，关联值存储在@sc{cdr}的@sc{car}中。）关联表通常用作栈，因为在关联表的前面添加或删除关联很简单。
+
+    例如：
+
+@example
+(setq alist-of-colors
+      '((rose . red) (lily . white) (buttercup . yellow)))
+@end example
+
+@noindent
+设置变量@code{alist-of-colors}为一个具有三元素的关联表。在第一个元素中，@code{rose}是关键字，而@code{red}是关联值。
+
+    要进步请了解关联表以及操作它的函数，请参考@xref{Association Lists}.一节。要了解另外一类用于处理大量具有关键字的的查找
+表，请参考@xref{Hash Tables}.一节。
+
+@node 数组类型
+@subsection 数组类型
+ 
+    @dfn{数组}由任意数量的槽组成，这此槽用于持有或引用其他Lisp对象，布局在连续的内存块中。访问数组的任意元素花费大约相同的时间。
+相比下，访问表元素的时间则与元素在表中的位置成比例关系。（表靠后的元素访问起来要比表靠前的元素耗时长。）
+         
+    Emacs定义了四类数组：字符串、容器、布尔容器以及字符表。
+
+    字符串是一个由字符构成的数组，而容器则是由任意Lisp对象构成的数组。布尔容器只可持有@code{t}或@code{nil}。这些数组长度可达
+最大的整数值。而字符表则是由有效字符码索引的稀松数组，它可持有任意Lisp对象。
+
+    数组的第一个元素索引为0，第而个元素索引为1，依次类推。这称为@dfn{自0开始}的索引方式。例如，一个具有四元素的数组，其索引为
+0、1、2、@w{和3}。数组最大的索引值为其长度减1。数组一旦被创建，其索引就固定了。
+
+    所有的Emacs Lisp数组都是一维的。（大部分其他语法都支持多维数组，但这并不必要，你可通过嵌套一维数组达到同样的效果）。每类
+数组都具有其特有的读取语法，详见后续的章节。
+
+    数组类型是序列的子类，包含字符串类型、容器类型、布尔容器类型以及字符表类型。
+
+@node 字符串类型
+@subsection 字符串类型
+
+    @dfn{字符串}是由字符组成的数组。字符串在Emacs中有多种用途，正如在文本编辑器中的作用一样；例如，可以作为Lisp符号的名称，
+作为给用消息，作为从缓冲区中读取的文本。在Lisp中的字符串是常量：对其求值得到相同的字符串。
+
+    关于操作字符串的函数，请参考@xref{Strings and Characters}.。
+
+@menu
+* 字符串语法::               如何指定字符串。
+* 字符串中的非ASCII字符::     字符串中的国际化字符。
+* 非打印字符::             字符串中不可打印的字符。
+* 文本属性和字符串::           具有文本属性的字符。
+@end menu
+
+@node 字符串语法
+@subsubsection 字符串语法
+
+@cindex 字符串中的@samp{"}
+@cindex 字符串中的双引号
+@cindex 字符串中的@samp{\}
+@cindex 字符串中的反斜线
+    字符串的读取语法以双引号开始，加上任意数量的字符，再加上另一个双引号结束，如@code{"like this"}。要在字符串中引用一个双引号，
+请在双引号前加上反斜线；因此@code{"\""}是一个仅由反斜线组成的字符串。相似地，你可以通过在反斜线前增加反斜线，以便在字符串引用包
+含反斜线，如：@code{"this \\ is a single embedded backslash"}。
+
+@cindex 字符中的换行
+    换行符对于字符串的读取语法而言并不特殊；你可以在两个反斜线之间插入换行符，它将成为字符串的一个字符，但被转义后的换行符，即
+前面有一个@samp{\}的换行符，将不会成为字符串的一部分，即Lisp读取器将在读取字符串时忽略该换行符。相似地，一个转义后的空格@w{@samp{\ }}
+也将被忽略。
+
+@example
+"It is useful to include newlines
+in documentation strings,
+but the newline is \
+ignored if escaped."
+     @result{} "It is useful to include newlines
+in documentation strings,
+but the newline is ignored if escaped."
+@end example
+
+@node 字符串中的非ASCII字符
+@subsubsection 字符串中的非@acronym{ASCII}字符
+
+    你可以在字符串常量中逐字地写下非ASCII国际化字符。在Emacs字符串（和缓冲区中），对于非@acronym{ASCII}字符，
+有两种表示：单字节或多字符。如果字符串常量从多字节源中读取，如多字节缓冲区或多字节字符串，或一个可以以多字节方式
+访问的文件，那么字符将以多字节字符地形式被读取，进而使得字符串成为多字节的。如果字符串常量从单字节源中读取，那么
+字符将以单字节形式读取，进而使得字符串成为单字节的。
+
+    对于多字节非@acronym{ASCII}字符，你还可以用其字符编码表示它：使用一个十六进制转义，@samp{\x@var{nnnnnnn}}，
+必要时可以用任意的数字。（多字节非@acronym{ASCII}字符的编码都大于256。）任意下一个字符如果其十六进制数字无效，将
+使得停止读取字符串。如果下一个字符可以被解释成十六进制数字，写一个@w{@samp{\ }}（反斜线加上空格）来终止这个十六进制
+转义---例如，字符串中的@w{@samp{\x8e0\ }}代表加上重音符的@samp{a}。字符串中的@w{@samp{\ }}就像转义后的换行符
+一样，它并不在字符串中产生任何字符，但它可以终止前面的十六进制转义。
+
+    对于单字节非@acronym{ASCII}字符，你可以用其字符编码表示它，字符编码必须介于128(八进制的0200)至255（八进制
+的0377）。如果你在字符串中写的全部是这种字符，没有其他使得字符串强制变为多字节字符串的字符，则产生一个单字节字符串，
+然而。在字符串中使用任何十六进制转义（即使是一个@acronym{ASCII}字符的十六进制转义），也将使字符串强制成为多字符
+字符串。
+
+    通过@samp{\u}和@samp{\U}，你还可以在字符串以字符串的Unicode数值指定字符。（请参考@pxref{字符类型}）。
+
+    要了解更多关于单字节和多字节的文本表示，请参考@xref{Text Representations}.一节。
+
+@node 非打印字符
+@subsubsection 非打印字符
+
+    你可以在字符串中使用和字符文字中相同的反斜线转义序列（但不要使用开启字符常量的?标记）。例如，你可以像@code{"\t, \C-a"}
+这样写下一个包含非打印字符制表符或@kbd{C-a}，并用逗号和空格分隔它们的字符串。（关于字符的读取语法，请参考@xref{字符类型}.）
+
+    然而，并不是所有的反斜线转义序列在字符串中都有有效的。字符串中唯一允许的控制字符即那些@acronym{ASCII}控制字符。字符串不区分
+@acronym{ASCII}控制字符的大小写。
+
+    恰当地说，字符串不能包含meta字符，但当一个字符串被用作按键序列时，有一个特殊惯例用来在字符串中代表@acronym{ASCII}字符的meta版本。
+你可以用@samp{\M-}语法在字符串常量中表示meta字符。这将设置字符串中该字符的第
+@tex
+@math{2^{7}}
+@end tex
+@ifnottex
+2**7
+@end ifnottex
+位。如果该字符用于@code{define-key}或@code{lookup-key}, 这个数值将被转换为相等的meta字符。（请参考@xref{字符类型}.。）
+
+    字符串不能持有带有hyper、super或alt修饰的字符。
+
+@node 文本属性和字符串
+@subsubsection 字符串中的文本属性
+
+@cindex @samp{#(}读取语法
+@cindex 文本属性，读取语法
+    字符串除持有字符外，还可以持有其存储字符的属性。这使得那些在字符串和缓冲区间拷贝字符的程序可以不费力地拷贝文本属性。要了解对文本属性的
+解释，请参考@xref{Text Properties}.一节。带有文本属性的字符串使用一个特殊的读取语法：
+
+@example
+#("@var{characters}" @var{property-data}...)
+@end example
+
+@noindent
+@var{property-data}包括0到多个的元素，被分为如下三组：
+
+@example
+@var{beg} @var{end} @var{plist}
+@end example
+
+@noindent
+元素@var{beg}和@var{end}是整数，它们一起指定了字符串的特定区域；@var{plist}是此区域的属性。例如：
+
+@example
+#("foo bar" 0 3 (face bold) 3 4 nil 4 7 (face italic))
+@end example
+
+@noindent
+代表一个字符串，其文本内容为@samp{foo bar}，在此字符串，前三个字符具有一个值为@code{bold}的@code{face}属性，
+而后面的三个字符则具有一个值为@code{italic}的@code{face}属性。（第四个字会没有文本属性，因此它的属性表为@code{nil}）。
+实际上并不需要指明@code{nil}作为属性表，这是因为未在任何区域内提及的字符默认没有任何属性。）
+
+@node 容器类型
+@subsection 容器类型
+
+    @dfn{容器}是一个包含任意类型元素的一维数组。访问其元素花费的时间固定。（在表中，访问表元素的时间则与元素在表中的位置成比例关系。）
+
+    容器的打印表示包含一个左方括号，容器元素，以及一个右方括号。这也是其读取语法。像数字和字符串一样，元素在被当作常量进行求值。
+
+@example
+[1 "two" (three)]      ; @r{具有三个元素的容器。}
+     @result{} [1 "two" (three)]
+@end example
+
+     要了解操作容器的函数，请参考@xref{Vectors}.一节。
+
+@node 字符表类型
+@subsection 字符表类型
+
+    @dfn{字符表}是一个由字符码索引的包含任意类型元素的一维数组。它具有某些额外特性，使其在许多涉及为字符码赋予信息的任务中变得更为有用
+---例如，字符表可以具有一个具有默认值的父类，并有少量的槽用于特殊目的。字符表也可以对整个字符集设置单个值。
+
+    字符表的打印语法和容器相似，除了在开头有一个额外的@samp{#^}之外。
+
+    要了解操作字符表的特殊函数，请参考@xref{Char-Tables}.。
+
+    字符表的应用包括：
+@itemize @bullet
+@item
+字符表 (@pxref{Case Tables}).
+
+@item
+字符归类表 (@pxref{Categories}).
+
+@item
+显示表 (@pxref{Display Tables}).
+
+@item
+语法表 (@pxref{Syntax Tables}).
+@end itemize
+
+@node 布尔容器类型
+@subsection 布尔容器类型
+
+    @dfn{布尔容器}类型是一个元素只能是@code{t}或@code{nil}的一维数组。
+
+    布尔容器的打印语法与字符串相似，除了它由一个@samp{#&}加上一个长度开始外。后面跟的字符串常量实际上以位图形式指明了布尔容器的
+内容---字符串中的每个``字符''包含8个位，用来指尔布尔容器的下8个元素（1代表@code{t}，0代表@code{nil}）。字符的最低有效位对
+应于布尔容器的最小索引。
+
+@example
+(make-bool-vector 3 t)
+     @result{} #&3"^G"
+(make-bool-vector 3 nil)
+     @result{} #&3"^@@"
+@end example
+
+@noindent
+这个结果是有意义的，因为@samp{C-g}的二进制码为111，而@samp{C-@@}是一个二进制码为0的字符。
+
+    如果布尔容器的长度不是8的倍数，其打印表示将显示多余的元素，但这些元素实际上没有意义。例如，在下一个例子中，那两个布尔容器
+相等，但只有前三个位有用：
+
+@example
+(equal #&3"\377" #&3"\007")
+     @result{} t
+@end example
+
+@node 哈希表类型
+@subsection 哈希表类型
+
+    哈希表是一类非常快的查找表，与将关键字映射到值的关联表有几分相似，但更快。其打印表示指明了其属性和内容，像这样：
+
+@example
+(make-hash-table)
+     @result{} #s(hash-table size 65 test eql rehash-size 1.5
+                             rehash-threshold 0.8 data ())
+@end example
+
+@noindent
+要了解关于哈希表的更多信息，请参考@xref{Hash Tables}.。
+
+@node 函数类型
+@subsection 函数类型
+
+    Lisp函数是可执行的做戏，就像其他语言中的函数一样。在Lisp中，不同于其他语言，函数也是Lisp对象。Lisp中未编译
+的函数是一个lambda表达式：即第一个元素的符号@code{lambda}的表（请参考@pxref{Lambda Expressions}.）。
+
+    在大多数编程语言中，不可能存在一个没有名字的函数。在Lisp中，函数没有固有的名字。一个lambda表达式可以被当
+作函数被调用，即使它没有名字。为了强调这个概念，我们也将这个函数称作@dfn{匿名函数}（请参考@pxref{Anonymous Functions}）。
+Lisp中具有名字的函数只是函数单元具有一个有效函数的符号而已（请参考@pxref{Defining Functions}）。
+
+    大多数情况下，在Lisp程序中，函数以在Lisp表达式中写下其名字地方式被调用。然而，你可以在运行时构造或获取一个函数对
+象，然而使用原子函数@code{funccall}有@code{apply}调用它。（请参考@xref{Calling Functions}.）
+
+@node 宏类型
+@subsection 宏类型
+
+    @dfn{Lisp宏}是一个用户定义的构造器，用来扩充Lisp语言。它由一个像函数的对象表示，但具有不同的参数传递语义。Lisp宏
+具有表的形式，该表的第一个元素是符号@code{macro}，此表的@sc{cdr}是一个Lisp函数对象，包括@code{lambda}符号。
+
+    Lisp宏对象通常使用内置函数@code{defmacro}定义，只要Emacs注意到，任何由@code{macro}开始的表都是一个宏。关于
+如何写作宏，请参考@xref{Macros}.。
+  
+    @strong{警告}: Lisp宏和键盘宏（参考@pxref{Keyboard Macros}）是完全不同的事物。当我们未对``宏''这个语做限定时，
+我们指一个Lisp宏，而不是键盘宏。
+
+@node 原始函数类型
+@subsection 原始函数类型
+@cindex 原始函数
+    @dfn{原始函数}是一个可被Lisp调用但用C写成的函数。原始函数也被称做@dfn{子程序}（译注：英文subr）或@dfn{内置函数}。（词``subr''派生自
+``subroutine''）大多数原始函数在被执行时，将对所有参数进行求值。不对所有参数求值的原始函数称作@dfn{特殊型}（请参考@pxref{Special Forms}）。
+
+    对于调用者而言，函数是否是是原始的并不重要。然而，如果你要尝试用Lisp编写的函数重定义一个原始函数时，你就需要注意了。原因在于原始函数也许
+会从C代码中直接调用，对于从Lisp中发起的对于重定义的函数的调用将使用新定义，而从C代码中的调用仍使用原来的函数。
+
+    术语@dfn{function}指所有Emacs的函数，无论是用Lisp还是C写成。关于Lisp写成函数的信息，请参考@xref{函数类型}.一节。
+
+    原子函数没有读取语法，用哈希记法加上子程序的名字打印。
+
+@example
+@group
+(symbol-function 'car)          ; @r{访问符号的函数单元}
+     @result{} #<subr car>
+(subrp (symbol-function 'car))  ; @r{是原始函数吗？}
+     @result{} t                       ; @r{是。}
+@end group
+@end example
+
+@node 字节码类型
+@subsection 字节码类型
+
+    字节码编译器产生@dfn{字节码函数对象}。从内部来看，一节字节码函数对象更像一个容器；然则 当它以被调用函数的形式出现时，
+求值器对这种数据类型进行特殊处理。关于字节码编译器的信息，请参考@xref{Byte Compilation}.一节。
+
+    字节码函数的打印表示和读取语法像容器一样，但在开始的@samp{[}之前，有一个附加的@samp{#}。
+
+@node 自动加载类型
+@subsection 自动加载类型
+
+    @dfn{自动加载对象}是一个第一个元素为符号@code{autoload}的表。它做为符号的函数定义存在，为真实的定义占位。自动加载对
+象表示真实的定义可以在文件或Lisp代码中找到，并在需要时被加载。它包含文件的名字，以及有关真实定义的某些其他信息。
+
+    当文件被加载后，该符号将具有一个一个非自动加载对象的函数。新定义就像一直存在一样被调用。从用户的角度看，函数调用如期望
+的那样工作，并使用在加载文件的函数定义。
+
+    一个自动加载对象通常使用函数@code{autoload}创建，并将该对象存储在符号的函数单元。关于更多细节，请参考@xref{Autoload}.。
+
+@node 编辑类型
+@section 编辑类型
+@cindex 编辑类型
+
+    在前面章节中谈到的类型用于一般的编程需要，它们的大部分在其他Lisp方言中也很常见。Emacs Lisp提供了一些与编辑相关的附加
+数据类型，
+
+@menu
+* 缓冲区类型::           编辑的基本对象。
+* 标记类型::             缓冲区的一个位置。
+* 窗口类型::             缓冲区在窗口中显示。
+* 框类型::              窗口分割框。
+* 终端类型::            显示框的终端设备。
+* 窗口配置类型::         记录框的分割方式。
+* 框配置类型::          记录所有框的状态。
+* 进程类型::            Emacs的子进程，进行在所属OS上。
+* 流类型::              接收或发送字符。
+* 按键映射类型::         按键发生时，哪个函数被调用。
+* 覆盖类型::            覆盖如何表示。
+* 字体类型::            用于显示文本的字体。
+@end menu
+
+@node 缓冲区类型
+@subsection 缓冲区类型
+
+    @dfn{缓冲区}是一个持有可编辑文本的对象（请参考（@pxref{Buffers}）。大多数缓冲区持有硬盘文件的内容，以便它们可以被编辑，
+但某些缓冲区用于其他目的。大多数缓冲区也意味着用户可见，因此某些时候显示在一个窗口里（@pxref{Windows}.）。 但缓冲并非必需显示
+在任何窗口里。每个缓冲区具有一个分配的位置，称作@dfn{点}（请参考@pxref{Positions}）；大多数编辑命令在操作当前缓冲区点周围的
+内容。无论何时，只有一个缓冲区是@dfn{当前缓冲区}。
+
+    缓冲区的内容和字符串很像，但缓冲区的操作并不像Emacs Lisp中操作字符串一样，它可用的操作是不同的。例如，你可以高效地向既有
+的缓冲中插入文本，替换缓冲区内容，而``插入''文本到字符串则需要连结子字符串，而结果是一个全新的字符串对象。
+
+    许多标准Emacs函数操作或测试当前缓冲区的字符；本文档专门有整个章节来描述这些函数（请参考@pxref{Text}）。
+
+    每个缓冲区都关联了一些其他数据结构：
+
+@itemize @bullet
+@item
+一个局部语法表(@pxref{Syntax Tables})；
+
+@item
+一个局部按键射(@pxref{Keymaps})；和
+
+@item
+一个缓冲区局部范围的变量绑定表(@pxref{Buffer-Local Variables})。
+
+@item
+覆盖(@pxref{Overlays}).
+
+@item
+缓冲区文本的文本属性(@pxref{Text Properties})。
+@end itemize
+
+@noindent
+局部按键映射和变量表包含用于独立改写全局绑定或值的表项。它们用于定制程序在不同缓冲中的形为，而不影响该程序。
+
+    缓冲区可以是@dfn{间接的}，意味着它可以与另一个缓冲共享文本，但用不同的方式呈现。（请参考@xref{Indirect Buffers}.）
+
+    缓冲区没有读取语法。它们用哈希记法打印，显示缓冲区名。
+
+@example
+@group
+(current-buffer)
+     @result{} #<buffer objects.texi>
+@end group
+@end example
+
+@node 标记类型
+@subsection 标记类型
+
+    @dfn{标记}表示特定缓冲区的一个位置。标记具有两个组成部分：一个面向缓冲区，一个面向位置。缓冲区文本发生改变时，将自动重定位
+位置值，以便保证标记总是指向缓冲区中相同的两个字符之间。
+
+    标记没有读取语法。它们以哈希记法打印，显示当前缓冲区位置以及缓冲区名。
+
+@example
+@group
+(point-marker)
+     @result{} #<marker at 10779 in objects.texi>
+@end group
+@end example
+
+要了解如何测试、创建、拷贝以及移动标记，请参考@xref{Markers}.一节。
+
+@node 窗口类型
+@subsection 窗口类型
+
+    @dfn{窗口}描述Emacs用来显示缓冲区使用的终端屏幕的一部分。每个窗口都有一个关联的缓冲区，该缓冲区的内容出现在窗口
+上。相反地，一个给定的缓冲区，可以显示在一个窗口里、不在窗口中显示或显示在几个窗口中。
+
+    尽管许多窗口可以同时存在，但在任何时候，只有一个窗口被指定为@dfn{选中窗口}。这是在Emacs准备接受命令时，光标通常显示
+的窗口。选中窗口通常显示当前缓冲区，但这并不一定。（译注：在编程时，可以使用Lisp操作缓冲区，而该缓冲区不一定是当前缓冲区）。
+
+    窗口在屏幕上被分组到框里；每个窗口属于一个且只能属于一个框。请参考@xref{框类型}.。
+   
+    窗口没有读取语法。它们以哈希记法打印，显示窗口编号以及它显示的缓冲区名。窗口号用于唯一区分窗口，因为指定窗口中的缓冲区
+可能频繁变化。
+
+@example
+@group
+(selected-window)
+     @result{} #<window 1 on objects.texi>
+@end group
+@end example
+
+    关于操作窗口函数的描述，请参考@xref{Windows}.一节。
+
+@node 框类型
+@subsection 框类型
+
+    @dfn{框}是一个包含一至多个Emacs窗口的屏幕区域；我们也用术语``框''来指Emacs用来指屏幕区域的Lisp对象。
+
+    框没有读取语法。它们以哈希记法打印，显示框的标题，以及其在Emacs核心中的地址（用来唯一识别框）。
+
+@example
+@group
+(selected-frame)
+     @result{} #<frame emacs@@psilocin.gnu.org 0xdac80>
+@end group
+@end example
+
+    关于操作框函数的描述，请参考@xref{Frames}.一节。
+
+@node 终端类型
+@subsection 终端类型
+@cindex 终端类型
+
+    @dfn{终端}是一个能够显示一到多个Emacs框的设备（请参考@pxref{框类型}）。
+
+    终端没有读取语法。它们以哈希记法表示，显示终端的序号以及其TTY设备文件名。
+
+@example
+@group
+(get-device-terminal nil)
+     @result{} #<terminal 1 on /dev/tty>
+@end group
+@end example
+
+@c FIXME: add an xref to where terminal-related primitives are described.
+
+@node 窗口配置类型
+@subsection 窗口配置类型
+@cindex 框中窗口布局
+
+    @dfn{窗口配置}一个框中窗口的有关存储位置、大小以及内容的信息，所以你可以后续重新创建相同的窗口布置。
+
+    窗口配置没有读取语法；它们的打印语法是@samp{#<window-configuration>}的形式。关于对与窗口配置相关的
+一些函数的描述，请参考@xref{Window Configurations}.一节。
+
+@node 框配置类型 
+@subsection 框配置类型
+@cindex 屏幕布局
+@cindex 窗口布局，所有的框
+
+    @dfn{框配置}存储所有框中窗口的有关存储位置、大小以及内容的信息。它不是一个原始类型---它是一个表，表的@sc{car}是
+@code{frame-configuration}并且@sc{cdr}是一个关联表。关联表的每个元素描述一个框，该框作为该元素的@sc{car}。
+
+    关于对与框配置有关的一些函数的描述，请参考@xref{Frame Configurations}.一节。
+
+@node 进程类型
+@subsection 进程类型
+
+    @dfn{进程}通常意味着一个正在运行的程序。Emacs本身就运行在一个这样的进程中。然而，在Emacs Lisp中，一个进程是一
+个被分配了一个Emacs进程创建的子进程的Lisp对象。程序如shells、GDB、ftp以及编译器，运行在Emacs的子进程中，扩展了Emacs
+的能力。
+
+    所有的Emacs子进程都接受来自Emacs的文本输入，并返回文本输出给Emacs供进一步的吕作。Emacs也可产生信号给这些子进程。
+
+    进程对象没有读取语法。它们以哈希记法打印，显示进程的名字。
+
+@example
+@group
+(process-list)
+     @result{} (#<process shell>)
+@end group
+@end example
+
+    关于用来创建、删除、返回信息、发送输入或信号以及接收进程输出的函数的描述，请参考@xref{Processes}.一节。
+
+@node 流类型
+@subsection 流类型
+
+@c 继续从这里翻译 
+
+    @dfn{流}是一个可以用作字符源或字符接收端的对象---或为输入提供字符或接受字符做为输出。许多不同的类型可以被这样
+使用：标记、缓冲区、字符串以及函数。通常，输入流（字符源）从键盘、缓冲区或文件，而发送流（字符接收端）向如@file{*Help*}缓冲区
+或回显区发送字符。
+
+    对象@code{nil}，除了它其他的含义外，也可做为流使用。它代表变量@code{standard-input}或@code{standard-output}。同样的，
+对象@code{t}也可做为流，代表使用minibuffer（请参考@pxref{Minibuffers}）的输入，或回显区的输出（请参考@pxref{The Echo
+Area}）。
+
+    流不具有特殊的打印表示或读取语法，它将以其原始类型打印。
+
+    关于与流有关的函数，包括解析或打印函数，请参考@xref{Read and Print}.一节。
+
+@node 按键映射类型
+@subsection 按键映射类型
+
+    @dfn{按键映射}将用户的按键映射到命令上。这个映射控制用户命令输入如何执行。一个键盘映射实际上是一个表，该表的@sc{car}是符号
+@code{keymap}。
+
+    关于创建按键映射、处理前缀按键、本地以及全局按键映射以及改变按键绑定的信息，请参考@xref{Keymaps}.一节。
+
+@node 覆盖类型
+@subsection 覆盖类型
+
+    @dfn{覆盖}指定应用于缓冲区的一部分的属性。每个覆盖应用于缓冲区的一个指定范围，包含一个属性表（表的元素是替换的属性名以及属性值）
+。覆盖属性用于将缓冲区的部分内容用不同的显示风格进行呈现。覆盖没有读取语法，用哈希记法进行打印，显示缓冲区名字以及位置范围。
+
+    关于如何创建覆盖，请参考@xref{Overlays}.一节。
+
+@node 字体类型
+@subsection 字体类型
+
+    @dfn{字体}指定如何在图形终端上显示文本。实际上有三种不同的字体类型---@dfn{字体对象}、@dfn{字体规格}以及@dfn{字体实体}---每
+个都具有不同的属性。它们均没有读取语法；它们的打印语法分别是@samp{#<font-object>}、@samp{#<font-spec>}以及@samp{#<font-entity>}
+的形式。关于这些Lisp对象的描述，请参考@xref{Low-Level Font}.一节。
+
+@node 循环对象
+@section 循环对象的读取语法
+@cindex 循环结构，读取语法
+@cindex 共享结构，读取语法
+@cindex @samp{#@var{n}=} 读取语法
+@cindex @samp{#@var{n}#} 读取语法
+
+    为展示复杂Lisp对象中的共享或循环结构，你可以使用@samp{#@var{n}=}和@samp{#@var{n}#}这样的读取构造器。
+
+    在对象前使用@code{#@var{n}=}来标记它供后续引用，后续你可以使用@code{#@var{n}#}另一个地方来引用该对象。这里的@var{n}是一个整数。
+例如，下面构造了一个表，在此表中，第一个元素将在第三个元素处再次出现。
+
+@example
+(#1=(a) b #1#)
+@end example
+
+@noindent
+这与一般的如下语法不同
+
+@example
+((a) b (a))
+@end example
+
+@noindent
+此语法产生一个表，表的第一个元素与第三个元素看起来相像，但不是同一个Lisp对象。下面显示其差异：
+
+@example
+(prog1 nil
+  (setq x '(#1=(a) b #1#)))
+(eq (nth 0 x) (nth 2 x))
+     @result{} t
+(setq x '((a) b (a)))
+(eq (nth 0 x) (nth 2 x))
+     @result{} nil
+@end example
+
+    你可以使用相同的语法来创建一个循环结构，它自身将作为一个``元素''出现在其自身里。下面是一个例子：
+
+@example
+#1=(a #1#)
+@end example
+
+@noindent
+这将构造一个表，该表的第二个元素是表自身。下面显示它确实能够工作：
+
+@example
+(prog1 nil
+  (setq x '#1=(a #1#)))
+
+(eq x (cadr x))
+     @result{} t
+@end example
+
+    Lisp打印器可以产生这种语法，用来记录Lisp对象中的循环或共享结构，如果你绑定变量@code{print-circle}到一个非@code{nil}值。
+（请参考@xref{Output Variables}.一节）
+
+@node 类型判定
+@section 类型判定
+@cindex 类型检查
+@kindex 错误类型的参数
+
+    Emacs Lisp解释器它自身并不在函数调用时对传递给函数的实参进行类型检查。它不能这样做是由于Lisp函数的参数并没有类型声明，像
+其他编程语言那样。因此检查每个参数是否属于函数可以使用的类型的工作，需要由单个函数自己完成。
+
+    所有的内置函数都检查它们的实际参数，在合适的时候，如果一个参数类型参数，将产生@code{wrong-type-argument}错误。例如，
+下面是你向@code{+}传递一个它不能处理的参数时将会发生的现象：
+
+@example
+@group
+(+ 2 'a)
+     @error{} Wrong type argument: number-or-marker-p, a
+@end group
+@end example
+
+@cindex 类型判定
+@cindex 类型测试
+    如果你想让你的程序对不同的类型进行不同的处理，你必须进行显式地类型检查。检查对象的类型最常见的方式就是调用一个称为@dfn{类型判定}
+的函数。Emacs对每个类型都提供了一个类型判定，以及一些针对组合类型的判定。
+
+    类型判定函数接受一个参数；如果参数属于合适的类型，它将返回@code{t}，否则返回@code{nil}。为遵循Lisp针对类型判定函数的一般惯例，
+大多数类型判定名以@samp{p}结尾。(译注：p是英文predicate的第一个字母。)
+    
+    下面是使用@code{listp}判定来检查表以及@code{symbolp}来检查符号的一个例子。
+
+@example
+(defun add-on (x)
+  (cond ((symbolp x)
+         ;; 如果X是一个符号，将其放到表里
+         (setq list (cons x list)))
+        ((listp x)
+         ;; 如果X是一个表，将其元素插入到表里
+         (setq list (append x list)))
+        (t
+         ;; 我们只处理符号和表
+         (error "Invalid argument %s in add-on" x))))
+@end example
+
+    下面是一个以字母排序的预定义的类型判定表，指向后续的信息。
+
+@table @code
+@item atom
+@xref{List-related Predicates, atom}.
+
+@item arrayp
+@xref{Array Functions, arrayp}.
+
+@item bool-vector-p
+@xref{Bool-Vectors, bool-vector-p}.
+
+@item bufferp
+@xref{Buffer Basics, bufferp}.
+
+@item byte-code-function-p
+@xref{字节码类型, byte-code-function-p}.
+
+@item case-table-p
+@xref{Case Tables, case-table-p}.
+
+@item char-or-string-p
+@xref{Predicates for Strings, char-or-string-p}.
+
+@item char-table-p
+@xref{Char-Tables, char-table-p}.
+
+@item commandp
+@xref{Interactive Call, commandp}.
+
+@item consp
+@xref{List-related Predicates, consp}.
+
+@item display-table-p
+@xref{Display Tables, display-table-p}.
+
+@item floatp
+@xref{Predicates on Numbers, floatp}.
+
+@item fontp
+@xref{Low-Level Font}.
+
+@item frame-configuration-p
+@xref{Frame Configurations, frame-configuration-p}.
+
+@item frame-live-p
+@xref{Deleting Frames, frame-live-p}.
+
+@item framep
+@xref{Frames, framep}.
+
+@item functionp
+@xref{Functions, functionp}.
+
+@item hash-table-p
+@xref{Other Hash, hash-table-p}.
+
+@item integer-or-marker-p
+@xref{Predicates on Markers, integer-or-marker-p}.
+
+@item integerp
+@xref{Predicates on Numbers, integerp}.
+
+@item keymapp
+@xref{Creating Keymaps, keymapp}.
+
+@item keywordp
+@xref{Constant Variables}.
+
+@item listp
+@xref{List-related Predicates, listp}.
+
+@item markerp
+@xref{Predicates on Markers, markerp}.
+
+@item wholenump
+@xref{Predicates on Numbers, wholenump}.
+
+@item nlistp
+@xref{List-related Predicates, nlistp}.
+
+@item numberp
+@xref{Predicates on Numbers, numberp}.
+
+@item number-or-marker-p
+@xref{Predicates on Markers, number-or-marker-p}.
+
+@item overlayp
+@xref{Overlays, overlayp}.
+
+@item processp
+@xref{Processes, processp}.
+
+@item sequencep
+@xref{Sequence Functions, sequencep}.
+
+@item stringp
+@xref{Predicates for Strings, stringp}.
+
+@item subrp
+@xref{Function Cells, subrp}.
+
+@item symbolp
+@xref{Symbols, symbolp}.
+
+@item syntax-table-p
+@xref{Syntax Tables, syntax-table-p}.
+
+@item user-variable-p
+@xref{Defining Variables, user-variable-p}.
+
+@item vectorp
+@xref{Vectors, vectorp}.
+
+@item window-configuration-p
+@xref{Window Configurations, window-configuration-p}.
+
+@item window-live-p
+@xref{Deleting Windows, window-live-p}.
+
+@item windowp
+@xref{Basic Windows, windowp}.
+
+@item booleanp
+@xref{nil和t, booleanp}.
+
+@item string-or-null-p
+@xref{Predicates for Strings, string-or-null-p}.
+@end table
+
+    检查对象的类型最为普遍的方式就是调用@code{type-of}函数。回想一下每个元素都属于一个且仅一个原始类型；@code{type-of}告诉
+你哪一个原始类型。但@code{type-of}并不知道关于非原始类型的任何信息。在大多数情况下，使用类型判定比@code{type-of}更为方便。
+
+@defun type-of object
+此函数返回一个命名@var{object}所属原始类型的符号。 它的值是如下符号中的一个： @code{bool-vector},
+@code{buffer}, @code{char-table}, @code{compiled-function},
+@code{cons}, @code{float}, @code{font-entity}, @code{font-object},
+@code{font-spec}, @code{frame}, @code{hash-table}, @code{integer},
+@code{marker}, @code{overlay}, @code{process}, @code{string},
+@code{subr}, @code{symbol}, @code{vector}, @code{window}, or
+@code{window-configuration}.
+
+@example
+(type-of 1)
+     @result{} integer
+@group
+(type-of 'nil)
+     @result{} symbol
+(type-of '())    ; @r{@code{()} is @code{nil}.}
+     @result{} symbol
+(type-of '(x))
+     @result{} cons
+@end group
+@end example
+@end defun
+
+@node 相等判定
+@section 相等判定
+@cindex 相等
+
+    下面我们描述用于测试两个对象相等性的函数。 其他函数测试特定类型对象的内容相等性，如字符串。对于这些判定，请参考后续描述
+相应数据类型的章节。
+
+@defun eq object1 object2
+如果@var{object1}与@code{object2}是同一个对象，此函数返回@code{t}，否则返回@code{nil}。
+    
+
+如果@var{object1}与@code{object2}是等值的两个整，@code{eq} returns @code{t}。因为符号名通常是唯一的，
+如果两个参数是具有同名的符号，它们是@code{eq}的。对于其他类型（如表、容器、字符串等），仅仅内容或元素相等并不
+使得它们@code{eq}对方：它们仅在是同一个对象时是@code{eq}的，即意味着内容的修改会在另外一个上反射出来。
+
+@example
+@group
+(eq 'foo 'foo)
+     @result{} t
+@end group
+
+@group
+(eq 456 456)
+     @result{} t
+@end group
+
+@group
+(eq "asdf" "asdf")
+     @result{} nil
+@end group
+
+@group
+(eq "" "")
+     @result{} t
+;; @r{此特例发生的原因是Emacs Lisp}
+;; @r{为了节省空间，只产生一个多字节空字符串。}
+@end group
+
+@group
+(eq '(1 (2 (3))) '(1 (2 (3))))
+     @result{} nil
+@end group
+
+@group
+(setq foo '(1 (2 (3))))
+     @result{} (1 (2 (3)))
+(eq foo foo)
+     @result{} t
+(eq foo '(1 (2 (3))))
+     @result{} nil
+@end group
+
+@group
+(eq [(1 2) 3] [(1 2) 3])
+     @result{} nil
+@end group
+
+@group
+(eq (point-marker) (point-marker))
+     @result{} nil
+@end group
+@end example
+
+    @code{make-symbol}函数产生一个未扣留的符号，不同于你用来在Lisp表达式中写下名字的符号。具有相同名字但不同的符号是不@code{eq}的。
+（请参考@xref{Creating Symbols}.一节）
+
+@example
+@group
+(eq (make-symbol "foo") 'foo)
+     @result{} nil
+@end group
+@end example
+@end defun
+
+@defun equal object1 object2
+如果@var{object1}和@var{object2}具有相同的内容，此函数返回@code{t}，否则返回@code{nil}。@code{eq}测试两个参数是否是
+同一个对象，而@code{equal}查看两个不相等的参数对应的内容是否相同。所以，如果两个对象@code{eq}，那么它们也@code{equal}，反过来
+并不一定成立。
+
+@example
+@group
+(equal 'foo 'foo)
+     @result{} t
+@end group
+
+@group
+(equal 456 456)
+     @result{} t
+@end group
+
+@group
+(equal "asdf" "asdf")
+     @result{} t
+@end group
+@group
+(eq "asdf" "asdf")
+     @result{} nil
+@end group
+
+@group
+(equal '(1 (2 (3))) '(1 (2 (3))))
+     @result{} t
+@end group
+@group
+(eq '(1 (2 (3))) '(1 (2 (3))))
+     @result{} nil
+@end group
+
+@group
+(equal [(1 2) 3] [(1 2) 3])
+     @result{} t
+@end group
+@group
+(eq [(1 2) 3] [(1 2) 3])
+     @result{} nil
+@end group
+
+@group
+(equal (point-marker) (point-marker))
+     @result{} t
+@end group
+
+@group
+(eq (point-marker) (point-marker))
+     @result{} nil
+@end group
+@end example
+
+字符串比较是区分大小写的，但并不考虑文本属性---它只比较字符串中的字符。考虑技术层面的原因，仅在具有相同的字符码序列并且
+字符码在0到127（@acronym{ASCII}）或160到255（@code{eight-bit-graphic}）范围内，我们可以说一个单字节字符串和多字
+节字符串是@code{equal}的。（请参考@pxref{Text Representations}）。
+
+@example
+@group
+(equal "asdf" "ASDF")
+     @result{} nil
+@end group
+@end example
+
+然而，两个不同的缓冲区永远不@code{equal}，即使它们的文本内容相同。
+@end defun
+
+    相等测试是用递归实现的；如，给定两个cons cell@var{x}和@var{y}，@code{(equal @var{x} @var{y})}
+仅在下面的两个表达式返回@code{t}时返回@code{t}：
+
+@example
+(equal (car @var{x}) (car @var{y}))
+(equal (cdr @var{x}) (cdr @var{y}))
+@end example
+
+由于这种递归方式，循环表因此可能导致无穷循环（导致一个错误）。
+
+@defun equal-including-properties object1 object2
+此函数在大多数情况下与@code{equal}相似，但要求两个字符串除相等外，它们还必须具有相同的文本属性。
+
+@example
+@group
+(equal "asdf" (propertize "asdf" '(asdf t)))
+     @result{} t
+@end group
+@group
+(equal-including-properties "asdf"
+                            (propertize "asdf" '(asdf t)))
+     @result{} nil
+@end group
+@end example
+@end defun
+
+@ignore
+   arch-tag: 9711a66e-4749-4265-9e8c-972d55b67096
+@end ignore

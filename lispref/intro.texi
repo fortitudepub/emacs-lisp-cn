@@ -1,0 +1,389 @@
+@c -*-texinfo-*-
+@c This is part of the GNU Emacs Lisp Reference Manual.
+@c Copyright (C) 1990, 1991, 1992, 1993, 1994, 2001, 2002, 2003, 2004,
+@c   2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software Foundation, Inc.
+@c See the file elisp.texi for copying conditions.
+@setfilename ../../info/intro
+
+@node 介绍, Lisp数据类型, Top, Top
+@comment  node-name,  next,  previous,  up
+@chapter 介绍
+  GNU Emacs文本编辑器大部分由称为Emacs Lisp的编程语言写成，你可以用Emacs Lisp编写代码并将其作为扩展安装到Emacs上。然而，Emacs Lisp并不仅仅是一个“扩展性语言”，它是一个全功能的计算机编程语言，你可以象你用其他编程语言那样地使用它。
+
+  由于Emacs Lisp被设计成在编辑器内使用，它具有一些如扫描和分析文本以及处理文件、缓冲区、显示和子进程等独有的特性。Emacs Lisp和各种编辑功能紧密的结合在一起，因此，编辑命令可以做为函数在Lisp程序中被调用，而编辑器的定制参数就是普通的Lisp变量。
+
+  本文档将致力于对Emacs Lisp进行全面性的描述，对于初学者而言，如想阅读一些介绍性的文档，请参考由Free Software Foundation出版，Bob Chassell所写的@cite{An Introduction to
+Emacs Lisp Programming} 。本书假定读者对于使用Emacs进行编辑有一定的了解，如需这方面的知识，可参考@cite{The GNU Emacs Manual}文档。
+
+  总体而言，本书前面的章节描述了Emacs Lisp和其他编程语言相对应的一些特性，后面的章节则重点介绍Emacs Lisp独有的特性以及和编辑相关的特性。
+
+  本文档的版本为@value{VERSION}，对应于Emacs版本@value{EMACSVER}。
+
+@menu
+* 注意事项::                 注意事项以及缺陷说明。
+* Lisp历史::                Emacs Lisp派生自MacLisp。
+* 惯例::                    本参考文档的内容格式说明。
+* 版本信息::                 Emacs版本信息。
+* 致谢::                    作者、编辑者以及赞助者信息。
+@end menu
+
+@node 注意事项
+@section 注意事项
+@cindex 文档中的错误
+
+    本文档几易其稿，但还不能说是完整无错。目前还有一些主题未被覆盖到，要么是因为它们相对次要（如大部分的独立mode），要么是因为还未来得及撰写，
+正是因为我们暂时不能处理完它们，所以我们将这些内容刻意省略掉了。
+
+    本文档覆盖到的地方，基本上是正确无误的，因它对于它讲述的内容，从特定示例和描述性的文字到章节顺序等，欢迎读者指正。如果某些内容让你觉得疑惑，
+或者需要通过查阅代码或者做实验来确定本文章未覆盖的内容，这说明本文档可能需要被修正，请知会我们。
+
+@iftex
+    在您阅读本文档的时候，我们请求您对此文档进行标注以便日后可您可查看并将批注寄给我们；如果您发现一个简单且真实的例子来说明一个或一组函数，
+劳烦您写给我们。在您发给我们批注时，建议您将引用的章节名称以及函数名称发给我们，因为页码或章节编号可能改变以致我们无法正确定位到您所描述的文本，
+除外，建议您也将您所阅读的文档版本号发给我们。
+@end iftex
+@ifnottex
+    在您使用本文档时，一时你发现错误，请您将其发送给我们；如果您发现一个简单且真实的例子来说明一个或一组函数，请尽量能将其写下来发给我们，请您
+引用一下章节名、函数名或变量名，并说明一下您阅读文本的版本号。
+@end ifnottex
+
+@cindex bugs
+@cindex 建议
+请使用@kbd{M-x report-emacs-bug}提供宝贵建议和纠错。
+
+@node Lisp历史
+@section Lisp历史
+@cindex Lisp历史
+    Lisp（LISt Processing luanguage）于20世纪50年代在麻省理工学院（MIT）为研究人工智能而被首次开发出来。Lisp语言的强大能力使得它也
+能应用于其他目的，如编写编辑命令。
+@cindex Maclisp
+@cindex Common Lisp
+    此后的许多年里，许多不同风格的Lisp实现被开发出来，它们大多数受到了20世纪60年代在MIT的MAC项目编写的Maclisp的启发。最终这些实现者坐到
+了一起，制定了Lisp系统的标准，称作Common Lisp。同时，MIT的Gerry Sussman和Guy Steele开发了一个简单但强大的Lisp方言（译注：这里沿用目前
+翻译中通用的称法，Lisp的各种变种通常被称为方言），称作Scheme。
+
+    GNU Emacs Lisp受到的大部分的启发来自于Maclisp，小部分来自于Common Lisp。如果你熟悉Common Lisp，你将注意到很多相似点，然而，由于为
+了降低GNU Emacs的内存需求，很多Common Lisp的特性被忽略或者简化；有时这些简化变动很大使得Common Lisp用户感到迷惑；我们将不时的指出GNU 
+Emacs Lisp与Common Lisp不同，如果你不熟悉Common Lisp，不要紧，本文档是自包含的。
+@pindex cl
+    一部分Common Lisp的仿真可以通过@file{cl}库来得到，请查看相应内容@inforef{Top, Overview, cl}。
+
+    Emacs Lisp并未受到任何来自Scheme的影响，但GNU项目也有一个称作Guile的Scheme实现，为了扩展性，我们新的GNU软件将都使用Guile开发(译注：
+从这点也说明了Lisp的强大，可以用来实现各种软件，比如有名的Reddit网站早期就使用Common Lisp写成)。
+@node 惯例
+@section 惯例
+
+    如下章节解释了本文档中的一些记法惯例，你可以跳过本章节，后面可以跳回查阅。
+
+@menu
+* 一些名词::                 介绍本文档所用名词。
+* nil和t::                  符号@code{nil}和@code{t}如何使用。
+* 求值记法::                 求值记法格式说明。
+* 打印记法::                 示例代码输出结果格式说明。
+* 错误信息::                 错误信息格式说明。
+* 缓冲区文本记法::            缓冲区文本格式说明。
+* 描述信息格式::              函数、变量等描述信息格式说明。
+@end menu
+
+@node 一些名词
+@subsection 一些名词
+    纵贯本文档，”Lisp读取器“和"Lisp打印器"指那些Lisp用来将那些用文字表示的Lisp对象转为实际的Lisp对象以及实现相反功能的例程，细节请参考@xref{打印表示},
+。你，正在阅读本文档的人，被认为是"程序员"并用"你"来着重强调。"用户"则指使用Lisp程序的人，包括你编写的Lisp程序。
+
+@cindex 排版惯例
+    Lisp示例代码被格式化成如@code{(list 1 2 3)}这样的形式，那些被描述的元语法变量（译注：所谓元语法变量，简单来说，就是为了说明语言本身所提出
+一些变量，如foo、bar这些，关于详细的解释，请参考这个链接：@uref{http://www.catb.org/jargon/html/M/metasyntactic-variable.html, 元语法变量}。
+, 或者函数的参数，将被格式化成如@var{first-number}这样的形式。
+
+@node nil和t
+@subsection @code{nil}和@code{t}
+@cindex 真值
+@cindex 布尔变量
+
+@cindex @code{nil}
+@cindex false
+    在Lisp中，@code{nil}符号有三重意义：
+
+    1) 名为@samp{nil}的符号
+    2) 逻辑真值@var{false}
+    3) 空表（具有零个成员的表）
+
+    当它被用作变量时，@code{nil}的值总是@code{nil}。
+
+    对于Lisp读取器而言，@samp{()}和@samp{nil}是相等的，它们代表同样的Lisp对象，即符号@code{nil}，只所以采用不同的方式书写，主要是从读者的
+角度考虑，在Lisp读取器读取了@samp{()}或@samp{nil}后，没有办法知道用户到底是用哪种形式编写的。
+
+    在本文档中，我们在需要强调空表时，将用@code{()}表示，而当我们强调逻辑真值@var{false}时，将用@var{false}表示，这也是一种好的Lisp编程惯例。
+@example
+(cons 'foo ())                ; @r{强调空表}
+(setq foo-flag nil)           ; @r{强调真值@var{false}}
+@end example
+
+@cindex @code{t}
+@cindex true
+    在需要真值的上下文中，所有非@code{nil}的值都被当做@var{true} 对待；然而推荐用@code{t}来表示真值中的@var{true} 。当你需要选择一个表示真值
+@var{true}的值时，如果没有其他的考虑，建议使用@code{t}，符号@code{t}永远具有值@code{t}。
+
+    在Emacs Lisp中，@code{nil}和@code{t}是求值是自身的特殊符号，因此你可以不必引用（译注：引用是Emacs Lisp中的一个重要概念，对应于quote函数，
+后面会讲到）它们而把它们当做常量使用，尝试改变它们的值将得到@code{setting-constance}错误，详情请参考@xref{Constant Variables},。
+
+@defun booleanp object
+    当object是@code{t}或@code{nil}中的任意一个时，返回非@code{nil}（译注，这里的非空表示不是@code{nil}，但并不代表返回@code{t}，比如求值
+@code{(booleanp nil)}会得到这样一个表@code{(nil t)}，同样是真值@var{true}。
+@end defun
+
+@node 求值记法
+@subsection 求值记法
+@cindex 求值记法
+@cindex 文档记法
+@cindex 记法
+    你可以进行求值操作的Lisp表达式称作@dfn{型}（译注：英文对应为form，因Lisp中最为常用的结果叫List，翻译过来都叫表，不易区分，因此这里翻译作型）
+，对型进行求值总是得到一个结果，该结果是一个Lisp对象，在本文档的示例中，该过程用@samp{@result{}}表示：
+
+@example
+(car '(1 2))
+     @result{} 1
+@end example
+
+@noindent
+    对上述过程你可以称为``@code{car '(1 2))}求值结果为1''。
+
+    当一个型是宏调用时，它将被展开为一个新的型，用于Lisp进行求值，我们用@samp{@expansion{}}表示展开结果，除外，我们也有可能将型最终的求值结果也表示出来：
+
+@example
+(third '(a b c))
+     @expansion{} (car (cdr (cdr '(a b c))))
+     @result{} c
+@end example
+    有时为了表示两个型产生相同的结果，我们用@samp{@equiv{}}表示两个型严格相等：
+@example
+(make-sparse-keymap) @equiv{} (list 'keymap)
+@end example
+
+@node 打印记法
+@subsection 打印记法
+@cindex 打印记法
+    本文档的许多示例都会打印文本信息；如果你在Lisp的交互缓冲区（如@samp{*scratch*}）中执行示例代码时，打印出的文本信息将会被插入到该缓冲区中，
+而如果你通过其他方式执行示例代码（如对@code{eval-region}函数进行求值），打印的文本信息将在回显区显示。
+
+    本文档的示例中使用@samp{@print{}}表示打印出的文本信息，而不考虑它们输出到什么地方，而型的求值结果（下面的示例中是@code{bar}）将和@samp{@result{}}
+跟在文本信息的下面一行：
+
+@example
+@group
+(progn (prin1 'foo) (princ "\n") (prin1 'bar))
+     @print{} foo
+     @print{} bar
+     @result{} bar
+@end group
+@end example
+
+@node 错误信息
+@subsection 错误信息
+@cindex 错误信息记法
+
+    一些示例将给出错误信息，这通常是在回显区显示一个错误信息，我们用@samp{@error{}}开头的一行来显示错误信息，注意@samp{@error{}}并不会显示在回显区中：
+
+@example
+(+ 23 'x)
+@error{} Wrong type argument: number-or-marker-p, x
+@end example
+
+@node 缓冲区文本记法
+@subsection 缓冲区文本记法
+@cindex 缓冲区文本记法
+
+    一些示例通过对文本的“前”、“后”版本的显示，演示如何对缓冲区的文本内容进行修改，这些示例将用两行中划线来标识缓冲区的文本内容，
+除外，@samp{@point{}}显示点的位置（当然，点的符号，并不是缓冲区文本的一部分，它标识了两个字符@emph{之间}即点所处的位置）。
+
+@example
+---------- Buffer: foo ----------
+This is the @point{}contents of foo.
+---------- Buffer: foo ----------
+
+(insert "changed ")
+     @result{} nil
+---------- Buffer: foo ----------
+This is the changed @point{}contents of foo.
+---------- Buffer: foo ----------
+@end example
+
+@node 描述信息格式
+@subsection 描述信息格式
+@cindex 描述信息格式
+
+    函数、变量、宏、命令、用户选项以及特殊型在本文档中用统一的形式进行描述。描述的第一行将是名称及其参数，如果可能的话，在第一行还会
+显示其所属类别---函数、变量或其他任意形式。
+
+@ifnottex
+    函数、变量或者其他任何其他类别，将出现在行的开头。
+@end ifnottex
+@iftex
+    函数、变量或者其他任何其他类别，将被打印在靠近文档右边界处。
+@end iftex
+    描述信息紧跟在后面，有时候还会伴有示例。
+@menu
+* 函数描述示例::              虚构函数@code{foo}描述说明。
+* 变量描述示例::              虚构变量@code{electric-future-map}描述说明。
+@end menu
+
+@node 函数描述示例
+@subsubsection 函数描述示例
+@cindex 函数描述
+@cindex 命令描述
+@cindex 宏描述
+@cindex 特殊型描述
+
+    在函数描述中，首先是函数的名称，跟着是参数名称列表，这些参数名称也将用在函数体中，代表参数的值。
+    在参数列表中，关键字@code{&optional}表示后面的参数（称为可选参数）可以被忽略，被忽略的参数的值默认为@code{nil}，注意在调用函数时不要加
+@code{&optional}；而关键字@code{&rest}（后面必须只跟一个参数，也即说明@code{&rest}必须出现在最后一个参数的前面）表示在调用时，从@code{&rest}
+所在位置开始，可以传递任意参数，这些任意参数将被合成在一个表中，作为单个参数（称为剩余参数）传递给函数，同样，在调用函数时不要加@code{&rest}。
+
+    下面是一个虚构的函数@code{foo}的描述：
+
+@defun foo integer1 &optional integer2 &rest integers
+    函数@code{foo}从@var{integer2}中减去@var{integer1}，然而将@var{integers2}表中的数值累加到的结果中，如果@var{integer2}未提供，将用默认值19替代它。
+@example
+(foo 1 5 3 9)
+     @result{} 16
+(foo 5)
+     @result{} 14
+@end example
+
+@need 1500
+    更直观的描述，
+@example
+(foo @var{w} @var{x} @var{y}@dots{})
+@equiv{}
+(+ (- @var{x} @var{w}) @var{y}@dots{})
+@end example
+@end defun
+
+    任何参数，如果其命名包含类型名（如@var{integer}、@var{integer1}或@var{buffer}），通常表示该参数需要是该类型，而复数的命名（如@var{buffers}）
+通常表示一个拥有该类型对象的表。参数指名的@var{object}可以是任意类型（详细的类型列表，请查阅@xref{Lisp数据类型}.)，其他方式命名的参数（如@var{new-file}）
+将在函数描述中进行特别讨论。在某些章节中，一些函数参数的共性描述，将在前面首先描述。
+
+    对于可选和剩余参数更为完整的描述，请参考@xref{Lambda Expressions}.。
+
+    命令、宏和特殊型的描述也采用上述形式，但字`Function'将被替换为对应的`Command'、`Macro'或`Special Form'，命令是可以被交互式调用的
+简单函数，宏处理参数的方式和函数不同（参数不进行求值），但仍用和函数相同的形式进行描述。
+
+    特殊型的描述用一种更为复杂的记法来指定可选和重复参数，这是因为它可以将参数列表用更为复杂的方式进行分解。@samp{@r{[}@var{optional-arg}@r{]}}
+说明那个@var{optional-arg}是可选的，而@samp{@var{repeated-args}@dots{}}代表零或多个参数，括号用来将若干个参数组成有层次的表结构。下面是一个
+示例：
+
+@defspec count-loop (@var{var} [@var{from} @var{to} [@var{inc}]]) @var{body}@dots{}
+    这个虚构的特殊型实现了一个循环，每次循环将执行@var{body}所表示的型，并自增变量@var{var}，在第一次循环中，变量的值为@var{from}的值，在后续的操作中
+，变量值每次自增（或者按@var{inc}的值指定的步长自增），循环将在变量@var{var}的值等于@var{to}的值时终止，下面是一个示例：
+@example
+(count-loop (i 0 10)
+  (prin1 i) (princ " ")
+  (prin1 (aref vector i))
+  (terpri))
+@end example
+
+    如果@var{from}和@var{to}被忽略，在循环执行前，@var{var}将被绑定到@var{nil}，循环将在@var{var}的值非空时终止，下面是一个示例：
+@example
+(count-loop (done)
+  (if (pending)
+      (fixit)
+    (setq done t)))
+@end example
+
+   在这个特殊型中，变量@var{from}和@var{to}是可选的，但必须同时存在或同时忽略，在它们同时存在，@var{inc}成为可选参数，这些参数和@var{var}
+一起，用括号形成一个表，用来和组成此特殊型的@var{body}区分开来。
+@end defspec
+
+@node 变量描述示例
+@subsubsection 变量描述示例
+@cindex 变量描述
+@cindex 选项描述
+
+    @dfn{变量}指可以持有值的名字。尽管接近所有的变量都可以由用户设置，部分变量专门用来由用户改变，这些变量称为@dfn{用户选项}，常规变量和
+用户选项使用和函数相同的描述，除了没有参数列表外。
+
+    下面是一个虚构的@code{electric-future-map}变量的描述：
+variable.@refill
+
+@defvar electric-future-map
+    此变量的值是一个被Electric Command Future Mode使用的完整键盘映射，这个映射中的函数允许你编辑你还未考虑执行的命令。
+@end defvar
+
+    用户选项的描述与上面的变量描述相同，只不过`Variable'将被替换为`User Option'。
+
+@node 版本信息
+@section 版本信息
+
+    下面这些函数用于确定当前使用Emacs版本。
+
+@deffn Command emacs-version &optional here
+    此函数返回描述当前使用的Emacs的版本的字符串，在bug报告中包含此字符串很有用。
+@smallexample
+@group
+(emacs-version)
+  @result{} "GNU Emacs 23.1 (i686-pc-linux-gnu, GTK+ Version 2.14.4)
+             of 2009-06-01 on cyd.mit.edu"
+@end group
+@end smallexample
+
+    如果@var{here}非空，此函数将在点所处的前面插入版本字符串，并返回@code{nil}。当此函数在交互模式下执行时，
+它在回显区打印出相同的字符串信息，但却给出了一个前缀参数使得@var{here}非@code{nil}。
+@end deffn
+
+@defvar emacs-build-time
+    此变量的值是Emacs在本地站点上的编译时间，它是一个具有三个数值的表，象@code{current-time}的值一样（@pxref{Time of Day}）。
+@example
+@group
+emacs-build-time
+     @result{} (18846 52016 156039)
+@end group
+@end example
+@end defvar
+
+@defvar emacs-version
+    此变量的值是当前正在运行的Emacs的版本号，它是一个像@code{"23.1.1"}这样的字符串，此字符串中的最后一个数字并不是Emacs的发布版本号，
+在你在相同目录下编译Emacs时，它会自增，而具有四个数值的值，如@code{"22.0.91.1"}，表示这是一个未发布的测试版本。
+@end defvar
+
+    下面这两个变量从Emacs 19.23版本开始存在：
+@defvar emacs-major-version
+    Emacs的主版本号，是一个数值，对于Emacs版本23.1，它的值是23。
+@end defvar
+
+@defvar emacs-minor-version
+    Emacs的次版本号，是一个数值，对于Emacs版本23.1，它的值是1。
+@end defvar
+
+@node 致谢
+@section 致谢
+    此节不再翻译，值得一提的是，在翻译本文档时，这里有一个中国人的名字，即Chong YiDong，当前这位仁兄正在美国研究物理，是目前的EMACS的总维护
+者，对于牛人，我们除了敬仰外，还需要学习如何达到同样的高度：）。
+
+    本文档由如下作者写成：Robert Krawitz, Bil Lewis, Dan LaLiberte,
+Richard@tie{}M. Stallman and Chris Welty, the volunteers of the GNU
+manual group, in an effort extending over several years.
+Robert@tie{}J. Chassell helped to review and edit the manual, with the
+support of the Defense Advanced Research Projects Agency, ARPA Order
+6082, arranged by Warren@tie{}A. Hunt, Jr.@: of Computational Logic,
+Inc.  Additional sections were written by Miles Bader, Lars Brinkhoff,
+Chong Yidong, Kenichi Handa, Lute Kamstra, Juri Linkov, Glenn Morris,
+Thien-Thi Nguyen, Dan Nicolaescu, Martin Rudalics, Kim F. Storm, Luc
+Teirlinck, and Eli Zaretskii.
+
+    如下人员提供了纠错信息：Drew Adams, Juanma Barranquero, Karl Berry, 
+Jim Blandy, Bard Bloom, Stephane Boucher, David Boyes, Alan
+Carroll, Richard Davis, Lawrence R. Dodd, Peter Doornbosch, David
+A. Duff, Chris Eich, Beverly Erlebacher, David Eckelkamp, Ralf Fassel,
+Eirik Fuller, Stephen Gildea, Bob Glickstein, Eric Hanchrow, Jesper
+Harder, George Hartzell, Nathan Hess, Masayuki Ida, Dan Jacobson, Jak
+Kirman, Bob Knighten, Frederick M. Korz, Joe Lammens, Glenn M. Lewis,
+K. Richard Magill, Brian Marick, Roland McGrath, Stefan Monnier, Skip
+Montanaro, John Gardiner Myers, Thomas A. Peterson, Francesco Potorti,
+Friedrich Pukelsheim, Arnold D. Robbins, Raul Rockwell, Jason Rumney,
+Per Starb@"ack, Shinichirou Sugou, Kimmo Suominen, Edward Tharp, Bill
+Trost, Rickard Westman, Jean White, Eduard Wiebe, Matthew Wilding,
+Carl Witty, Dale Worley, Rusty Wright, and David D. Zuhn.
+
+@ignore
+   arch-tag: d156593f-82f8-4708-a844-204e48f7f2aa
+@end ignore

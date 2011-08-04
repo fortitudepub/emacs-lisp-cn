@@ -1,0 +1,25 @@
+This is pdfTeXk, Version 3.1415926-1.40.9 (Web2C 7.5.7) (format=pdfetex 2011.7.3)  3 JUL 2011 00:43
+entering extended mode
+ file:line:error style messages enabled.
+ %&-line parsing enabled.
+**/home/fortitude/Texinfo/lispref/elisp.t2d/pdf/src/elisp.texi
+(/home/fortitude/Texinfo/lispref/elisp.t2d/pdf/src/elisp.texi
+/home/fortitude/Texinfo/lispref/elisp.t2d/pdf/src/elisp.texi:1: I can't find fi
+le `texinfo'.
+l.1 \input texinfo 
+                    @c -*-texinfo-*-
+(Press Enter to retry, or Control-D to exit)
+Please type another input file name: 
+/home/fortitude/Texinfo/lispref/elisp.t2d/pdf/src/elisp.texi:1: I can't find fi
+le `texinfo'.
+l.1 \input texinfo 
+                    @c -*-texinfo-*-
+(Press Enter to retry, or Control-D to exit)
+Please type another input file name: 
+/home/fortitude/Texinfo/lispref/elisp.t2d/pdf/src/elisp.texi:1: Emergency stop.
+l.1 \input texinfo 
+                    @c -*-texinfo-*-
+End of file on the terminal!
+
+/home/fortitude/Texinfo/lispref/elisp.t2d/pdf/src/elisp.texi:1:  ==> Fatal erro
+r occurred, no output PDF file produced!
