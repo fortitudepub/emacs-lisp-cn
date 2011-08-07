@@ -48,7 +48,7 @@ sequence or buffer.@*
 
 @item arith-error
 @code{"Arithmetic error"}@*
-@xref{Arithmetic Operations}.
+@xref{算术操作}.
 
 @item beginning-of-buffer
 @code{"Beginning of buffer"}@*
@@ -182,26 +182,26 @@ mathematical functions.
 @table @code
 @item domain-error
 @code{"Arithmetic domain error"}@*
-@xref{Math Functions}.
+@xref{数学函数}.
 
 @item overflow-error
 @code{"Arithmetic overflow error"}@*
 This is a subcategory of @code{domain-error}.@*
-@xref{Math Functions}.
+@xref{数学函数}.
 
 @item range-error
 @code{"Arithmetic range error"}@*
-@xref{Math Functions}.
+@xref{数学函数}.
 
 @item singularity-error
 @code{"Arithmetic singularity error"}@*
 This is a subcategory of @code{domain-error}.@*
-@xref{Math Functions}.
+@xref{数学函数}.
 
 @item underflow-error
 @code{"Arithmetic underflow error"}@*
 This is a subcategory of @code{domain-error}.@*
-@xref{Math Functions}.
+@xref{数学函数}.
 @end table
 
 @ignore

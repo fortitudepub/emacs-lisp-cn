@@ -1465,7 +1465,7 @@ period before the width requests zero-padding instead.  For example,
 @code{"%.3Y"} might produce @code{"004 years"}.
 
 @emph{Warning:} This function works only with values of @var{seconds}
-that don't exceed @code{most-positive-fixnum} (@pxref{Integer Basics,
+that don't exceed @code{most-positive-fixnum} (@pxref{整数基础,
 most-positive-fixnum}).
 @end defun
 

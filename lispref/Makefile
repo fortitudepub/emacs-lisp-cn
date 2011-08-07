@@ -21,12 +21,12 @@
 
 
 # Standard configure variables.
-srcdir = /home/cyd/pretest/emacs-23.3/doc/lispref
+srcdir = ./
 
 # Tell make where to find source files; this is needed for the makefiles.
-VPATH=/home/cyd/pretest/emacs-23.3/doc/lispref
+VPATH=./
 
-infodir = ../../info
+infodir = ../info
 # Directory with the (customized) texinfo.tex file.
 texinfodir = $(srcdir)/../misc
 
@@ -34,7 +34,7 @@ TEXI2DVI = texi2dvi
 TEXI2PDF = texi2pdf
 SHELL = /bin/sh
 INSTALL_INFO = install-info
-MAKEINFO = makeinfo --force
+MAKEINFO = makeinfo
 
 # List of all the texinfo files in the manual:
 
@@ -106,6 +106,9 @@ elisp.dvi: $(srcs)
 
 elisp.pdf: $(srcs)
 	$(TEXI2PDF) -I $(srcdir) -I $(texinfodir) $(srcdir)/elisp.texi
+
+elisp.html: $(srcs)
+	$(MAKEINFO) --html --no-split -o elisp.html $(srcdir)/elisp.texi
 
 clean:
 	rm -f *.toc *.aux *.log *.cp *.cps *.fn *.fns *.tp *.tps \

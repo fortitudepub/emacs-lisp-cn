@@ -5,7 +5,7 @@
 @c   Free Software Foundation, Inc.
 @c See the file elisp.texi for copying conditions.
 @setfilename ../../info/objects
-@node Lisp数据类型, Numbers, 介绍, Top
+@node Lisp数据类型, 数字, 介绍, Top
 @chapter Lisp数据类型
 @cindex 对象
 @cindex Lisp对象
@@ -143,7 +143,7 @@ to
     有个特例则是，如果由一串数字表示的整数太大或者大小，不能成为有效的整数型对象时，Lisp读取器将以浮点数据读取（请参考@pxref{浮点类型}）。比如在大多数
 机器上，@code{536870912}都将被读取成浮点数@code{536870912.0}。
 
-    更详细的信息，请参考@xref{Numbers}.一节。
+    更详细的信息，请参考@xref{数字}.一节。
 
 @node 浮点类型
 @subsection 浮点类型
@@ -154,7 +154,7 @@ to
     浮点数的打印表示可以是一个数点（至少有一个数字跟在其后）、一个指数、或者两个都包含。如@samp{1500.0}、@samp{15e2}、@samp{1.5e3}以及@samp{.15e4}
 是表示具有值1500的浮点数的五种表示方法，它们是相等的。
 
-    更详细的信息，请参考@xref{Numbers}.一节。
+    更详细的信息，请参考@xref{数字}.一节。
 
 @node 字符类型
 @subsection 字符类型
@@ -1312,7 +1312,7 @@ Area}）。
 @xref{Display Tables, display-table-p}.
 
 @item floatp
-@xref{Predicates on Numbers, floatp}.
+@xref{数字判定, floatp}.
 
 @item fontp
 @xref{Low-Level Font}.
@@ -1336,7 +1336,7 @@ Area}）。
 @xref{Predicates on Markers, integer-or-marker-p}.
 
 @item integerp
-@xref{Predicates on Numbers, integerp}.
+@xref{数字判定, integerp}.
 
 @item keymapp
 @xref{Creating Keymaps, keymapp}.
@@ -1351,13 +1351,13 @@ Area}）。
 @xref{Predicates on Markers, markerp}.
 
 @item wholenump
-@xref{Predicates on Numbers, wholenump}.
+@xref{数字判定, wholenump}.
 
 @item nlistp
 @xref{List-related Predicates, nlistp}.
 
 @item numberp
-@xref{Predicates on Numbers, numberp}.
+@xref{数字判定, numberp}.
 
 @item number-or-marker-p
 @xref{Predicates on Markers, number-or-marker-p}.

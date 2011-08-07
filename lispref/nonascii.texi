@@ -621,7 +621,7 @@ This function decodes a character that is assigned a @var{code-point}
 in @var{charset}, to the corresponding Emacs character, and returns
 it.  If @var{charset} doesn't contain a character of that code point,
 the value is @code{nil}.  If @var{code-point} doesn't fit in a Lisp
-integer (@pxref{Integer Basics, most-positive-fixnum}), it can be
+integer (@pxref{整数基础, most-positive-fixnum}), it can be
 specified as a cons cell @code{(@var{high} . @var{low})}, where
 @var{low} are the lower 16 bits of the value and @var{high} are the
 high 16 bits.

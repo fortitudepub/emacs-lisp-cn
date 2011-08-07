@@ -50,6 +50,7 @@
 
 2011/06/22：启动第二章的翻译，待完成。
 2011/07/02：完成第二章的翻译。
+2011/08/07：完成第三章的翻译。
 
 Copyright @copyright{} 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998,
 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software
@@ -116,7 +117,7 @@ Cover art by Etienne Suvasa.
 * 介绍::                    介绍以及惯例
 
 * Lisp数据类型::             Emacs Lisp中的数据类型。
-* 数值::                    数值与算术运算函数。
+* 数字::                    数值与算术运算函数。
 * Strings and Characters::  Strings, and functions that work on them.
 * Lists::                   Lists, cons cells, and related functions.
 * Sequences Arrays Vectors::  Lists, strings and vectors are called sequences.
@@ -289,18 +290,18 @@ Cons Cell和表类型
 * 覆盖类型::            覆盖如何表示。
 * 字体类型::            用于显示文本的字体。
 
-Numbers
+数字
 
-* Integer Basics::          Representation and range of integers.
-* Float Basics::            Representation and range of floating point.
-* Predicates on Numbers::   Testing for numbers.
-* Comparison of Numbers::   Equality and inequality predicates.
-* Numeric Conversions::     Converting float to integer and vice versa.
-* Arithmetic Operations::   How to add, subtract, multiply and divide.
-* Rounding Operations::     Explicitly rounding floating point numbers.
-* Bitwise Operations::      Logical and, or, not, shifting.
-* Math Functions::          Trig, exponential and logarithmic functions.
-* Random Numbers::          Obtaining random integers, predictable or not.
+* 整数基础::     表示以及整数范围。
+* 浮点数基础::   表示以及浮点数范围。
+* 数字判定::     数字测试。
+* 数字比较::     相等性或不等性判定。
+* 数字转换::     浮点数与整数相互转换。
+* 算术操作::     如何加、减、乘除。
+* 舍入操作::     显式舍入浮点数。
+* 位操作::       逻辑与、或、移位。
+* 数学函数::     三角运算、指数或对数运算。
+* 随机数::       生成随机数，是否伪随机数。
 
 Strings and Characters
 

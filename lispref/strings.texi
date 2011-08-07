@@ -5,7 +5,7 @@
 @c   Free Software Foundation, Inc.
 @c See the file elisp.texi for copying conditions.
 @setfilename ../../info/strings
-@node Strings and Characters, Lists, Numbers, Top
+@node Strings and Characters, Lists, 数字, Top
 @comment  node-name,  next,  previous,  up
 @chapter Strings and Characters
 @cindex strings
