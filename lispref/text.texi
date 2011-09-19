@@ -2461,8 +2461,8 @@ If @var{arg} is omitted or @code{nil}, it defaults to 1.
 @cindex case conversion in buffers
 
   The case change commands described here work on text in the current
-buffer.  @xref{Case Conversion}, for case conversion functions that work
-on strings and characters.  @xref{Case Tables}, for how to customize
+buffer.  @xref{大小写转换}, for case conversion functions that work
+on strings and characters.  @xref{大小写表}, for how to customize
 which characters are upper or lower case and how to convert them.
 
 @deffn Command capitalize-region start end

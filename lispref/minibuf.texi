@@ -2200,7 +2200,7 @@ This function displays @var{string} temporarily at the end of the
 minibuffer text, for two seconds, or until the next input event
 arrives, whichever comes first.  If @var{args} is non-@code{nil}, the
 actual message is obtained by passing @var{string} and @var{args}
-through @code{format}.  @xref{Formatting Strings}.
+through @code{format}.  @xref{格式化字符串}.
 @end defun
 
 @ignore

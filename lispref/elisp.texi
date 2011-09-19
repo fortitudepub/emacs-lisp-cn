@@ -9,7 +9,7 @@
 @c And also the copies in vol1.texi and vol2.texi.
 @set VERSION  3.0
 @set EMACSVER 23.3
-@set CNVERSION 0.9
+@set CNVERSION 0.1
 @set DATE July 2009
 
 @c in general, keep the following line commented out, unless doing a
@@ -49,8 +49,12 @@
 更新记录：
 
 2011/06/22：启动第二章的翻译，待完成。
+
 2011/07/02：完成第二章的翻译。
+
 2011/08/07：完成第三章的翻译。
+
+2011/09/19：完成第章的翻译。
 
 Copyright @copyright{} 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998,
 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software
@@ -118,7 +122,7 @@ Cover art by Etienne Suvasa.
 
 * Lisp数据类型::             Emacs Lisp中的数据类型。
 * 数字::                    数值与算术运算函数。
-* Strings and Characters::  Strings, and functions that work on them.
+* 字符串与字符::             字符串，以及操作字符串的函数。
 * Lists::                   Lists, cons cells, and related functions.
 * Sequences Arrays Vectors::  Lists, strings and vectors are called sequences.
                                 Certain functions act on any kind of sequence.
@@ -305,15 +309,15 @@ Cons Cell和表类型
 
 Strings and Characters
 
-* String Basics::           Basic properties of strings and characters.
-* Predicates for Strings::  Testing whether an object is a string or char.
-* Creating Strings::        Functions to allocate new strings.
-* Modifying Strings::       Altering the contents of an existing string.
-* Text Comparison::         Comparing characters or strings.
-* String Conversion::       Converting to and from characters and strings.
-* Formatting Strings::      @code{format}: Emacs's analogue of @code{printf}.
-* Case Conversion::         Case conversion functions.
-* Case Tables::             Customizing case conversion.
+* 基础: 字符串基础.             字符串和字符的基础属性。
+* 字符串判定::                  测试对象是否是字符串或字符。
+* 创建字符串::                  用于分配字符串的函数。
+* 修改字符串::                  替换即有字符串的内容。
+* 文本比较::                    字符或字符串比较。
+* 字符串转换::                  从字符串或字符中转入转出。
+* 格式化字符串::                @code{format}：Emacs与@code{printf}相似的函数。
+* 大小写转换::                 大小写转换函数。
+* 大小写表::                   定制大小写转换。
 
 Lists
 

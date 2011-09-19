@@ -702,7 +702,7 @@ cons cell的@sc{cdr}。例如，@code{(rose violet . buttercup)}和@code{(code .
     @dfn{字符串}是由字符组成的数组。字符串在Emacs中有多种用途，正如在文本编辑器中的作用一样；例如，可以作为Lisp符号的名称，
 作为给用消息，作为从缓冲区中读取的文本。在Lisp中的字符串是常量：对其求值得到相同的字符串。
 
-    关于操作字符串的函数，请参考@xref{Strings and Characters}.。
+    关于操作字符串的函数，请参考@xref{字符串与字符}.。
 
 @menu
 * 字符串语法::               如何指定字符串。
@@ -839,7 +839,7 @@ but the newline is ignored if escaped."
     字符表的应用包括：
 @itemize @bullet
 @item
-字符表 (@pxref{Case Tables}).
+字符表 (@pxref{大小写表}).
 
 @item
 字符归类表 (@pxref{Categories}).
@@ -1294,10 +1294,10 @@ Area}）。
 @xref{字节码类型, byte-code-function-p}.
 
 @item case-table-p
-@xref{Case Tables, case-table-p}.
+@xref{大小写表, case-table-p}.
 
 @item char-or-string-p
-@xref{Predicates for Strings, char-or-string-p}.
+@xref{字符串判定, char-or-string-p}.
 
 @item char-table-p
 @xref{Char-Tables, char-table-p}.
@@ -1372,7 +1372,7 @@ Area}）。
 @xref{Sequence Functions, sequencep}.
 
 @item stringp
-@xref{Predicates for Strings, stringp}.
+@xref{字符串判定, stringp}.
 
 @item subrp
 @xref{Function Cells, subrp}.
@@ -1402,7 +1402,7 @@ Area}）。
 @xref{nil和t, booleanp}.
 
 @item string-or-null-p
-@xref{Predicates for Strings, string-or-null-p}.
+@xref{字符串判定, string-or-null-p}.
 @end table
 
     检查对象的类型最为普遍的方式就是调用@code{type-of}函数。回想一下每个元素都属于一个且仅一个原始类型；@code{type-of}告诉

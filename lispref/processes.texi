@@ -211,7 +211,7 @@ a single Lisp string to be presented in the minibuffer or echo area.
 @defun split-string-and-unquote string &optional separators
 This function splits @var{string} into substrings at matches for the
 regular expression @var{separators}, like @code{split-string} does
-(@pxref{Creating Strings}); in addition, it removes quoting from the
+(@pxref{创建字符串}); in addition, it removes quoting from the
 substrings.  It then makes a list of the substrings and returns it.
 
 If @var{separators} is omitted or @code{nil}, it defaults to

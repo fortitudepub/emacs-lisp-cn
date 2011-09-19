@@ -169,7 +169,7 @@ This function does not work for dotted lists.  Trying to copy a
 circular list may cause an infinite loop.
 
 See also @code{append} in @ref{Building Lists}, @code{concat} in
-@ref{Creating Strings}, and @code{vconcat} in @ref{Vector Functions},
+@ref{创建字符串}, and @code{vconcat} in @ref{Vector Functions},
 for other ways to copy sequences.
 
 @example
@@ -275,7 +275,7 @@ Strings can hold text properties.  @xref{Text Properties}.
 @item
 Many of the specialized editing and I/O facilities of Emacs accept only
 strings.  For example, you cannot insert a vector of characters into a
-buffer the way you can insert a string.  @xref{Strings and Characters}.
+buffer the way you can insert a string.  @xref{字符串与字符}.
 @end itemize
 
   By contrast, for an array of keyboard input characters (such as a key
@@ -389,7 +389,7 @@ are often useful for objects known to be arrays.  @xref{Sequence Functions}.
 
   A @dfn{vector} is a general-purpose array whose elements can be any
 Lisp objects.  (By contrast, the elements of a string can only be
-characters.  @xref{Strings and Characters}.)  Vectors are used in
+characters.  @xref{字符串与字符}.)  Vectors are used in
 Emacs for many purposes: as key sequences (@pxref{Key Sequences}), as
 symbol-lookup tables (@pxref{Creating Symbols}), as part of the
 representation of a byte-compiled function (@pxref{Byte Compilation}),
@@ -495,7 +495,7 @@ arguments.  This is a special feature to make it easy to access the entire
 contents of a byte-code function object.  @xref{Byte-Code Objects}.
 
 For other concatenation functions, see @code{mapconcat} in @ref{Mapping
-Functions}, @code{concat} in @ref{Creating Strings}, and @code{append}
+Functions}, @code{concat} in @ref{创建字符串}, and @code{append}
 in @ref{Building Lists}.
 @end defun
 

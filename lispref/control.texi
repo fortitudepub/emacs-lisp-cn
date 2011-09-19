@@ -756,7 +756,7 @@ should not end with any sort of punctuation.
 
 @defun error format-string &rest args
 This function signals an error with an error message constructed by
-applying @code{format} (@pxref{Formatting Strings}) to
+applying @code{format} (@pxref{格式化字符串}) to
 @var{format-string} and @var{args}.
 
 These examples show typical uses of @code{error}:

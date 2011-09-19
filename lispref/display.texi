@@ -269,7 +269,7 @@ area messages.  Many other Emacs features display messages there, too.
 @defun message format-string &rest arguments
 This function displays a message in the echo area.  The argument
 @var{format-string} is similar to a C language @code{printf} format
-string.  See @code{format} in @ref{Formatting Strings}, for the details
+string.  See @code{format} in @ref{格式化字符串}, for the details
 on the conversion specifications.  @code{message} returns the
 constructed string.
 

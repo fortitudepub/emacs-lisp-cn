@@ -4,7 +4,7 @@
 @c   2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software Foundation, Inc.
 @c See the file elisp.texi for copying conditions.
 @setfilename ../../info/lists
-@node Lists, Sequences Arrays Vectors, Strings and Characters, Top
+@node Lists, Sequences Arrays Vectors, 字符串与字符, Top
 @chapter Lists
 @cindex lists
 @cindex element (of list)
@@ -451,7 +451,7 @@ are given, the empty list is returned.
 @defun make-list length object
 This function creates a list of @var{length} elements, in which each
 element is @var{object}.  Compare @code{make-list} with
-@code{make-string} (@pxref{Creating Strings}).
+@code{make-string} (@pxref{创建字符串}).
 
 @example
 @group
@@ -1622,8 +1622,7 @@ Here is another example, in which the keys and values are not symbols:
 @end defun
 
   The function @code{assoc-string} is much like @code{assoc} except
-that it ignores certain differences between strings.  @xref{Text
-Comparison}.
+that it ignores certain differences between strings.  @xref{文本比较}.
 
 @defun rassoc value alist
 This function returns the first association with value @var{value} in

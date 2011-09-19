@@ -1047,7 +1047,7 @@ Tables}).
 @itemx case_canon_table
 These fields store the conversion tables for converting text to lower
 case, upper case, and for canonicalizing text for case-fold search.
-@xref{Case Tables}.
+@xref{大小写表}.
 
 @item minor_modes
 An alist of the minor modes of this buffer.
