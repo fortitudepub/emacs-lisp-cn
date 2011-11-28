@@ -4,108 +4,74 @@
 @c   2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software Foundation, Inc.
 @c See the file elisp.texi for copying conditions.
 @setfilename ../../info/lists
-@node Lists, Sequences Arrays Vectors, 字符串与字符, Top
-@chapter Lists
-@cindex lists
-@cindex element (of list)
+@node 列表, Sequences Arrays Vectors, 字符串与字符, Top
+@chapter 列表
+@cindex 列表
+@cindex 列表的元素
 
-  A @dfn{list} represents a sequence of zero or more elements (which may
-be any Lisp objects).  The important difference between lists and
-vectors is that two or more lists can share part of their structure; in
-addition, you can insert or delete elements in a list without copying
-the whole list.
+  @dfn{列表}代表了包含一个或多个元素（可以是任意Lisp对象）的序列。列表与容器最重要的不同在于两个或多个列表可以共享它们的部分结构。
+除外，你可以向列表中增加或删除元素，而不必拷贝整个列表。
 
 @menu
-* Cons Cells::          How lists are made out of cons cells.
-* List-related Predicates::        Is this object a list?  Comparing two lists.
-* List Elements::       Extracting the pieces of a list.
-* Building Lists::      Creating list structure.
-* List Variables::      Modifying lists stored in variables.
-* Modifying Lists::     Storing new pieces into an existing list.
-* Sets And Lists::      A list can represent a finite mathematical set.
-* Association Lists::   A list can represent a finite relation or mapping.
-* Rings::               Managing a fixed-size ring of objects.
+* Cons Cells::          如何由cons cell构造列表。
+* 列表相关的断定::        这个对象是列表吗？比如两个列表。
+* 列表元素::             从列表中提取元素。
+* 构造列表::             创建列表结构。
+* 列表变量::             修改存储在变量里的列表。
+* 修改列表::             向既有列表中存储新元素。
+* 集合与列表::           列表可表示一个有限的数学集合。
+* 关联列表::             列表可表示一个有效的关系或映射。
+* 环::                  管理有个固定大小的对对象环。
 @end menu
 
 @node Cons Cells
-@section Lists and Cons Cells
-@cindex lists and cons cells
+@section 列表和Cons Cells
+@cindex 列表和Cons Cells
 
-  Lists in Lisp are not a primitive data type; they are built up from
-@dfn{cons cells}.  A cons cell is a data object that represents an
-ordered pair.  That is, it has two slots, and each slot @dfn{holds}, or
-@dfn{refers to}, some Lisp object.  One slot is known as the @sc{car},
-and the other is known as the @sc{cdr}.  (These names are traditional;
-see @ref{Cons Cell类型}.)  @sc{cdr} is pronounced ``could-er.''
+  Lisp中的列表并不是一个原子类型；它们是从@dfn{cons cells}中构造的。一个cons cell是表示一个有序对的数据对象。也即，它具有两个槽，每个槽@dfn{持有}
+或@dfn{引用}某些Lisp对象。其中一个槽被称为@sc{car}，而别一个被称为@sc{cdr}。（这些名字是惯例所为，请参考@ref{Cons Cell类型}.）@sc(cdr}读作``could-er.''
 
-  We say that ``the @sc{car} of this cons cell is'' whatever object
-its @sc{car} slot currently holds, and likewise for the @sc{cdr}.
+  当我们说``这个cons cell的@sc{car}是''时，我们指的是它的@sc{car}槽当前所持有的任意对象，@sc{cdr}亦同。
 
-  A list is a series of cons cells ``chained together,'' so that each
-cell refers to the next one.  There is one cons cell for each element of
-the list.  By convention, the @sc{car}s of the cons cells hold the
-elements of the list, and the @sc{cdr}s are used to chain the list: the
-@sc{cdr} slot of each cons cell refers to the following cons cell.  The
-@sc{cdr} of the last cons cell is @code{nil}.  This asymmetry between
-the @sc{car} and the @sc{cdr} is entirely a matter of convention; at the
-level of cons cells, the @sc{car} and @sc{cdr} slots have the same
-characteristics.
+  一个列表是一系列的cons cell``链接在一起,''因此每个cell指向下一个cons cell。列表中的每个元素都有一个cons cell。根据惯例，cons cell的@sc{car}持有列表
+元素，而@sc{cdr}则指向下一个cons cell。最后一个cons cell的@sc{cdr}是@code{nil}。@sc{car}与@sc{cdr}的这种不对称完全是一种惯例；在cons cell这个层面上，
+@sc{car}和@sc{cdr}槽具有相同的特性。
 
-@cindex true list
-  Since @code{nil} is the conventional value to put in the @sc{cdr} of
-the last cons cell in the list, we call that case a @dfn{true list}.
+@cindex 真列表
+  由于@code{nil}是存放在列表中的最后一个cons cell的@sc{cdr}的惯例值，我们称这种列表为@dfn{真列表}。
 
-  In Lisp, we consider the symbol @code{nil} a list as well as a
-symbol; it is the list with no elements.  For convenience, the symbol
-@code{nil} is considered to have @code{nil} as its @sc{cdr} (and also
-as its @sc{car}).  Therefore, the @sc{cdr} of a true list is always a
-true list.
+  在Lisp中，我们将@code{nil}既当作符号，又当作列表；它是一个不具有任何元素的列表。为方便起见，符号@code{nil}可以被理解以@code{nil}为@sc{cdr}（同样@code{nil}
+是其@sc{cdr}）。因此，真列表的@sc{cdr}总是一个真列表。
 
-@cindex dotted list
-@cindex circular list
-  If the @sc{cdr} of a list's last cons cell is some other value,
-neither @code{nil} nor another cons cell, we call the structure a
-@dfn{dotted list}, since its printed representation would use
-@samp{.}.  There is one other possibility: some cons cell's @sc{cdr}
-could point to one of the previous cons cells in the list.  We call
-that structure a @dfn{circular list}.
+@cindex 点分列表
+@cindex 循环列表
+  如果列表最后一个cons cell的@sc{cdr}是其他値，即不是@code{nil}也不是其他的cons cell，由于其打印表示将使用@samp{.}，我们称这种结构为@dfn{点分列表}。这里有另
+外一种可能：某些cons cell的@sc{cdr}可以指向列表中前面的cons cell。我们将这种结构成为@dfn{circular list}。
 
-  For some purposes, it does not matter whether a list is true,
-circular or dotted.  If the program doesn't look far enough down the
-list to see the @sc{cdr} of the final cons cell, it won't care.
-However, some functions that operate on lists demand true lists and
-signal errors if given a dotted list.  Most functions that try to find
-the end of a list enter infinite loops if given a circular list.
+  在某些情况下，列表是真列表、循环列表或点分列表并不重要，如果程序不深入查看列表的最后一个cons cell，它不用在意。然而，某些操作列表的函数要求真列表，如果是点分列表，
+它将报错。而大多数尝试查找链表结尾的函数在处理循环列表时将产生无穷循环。
 
-@cindex list structure
-  Because most cons cells are used as part of lists, the phrase
-@dfn{list structure} has come to mean any structure made out of cons
-cells.
+@cindex 列表结构
+  由于大多数cons cell都作为列表的一部分。@dfn{列表结构}这个短语用来指任何由cons cell构造出的结构。
 
-  The @sc{cdr} of any nonempty true list @var{l} is a list containing all the
-elements of @var{l} except the first.
+  任一非空真列表@var{l}的@sc{cdr}是一个包含除了第一个元素的所有元素的列表。
 
-  @xref{Cons Cell类型}, for the read and print syntax of cons cells and
-lists, and for ``box and arrow'' illustrations of lists.
+  关于cons cell的读取和打印语法以及列表的``盒子和箭头''图示，请参考@xref{Cons Cell类型}.。
 
-@node List-related Predicates
-@section Predicates on Lists
+@node 列表相关的判定
+@section 列表相关的判定
 
-  The following predicates test whether a Lisp object is an atom,
-whether it is a cons cell or is a list, or whether it is the
-distinguished object @code{nil}.  (Many of these predicates can be
-defined in terms of the others, but they are used so often that it is
-worth having all of them.)
+  以下判定测试一个Lisp对象是否是一个原子，是否是一个cons cell或列表，是否是特定的对象@code{nil}。（这里的许多判定可以由其他判定定义，但由于它们使用的很频繁，值得
+将它们全部定义出来。）
 
 @defun consp object
-This function returns @code{t} if @var{object} is a cons cell, @code{nil}
-otherwise.  @code{nil} is not a cons cell, although it @emph{is} a list.
+此函数在@var{object}是cons cell时返回@code{t}，否则返回@code{nil}。尽管@code{nil}是一个列表
+，但它不是一个cons cell。
 @end defun
 
 @defun atom object
-This function returns @code{t} if @var{object} is an atom, @code{nil}
-otherwise.  All objects except cons cells are atoms.  The symbol
-@code{nil} is an atom and is also a list; it is the only Lisp object
+此函数在@var{object}是原子时返回@code{t}，否则返回@code{nil}。除cons cell外的对象都是原子。符号
+@code{nil}即是一个原子，又是一个列表，它是唯一同属于两类的Lisp对象。
 that is both.
 
 @example
@@ -114,9 +80,7 @@ that is both.
 @end defun
 
 @defun listp object
-This function returns @code{t} if @var{object} is a cons cell or
-@code{nil}.  Otherwise, it returns @code{nil}.
-
+此函数在@var{object}是cons cell或@code{nil}时返回@code{t}，否则返回@code{nil}。
 @example
 @group
 (listp '(1))
@@ -130,20 +94,18 @@ This function returns @code{t} if @var{object} is a cons cell or
 @end defun
 
 @defun nlistp object
-This function is the opposite of @code{listp}: it returns @code{t} if
-@var{object} is not a list.  Otherwise, it returns @code{nil}.
+此函数是@code{listp}的反面：它在@var{object}不是列表时返回@code{t}，否则返回@code{nil}。
 
 @example
 (listp @var{object}) @equiv{} (not (nlistp @var{object}))
 @end example
 @end defun
 
+
 @defun null object
-This function returns @code{t} if @var{object} is @code{nil}, and
-returns @code{nil} otherwise.  This function is identical to @code{not},
-but as a matter of clarity we use @code{null} when @var{object} is
-considered a list and @code{not} when it is considered a truth value
-(see @code{not} in @ref{Combining Conditions}).
+此函数在@var{object}是@code{nil}时返回@code{t}，否则返回@code{nil}。此函数等同于@code{not}，但为
+了更加清晰，我们在@var{object}被当作列表时使用它，而在@var{object}被当作真值时使用@code{not}。（请参考
+@ref{Combining Conditons}.中的@code{not}）
 
 @example
 @group
@@ -158,18 +120,15 @@ considered a list and @code{not} when it is considered a truth value
 @end defun
 
 
-@node List Elements
-@section Accessing Elements of Lists
-@cindex list elements
+@node 列表元素
+@section 访问列表元素
+@cindex 列表元素
 
 @defun car cons-cell
-This function returns the value referred to by the first slot of the
-cons cell @var{cons-cell}.  In other words, it returns the @sc{car} of
-@var{cons-cell}.
+此函数返回@var{cons cell}第一个槽引用的值。换句话说，它返回@var{cons cell}的@sc{car}。
 
-As a special case, if @var{cons-cell} is @code{nil}, this function
-returns @code{nil}.  Therefore, any list is a valid argument.  An
-error is signaled if the argument is not a cons cell or @code{nil}.
+作为特例，如果@var{cons cell}是@code{nil}，这个函数返回@code{nil}。因此，任何列表都是有效的参数。
+如果参数不是cons cell或@code{nil}时将报错。 
 
 @example
 @group
@@ -184,13 +143,10 @@ error is signaled if the argument is not a cons cell or @code{nil}.
 @end defun
 
 @defun cdr cons-cell
-This function returns the value referred to by the second slot of the
-cons cell @var{cons-cell}.  In other words, it returns the @sc{cdr} of
-@var{cons-cell}.
+此函数返回@var{cons cell}第二个槽引用的值。换句话说，它返回@var{cons cell}的@sc{cdr}。
 
-As a special case, if @var{cons-cell} is @code{nil}, this function
-returns @code{nil}; therefore, any list is a valid argument.  An error
-is signaled if the argument is not a cons cell or @code{nil}.
+作为特例，如果@var{cons cell}是@code{nil}，这个函数返回@code{nil}。因此，任何列表都是有效的参数。
+如果参数不是cons cell或@code{nil}时将报错。 
 
 @example
 @group
@@ -205,10 +161,8 @@ is signaled if the argument is not a cons cell or @code{nil}.
 @end defun
 
 @defun car-safe object
-This function lets you take the @sc{car} of a cons cell while avoiding
-errors for other data types.  It returns the @sc{car} of @var{object} if
-@var{object} is a cons cell, @code{nil} otherwise.  This is in contrast
-to @code{car}, which signals an error if @var{object} is not a list.
+此函数允许你取得cons cell的@sc{car}但避免其他类型时的报错。在@var{object}是cons cell时，它返回@var{object}的
+@sc{car}，另外的情况下返回@code{nil}。相比之下，@code{car}将在 @var{object}不是列表时返回错误。
 
 @example
 @group
@@ -223,11 +177,8 @@ to @code{car}, which signals an error if @var{object} is not a list.
 @end defun
 
 @defun cdr-safe object
-This function lets you take the @sc{cdr} of a cons cell while
-avoiding errors for other data types.  It returns the @sc{cdr} of
-@var{object} if @var{object} is a cons cell, @code{nil} otherwise.
-This is in contrast to @code{cdr}, which signals an error if
-@var{object} is not a list.
+此函数允许你取得cons cell的@sc{cdr}但避免其他类型时的报错。在@var{object}是cons cell时，它返回@var{object}的
+@sc{cdr}，另外的情况下返回@code{nil}。相比之下，@code{cdr}将在 @var{object}不是列表时返回错误。
 
 @example
 @group
@@ -242,13 +193,10 @@ This is in contrast to @code{cdr}, which signals an error if
 @end defun
 
 @defmac pop listname
-This macro is a way of examining the @sc{car} of a list,
-and taking it off the list, all at once.
+此宏提供一种检查列表的@sc{car}的方式，并将@sc{car}从列表中一次摘除。
 
-It operates on the list which is stored in the symbol @var{listname}.
-It removes this element from the list by setting @var{listname}
-to the @sc{cdr} of its old value---but it also returns the @sc{car}
-of that list, which is the element being removed.
+它操作存在符号@var{listname}中的列表。它通过设置旧值的@sc{cdr}至符号@var{listname}来移除元素，但它同时返回
+该列表的@sc{var}，即被移除的元素。
 
 @example
 x
@@ -262,13 +210,10 @@ x
 
 @defun nth n list
 @anchor{Definition of nth}
-This function returns the @var{n}th element of @var{list}.  Elements
-are numbered starting with zero, so the @sc{car} of @var{list} is
-element number zero.  If the length of @var{list} is @var{n} or less,
-the value is @code{nil}.
+此函数返回@var{list}中的第@var{n}个元素。元素以0开始计数，所以@var{list}的@sc{car}是第0号元素。如果@var{list}
+的长度是@var{n}或更小，返回@code{nil}。
 
-If @var{n} is negative, @code{nth} returns the first element of
-@var{list}.
+如果@var{n}是负值，@code{nth}返回列表的第一个元素。
 
 @example
 @group
@@ -287,20 +232,14 @@ If @var{n} is negative, @code{nth} returns the first element of
 @end group
 @end example
 
-The function @code{elt} is similar, but applies to any kind of sequence.
-For historical reasons, it takes its arguments in the opposite order.
-@xref{Sequence Functions}.
+函数@code{elt}相似，但它可应用于任何序列。由于历史原因，它以相反的顺序传参。请参考@xref{Sequence Functions}.。
 @end defun
 
 @defun nthcdr n list
-This function returns the @var{n}th @sc{cdr} of @var{list}.  In other
-words, it skips past the first @var{n} links of @var{list} and returns
-what follows.
+此函数返回@var{list}的第@var{n}个@sc{cdr}。换句话说，它跳过@var{list}的前@var{n}个链并返回后继内容。
 
-If @var{n} is zero or negative, @code{nthcdr} returns all of
-@var{list}.  If the length of @var{list} is @var{n} or less,
-@code{nthcdr} returns @code{nil}.
-
+如果@var{n}是0或者负值，@code{nthcdr}返回@var{list}的所有元素。如果@var{list}的长度是@var{n}或者更小，@code{nthcdr}
+返回@code{nil}。
 @example
 @group
 (nthcdr 1 '(1 2 3 4))
@@ -318,58 +257,52 @@ If @var{n} is zero or negative, @code{nthcdr} returns all of
 @end defun
 
 @defun last list &optional n
-This function returns the last link of @var{list}.  The @code{car} of
-this link is the list's last element.  If @var{list} is null,
-@code{nil} is returned.  If @var{n} is non-@code{nil}, the
-@var{n}th-to-last link is returned instead, or the whole of @var{list}
-if @var{n} is bigger than @var{list}'s length.
+此函数返回@var{list}的最后一个链接。此链接的@code{car}是该列表的最后一个元素。如果@var{list}是空，@code{nil}将被返回。
+如果@var{n}不是@code{nil}，倒数第@var{n}个链接将被返回，而如果@var{n}大于@var{list}的长度度，则整@var{list}将被返回。
 @end defun
 
 @defun safe-length list
-@anchor{Definition of safe-length}
-This function returns the length of @var{list}, with no risk of either
-an error or an infinite loop.  It generally returns the number of
-distinct cons cells in the list.  However, for circular lists,
-the value is just an upper bound; it is often too large.
+@anchor{safe-length的定义}
+此函数返回@var{list}的长度，但避免错误或者无限循环。它通常返回list中不同的cons cell的个数。然而，对于循环列表，该值就是
+一个上限；它通常很大。
 
-If @var{list} is not @code{nil} or a cons cell, @code{safe-length}
-returns 0.
+如果@var{list}不是@code{nil}或者cons cell，它返回0。
 @end defun
 
-  The most common way to compute the length of a list, when you are not
-worried that it may be circular, is with @code{length}.  @xref{Sequence
-Functions}.
+  当你不担心列表是循环列表时，计算其长度的通常办法就是使用@code{length}。请参考@xref{Sequence Functions}.。
 
 @defun caar cons-cell
-This is the same as @code{(car (car @var{cons-cell}))}.
+等同于@code{(car (car @var{cons-cell}))}。
 @end defun
 
 @defun cadr cons-cell
-This is the same as @code{(car (cdr @var{cons-cell}))}
-or @code{(nth 1 @var{cons-cell})}.
+等同于@code{(car (cdr @var{cons-cell}))}或@code{(nth 1 @var{cons-cell})}。
 @end defun
 
 @defun cdar cons-cell
-This is the same as @code{(cdr (car @var{cons-cell}))}.
+等同于@code{(cdr (car @var{cons-cell}))}。
 @end defun
 
 @defun cddr cons-cell
-This is the same as @code{(cdr (cdr @var{cons-cell}))}
-or @code{(nthcdr 2 @var{cons-cell})}.
+等同于@code{(cdr (cdr @var{cons-cell}))}或@code{(nthcdr 2 @var{cons-cell})}。
 @end defun
 
 @defun butlast x &optional n
-This function returns the list @var{x} with the last element,
-or the last @var{n} elements, removed.  If @var{n} is greater
-than zero it makes a copy of the list so as not to damage the
-original list.  In general, @code{(append (butlast @var{x} @var{n})
-(last @var{x} @var{n}))} will return a list equal to @var{x}.
+此函数返回最后一个或最后@var{n}个元素被移除的列表。如果@var{n}比0大，它将拷贝一份列表以便不破坏原列表。
+通常，@code{(append (butlast @var{x} @var{n}) (last @var{x} @var{n}))}将返回与@var{x}相等的
+一个列表。
 @end defun
 
 @defun nbutlast x &optional n
-This is a version of @code{butlast} that works by destructively
-modifying the @code{cdr} of the appropriate element, rather than
-making a copy of the list.
+此函数是@code{butlast}的另一个版本，此版本破坏性地修改元素的@code{cdr}，而不是拷贝该列表。
+（译注：请注意如下代码：
+@example
+(setq a '(1 2 3))
+(equal (nbutlast a) a)
+     @result{} t
+(equal (nbutlast a) a)
+     @result{} nil
+@end example
 @end defun
 
 @node Building Lists
