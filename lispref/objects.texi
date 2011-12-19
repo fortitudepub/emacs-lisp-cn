@@ -642,7 +642,7 @@ cons cell的@sc{cdr}。例如，@code{(rose violet . buttercup)}和@code{(code .
 @end group
 @end example
 
-    相似地，三元素表@code{(rose violet buttercup)}与@code{(rose . (violet . buttercup)}等价。
+    相似地，三元素表@code{(rose violet buttercup)}与@code{(rose . (violet . (buttercup))}等价。
 @ifnottex
     它看起来是这个样子：
 @example
@@ -688,7 +688,7 @@ cons cell的@sc{cdr}。例如，@code{(rose violet . buttercup)}和@code{(code .
     字符串是一个由字符构成的数组，而容器则是由任意Lisp对象构成的数组。布尔容器只可持有@code{t}或@code{nil}。这些数组长度可达
 最大的整数值。而字符表则是由有效字符码索引的稀松数组，它可持有任意Lisp对象。
 
-    数组的第一个元素索引为0，第而个元素索引为1，依次类推。这称为@dfn{自0开始}的索引方式。例如，一个具有四元素的数组，其索引为
+    数组的第一个元素索引为0，第二个元素索引为1，依次类推。这称为@dfn{自0开始}的索引方式。例如，一个具有四元素的数组，其索引为
 0、1、2、@w{和3}。数组最大的索引值为其长度减1。数组一旦被创建，其索引就固定了。
 
     所有的Emacs Lisp数组都是一维的。（大部分其他语法都支持多维数组，但这并不必要，你可通过嵌套一维数组达到同样的效果）。每类

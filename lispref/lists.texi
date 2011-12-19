@@ -29,7 +29,7 @@
 @cindex 列表和Cons Cells
 
   Lisp中的列表并不是一个原子类型；它们是从@dfn{cons cells}中构造的。一个cons cell是表示一个有序对的数据对象。也即，它具有两个槽，每个槽@dfn{持有}
-或@dfn{引用}某些Lisp对象。其中一个槽被称为@sc{car}，而别一个被称为@sc{cdr}。（这些名字是惯例所为，请参考@ref{Cons Cell类型}.）@sc(cdr}读作``could-er.''
+或@dfn{引用}某些Lisp对象。其中一个槽被称为@sc{car}，而别一个被称为@sc{cdr}。（这些名字是惯例所为，请参考@ref{Cons Cell类型}.）@sc{cdr}读作``could-er.''
 
   当我们说``这个cons cell的@sc{car}是''时，我们指的是它的@sc{car}槽当前所持有的任意对象，@sc{cdr}亦同。
 
@@ -305,23 +305,18 @@ x
 @end example
 @end defun
 
-@node Building Lists
+@node 创建列表
 @comment  node-name,  next,  previous,  up
-@section Building Cons Cells and Lists
+@section 创建Cons cell和列表
 @cindex cons cells
-@cindex building lists
+@cindex 创建列表
 
-  Many functions build lists, as lists reside at the very heart of Lisp.
-@code{cons} is the fundamental list-building function; however, it is
-interesting to note that @code{list} is used more times in the source
-code for Emacs than @code{cons}.
+  列表在Lisp中居核心地位，许多函数可以用来创建列表。@code{cons}是创建列表的基础函数；然而有趣的是，在Emacs的源码中，@code{list}
+要比@code{cons}用得多。
 
 @defun cons object1 object2
-This function is the most basic function for building new list
-structure.  It creates a new cons cell, making @var{object1} the
-@sc{car}, and @var{object2} the @sc{cdr}.  It then returns the new
-cons cell.  The arguments @var{object1} and @var{object2} may be any
-Lisp objects, but most often @var{object2} is a list.
+此函数用来创建新列表结构的最基本函数。它创建一个新的cons cell，用@var{object1}作@sc{car}，而@code{object2}作@sc{cdr}，之后返回
+新创建的cons cell。参数@var{object1}和@var{object2}可以是任意的cons cell，但通常@var{object2}是一个列表。
 
 @example
 @group
@@ -339,31 +334,21 @@ Lisp objects, but most often @var{object2} is a list.
 @end example
 
 @cindex consing
-@code{cons} is often used to add a single element to the front of a
-list.  This is called @dfn{consing the element onto the list}.
-@footnote{There is no strictly equivalent way to add an element to
-the end of a list.  You can use @code{(append @var{listname} (list
-@var{newelt}))}, which creates a whole new list by copying @var{listname}
-and adding @var{newelt} to its end.  Or you can use @code{(nconc
-@var{listname} (list @var{newelt}))}, which modifies @var{listname}
-by following all the @sc{cdr}s and then replacing the terminating
-@code{nil}.  Compare this to adding an element to the beginning of a
-list with @code{cons}, which neither copies nor modifies the list.}
-For example:
+@code{cons}通常用于向列表头插入一个单个元素。这称为@dfn{向列表中consing}。
+@footnote{没有严格相等地向列表尾插入元素的方法。你可以使用@code{(append @var{listname} (list @var{newelt}))}，
+它通过拷贝@var{listname}创建一个新的列表，并将@var{newelt}插入其尾部。或者你可以使用@code{(nconc @var{listname} (list @var{newelt}))}，
+它通过跟踪@var{listname}的所有@sc{cdr}，并替换终结的@code{nil}。请比较使用@code{cons}向列表头插入元素，它即不拷贝，也不修改列表。
+例如：
 
 @example
 (setq list (cons newelt list))
 @end example
 
-Note that there is no conflict between the variable named @code{list}
-used in this example and the function named @code{list} described below;
-any symbol can serve both purposes.
+注意在此例中使用到的名为@code{list}的变量与下面描述的函数@code{list}之间并没有冲突；任何符号都可以即做为变量名又作为函数。
 @end defun
 
 @defun list &rest objects
-This function creates a list with @var{objects} as its elements.  The
-resulting list is always @code{nil}-terminated.  If no @var{objects}
-are given, the empty list is returned.
+此函数使用@var{objects}作为元素创建一个列表。生成的列表总是以@code{nil}结尾。如果没有@var{objects}给出，将返回空表。
 
 @example
 @group
@@ -382,9 +367,7 @@ are given, the empty list is returned.
 @end defun
 
 @defun make-list length object
-This function creates a list of @var{length} elements, in which each
-element is @var{object}.  Compare @code{make-list} with
-@code{make-string} (@pxref{创建字符串}).
+此函数创建具有@var{length}个元素的一个列表，它的每个元素都是@var{object}。请将@code{make-list}和@code{make-string}作下比较（@pxref{创建字符串}）。
 
 @example
 @group
@@ -396,7 +379,7 @@ element is @var{object}.  Compare @code{make-list} with
      @result{} nil
 @end group
 @group
-(setq l (make-list 3 '(a b))
+(setq l (make-list 3 '(a b)))
      @result{} ((a b) (a b) (a b))
 (eq (car l) (cadr l))
      @result{} t
@@ -405,24 +388,16 @@ element is @var{object}.  Compare @code{make-list} with
 @end defun
 
 @defun append &rest sequences
-@cindex copying lists
-This function returns a list containing all the elements of
-@var{sequences}.  The @var{sequences} may be lists, vectors,
-bool-vectors, or strings, but the last one should usually be a list.
-All arguments except the last one are copied, so none of the arguments
-is altered.  (See @code{nconc} in @ref{Rearrangement}, for a way to join
-lists with no copying.)
+@cindex 拷贝列表
+此函数返回一个包含@var{sequences}中所有元素的列表。@var{sequences}可以是列表、容器、布尔容器或字符串，但最后一个通常是一个列表。
+所有参数除了最后一个外都将被拷贝，所以任一参数都不会被替换。（关于非拷贝方式合并两表的方式，请参考@ref{Rearrangement}.一节中的@code{nconc}。）
 
-More generally, the final argument to @code{append} may be any Lisp
-object.  The final argument is not copied or converted; it becomes the
-@sc{cdr} of the last cons cell in the new list.  If the final argument
-is itself a list, then its elements become in effect elements of the
-result list.  If the final element is not a list, the result is a
-dotted list since its final @sc{cdr} is not @code{nil} as required
-in a true list.
+更通俗的来说，@code{append}的最后一个元素可以是任意Lisp对象。最后一个元素不被拷贝或转换；它变成新列表中的最后一个cons cell。如果最后一个参数
+本身是一个列表，那么它的元素实际上变成了结果列表中的有效元素。如果最后一个元素不是列表，则结果列表是一个点分式的列表，因为真列表表要求最终的@sc{cdr}是@code{nil}，
+而它不满足这个要求。
 @end defun
 
-  Here is an example of using @code{append}:
+  以下是一个使用@code{append}的例子：
 
 @example
 @group
@@ -444,11 +419,8 @@ more-trees
 @end group
 @end example
 
-  You can see how @code{append} works by looking at a box diagram.  The
-variable @code{trees} is set to the list @code{(pine oak)} and then the
-variable @code{more-trees} is set to the list @code{(maple birch pine
-oak)}.  However, the variable @code{trees} continues to refer to the
-original list:
+  你可通过观察盒子图解来了解@code{append}如何工作。变量@code{trees}被设置为列表@code{(pine oak)}，继而
+变量@code{more-trees}被设置为@code{(maple birch pine oak)}。然而，@code{trees}继续指向原表：
 
 @smallexample
 @group
@@ -463,9 +435,7 @@ more-trees                trees
 @end group
 @end smallexample
 
-  An empty sequence contributes nothing to the value returned by
-@code{append}.  As a consequence of this, a final @code{nil} argument
-forces a copy of the previous argument:
+  一个空序列对@code{appned}的返回值不起作用。因此，@code{nil}使得强制拷贝前一个参数。
 
 @example
 @group
@@ -487,10 +457,9 @@ wood
 @end example
 
 @noindent
-This once was the usual way to copy a list, before the function
-@code{copy-sequence} was invented.  @xref{Sequences Arrays Vectors}.
+在函数@code{copy-sequence}发明前，这曾经是一种拷贝列表的常用方式。（请参考@xref{Sequences Arrays Vectors}.）
 
-  Here we show the use of vectors and strings as arguments to @code{append}:
+  以下说明如何用容器和字符串做为@code{append}的参数：
 
 @example
 @group
@@ -499,8 +468,7 @@ This once was the usual way to copy a list, before the function
 @end group
 @end example
 
-  With the help of @code{apply} (@pxref{Calling Functions}), we can append
-all the lists in a list of lists:
+  借助于@code{apply}（@pxref{Calling Functions}}.），我们可以补加在一个列表的列表的所有列表：
 
 @example
 @group
@@ -509,7 +477,7 @@ all the lists in a list of lists:
 @end group
 @end example
 
-  If no @var{sequences} are given, @code{nil} is returned:
+  如果未给出@var{sequences}，@code{append}函数将返回@code{nil}：
 
 @example
 @group
@@ -518,7 +486,7 @@ all the lists in a list of lists:
 @end group
 @end example
 
-  Here are some examples where the final argument is not a list:
+  以下是最后一个参数不是列表的示例：
 
 @example
 (append '(x y) 'z)
@@ -528,15 +496,11 @@ all the lists in a list of lists:
 @end example
 
 @noindent
-The second example shows that when the final argument is a sequence but
-not a list, the sequence's elements do not become elements of the
-resulting list.  Instead, the sequence becomes the final @sc{cdr}, like
-any other non-list final argument.
+第二个示例演示了当最后一个参数不是列表的情况，该序列的元素并未成为结果列表的元素。相反的，像其他任意非列表的参数一样，
+它成为最后的@sc{cdr}。
 
 @defun reverse list
-This function creates a new list whose elements are the elements of
-@var{list}, but in reverse order.  The original argument @var{list} is
-@emph{not} altered.
+此函数创建一个与原列表元素相反的新列表。原参数@var{list}并@emph{未}被替换。
 
 @example
 @group
@@ -553,45 +517,28 @@ x
 @end defun
 
 @defun copy-tree tree &optional vecp
-This function returns a copy of the tree @code{tree}.  If @var{tree} is a
-cons cell, this makes a new cons cell with the same @sc{car} and
-@sc{cdr}, then recursively copies the @sc{car} and @sc{cdr} in the
-same way.
+此函数返回@code{tree}树的拷贝。如果@var{tree}是一个cons cell，它用同样的@sc{car}和@sc{cdr}创建一个新的cons cell，
+然后用同样的方式递归地拷贝@sc{car}和@sc{cdr}。
 
-Normally, when @var{tree} is anything other than a cons cell,
-@code{copy-tree} simply returns @var{tree}.  However, if @var{vecp} is
-non-@code{nil}, it copies vectors too (and operates recursively on
-their elements).
+通常，当@var{tree}是非cons cell的任意对象，@code{copy-tree}直接返回@var{tree}。然而，如果@var{vecp}非空，它也拷贝
+容器（并递归拷贝容器的元素）。
 @end defun
 
 @defun number-sequence from &optional to separation
-This returns a list of numbers starting with @var{from} and
-incrementing by @var{separation}, and ending at or just before
-@var{to}.  @var{separation} can be positive or negative and defaults
-to 1.  If @var{to} is @code{nil} or numerically equal to @var{from},
-the value is the one-element list @code{(@var{from})}.  If @var{to} is
-less than @var{from} with a positive @var{separation}, or greater than
-@var{from} with a negative @var{separation}, the value is @code{nil}
-because those arguments specify an empty sequence.
+此函数返回以@var{from}起始并以@var{separation}步长增加的一个列表，并在@var{to}或恰好在@var{to}之前终结。@var{separation}}
+可以是正数或负数，默认是1。如果@var{to}是@code{nil}或在数值上与@var{from}相等，结果列表是单元素的列表@code{(@var{from})}。
+如果@var{to}小于@var{from}并且@var{separation}是正数，或大于@var{from}并且@var{separation}是负数，则结果是@code{nil}，
+这是因为这些参数指明了一个空序列。
 
-If @var{separation} is 0 and @var{to} is neither @code{nil} nor
-numerically equal to @var{from}, @code{number-sequence} signals an
-error, since those arguments specify an infinite sequence.
+如果@var{separation}是0并且@var{to}即不是@code{nil}或在数值上与@var{from}相等，@code{number-sequence}将产生一个错误，
+因为这些参数指明了一个无限的序列。
 
-All arguments can be integers or floating point numbers.  However,
-floating point arguments can be tricky, because floating point
-arithmetic is inexact.  For instance, depending on the machine, it may
-quite well happen that @code{(number-sequence 0.4 0.6 0.2)} returns
-the one element list @code{(0.4)}, whereas
-@code{(number-sequence 0.4 0.8 0.2)} returns a list with three
-elements.  The @var{n}th element of the list is computed by the exact
-formula @code{(+ @var{from} (* @var{n} @var{separation}))}.  Thus, if
-one wants to make sure that @var{to} is included in the list, one can
-pass an expression of this exact type for @var{to}.  Alternatively,
-one can replace @var{to} with a slightly larger value (or a slightly
-more negative value if @var{separation} is negative).
+所有参数即可以是整数，也可以是浮点数。然后，浮点数将会很棘手，因为浮点算数不是精确的。例如，依赖于机器实现，@code{(number-sequence 0.4 0.6 0.2)}
+很可能返回具有一个元素的列表@code{(0.4)}，而@code{(number-sequence 0.4 0.8 0.2)}返回一个具有三个元素的列表。列表的第@var{n}个元素用精确的工式
+@code{(+ @var{from} (* @var{n} @var{separation}))}计算。因此，如果你想确保@var{to}在列表中被包含，你可以传递一个像这样精确的表达式做为参数
+@var{to}。或者，你可以用一个稍大的值替换@var{to}（或在@var{separation}是负值的情况下用稍小的负值替换）。
 
-Some examples:
+一些例子:
 
 @example
 (number-sequence 4 9)
