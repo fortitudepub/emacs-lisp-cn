@@ -1230,18 +1230,15 @@ sample-list
 @end defun
 
 @defun delete object sequence
-If @code{sequence} is a list, this function destructively removes all
-elements @code{equal} to @var{object} from @var{sequence}.  For lists,
-@code{delete} is to @code{delq} as @code{member} is to @code{memq}: it
-uses @code{equal} to compare elements with @var{object}, like
-@code{member}; when it finds an element that matches, it cuts the
-element out just as @code{delq} would.
+如果@code{sequence}是一个列表，此函数将从中破坏性地删除所有与@var{object}用@code{equal}比较相等的元素。对于列表而言，
+@code{delete}之于@code{delq}就像@code{member}之于@code{memq}一样：它像@code{member}
+一样，使用@code{equal}来将元素与@var{object}作比；当它找到一个匹配的元素，它将像@code{delq}
+那样移掉该元素。
 
-If @code{sequence} is a vector or string, @code{delete} returns a copy
-of @code{sequence} with all elements @code{equal} to @code{object}
-removed.
+如果@code{sequence}是一个容器或元素，@code{delete}返回一个@code{sequence}移除了那些与@code{object}用@code{equal}
+比较相等的所有元素的的拷贝。
 
-For example:
+例如：
 
 @example
 @group
@@ -1250,8 +1247,8 @@ For example:
      @result{} ((1))
 l
      @result{} ((2) (1))
-;; @r{If you want to change @code{l} reliably,}
-;; @r{write @code{(setq l (delete elt l))}.}
+;; @r{如果你要确保@code{l}被改变，}
+;; @r{可以写成@code{(setq l (delete elt l))}。}
 @end group
 @group
 (setq l '((2) (1) (2)))
@@ -1259,8 +1256,8 @@ l
      @result{} ((2) (2))
 l
      @result{} ((2) (2))
-;; @r{In this case, it makes no difference whether you set @code{l},}
-;; @r{but you should do so for the sake of the other case.}
+;; @r{在这个例子中，无论你是否设置@code{l}，都没有区别，}
+;; @r{但你应当这样做，以便考虑其他情况。}
 @end group
 @group
 (delete '(2) [(2) (1) (2)])
@@ -1270,9 +1267,8 @@ l
 @end defun
 
 @defun remove object sequence
-This function is the non-destructive counterpart of @code{delete}.  It
-returns a copy of @code{sequence}, a list, vector, or string, with
-elements @code{equal} to @code{object} removed.  For example:
+此函数是@code{delete}的非破坏性形式。它返回@code{sequence}的一个拷贝，一个列表、一个容器或者一个字符串，
+而那些与@code{object}用@code{equal}比较相等的元素则被移除。例如：
 
 @example
 @group
@@ -1287,47 +1283,34 @@ elements @code{equal} to @code{object} removed.  For example:
 @end defun
 
 @quotation
-@b{Common Lisp note:} The functions @code{member}, @code{delete} and
-@code{remove} in GNU Emacs Lisp are derived from Maclisp, not Common
-Lisp.  The Common Lisp versions do not use @code{equal} to compare
-elements.
+@b{Common Lisp注释:} GNU Emacs Lisp中的函数@code{member}、@code{delete}以及@code{remove}派生自
+MacLisp，而不是Common Lisp。它们的Common Lisp版本并不使用@code{equal}来做元素比较。
 @end quotation
 
 @defun member-ignore-case object list
-This function is like @code{member}, except that @var{object} should
-be a string and that it ignores differences in letter-case and text
-representation: upper-case and lower-case letters are treated as
-equal, and unibyte strings are converted to multibyte prior to
-comparison.
+此函数与@code{member}相似，除了@var{object}应当是一个字符串并且它忽略字母大小写和文本表示的差异：大写和
+小写字母将被视作相等，且单字节字符串在比较前将被转成多字节字符串。
 @end defun
 
 @defun delete-dups list
-This function destructively removes all @code{equal} duplicates from
-@var{list}, stores the result in @var{list} and returns it.  Of
-several @code{equal} occurrences of an element in @var{list},
-@code{delete-dups} keeps the first one.
+此函数破坏性地删除@var{list}中所有用@code{equal}相等的多余元素，将结果存在@var{list}中并返回它。对于@var{list}中
+用@code{equal}比等的一个元素的多次出现，@code{delete-dups}保持其第一次出现。
 @end defun
 
-  See also the function @code{add-to-list}, in @ref{List Variables},
-for a way to add an element to a list stored in a variable and used as a
-set.
+  要了解如何向存在变量中的列表添加元素以及将其当成集合使用的方法，请参考@ref{List Variables}.一节中的
+函数@code{add-to-list}。
 
-@node Association Lists
-@section Association Lists
-@cindex association list
+@node 关联列表
+@section 关联列表
+@cindex 关联列表
 @cindex alist
 
-  An @dfn{association list}, or @dfn{alist} for short, records a mapping
-from keys to values.  It is a list of cons cells called
-@dfn{associations}: the @sc{car} of each cons cell is the @dfn{key}, and the
-@sc{cdr} is the @dfn{associated value}.@footnote{This usage of ``key''
-is not related to the term ``key sequence''; it means a value used to
-look up an item in a table.  In this case, the table is the alist, and
-the alist associations are the items.}
+  一个@dfn{关联列表｝，或简记为@dfn{alist}，记录了关键字到值的一个映射。它是一个包含称为@dfn{关联}的cons cell的列表：
+每个cons cell的@sc{car}是@dfn{关键字}，而@sc{cdr}是@dfn{关联值}。@footnote{这里使用到的``关键字''和术语``按键序列''的
+``按键''（译注，英文中都是key）并无关系；它指一个用来在表中查找项目的值。在这种情况下，表是该关联列表，而关联则是那些项目。}
 
-  Here is an example of an alist.  The key @code{pine} is associated with
-the value @code{cones}; the key @code{oak} is associated with
-@code{acorns}; and the key @code{maple} is associated with @code{seeds}.
+　下面是关联列表的一个例子。关键字@code{pine}关联值@code{cones}；关键字@code{oak}关联@code{acrons}；而关键字@code{maple}
+关联@code{seeds}。
 
 @example
 @group
@@ -1337,59 +1320,41 @@ the value @code{cones}; the key @code{oak} is associated with
 @end group
 @end example
 
-  Both the values and the keys in an alist may be any Lisp objects.
-For example, in the following alist, the symbol @code{a} is
-associated with the number @code{1}, and the string @code{"b"} is
-associated with the @emph{list} @code{(2 3)}, which is the @sc{cdr} of
-the alist element:
+  关联列中的关键字和值可以是任意Lisp对象。例如，在下面的关联列表中，@code{a}与数字@code{1}关联，而字符串@code{"b"}则与@epmh{列表}
+@code{(2 3)}关联，该列表是关联列表元素的@sc{cdr}。
 
 @example
 ((a . 1) ("b" 2 3))
 @end example
 
-  Sometimes it is better to design an alist to store the associated
-value in the @sc{car} of the @sc{cdr} of the element.  Here is an
-example of such an alist:
+  有时最好将关联值存在元素的@sc{cdr}的@sc{car}处。下面是这种关联列表的一个例子：
 
 @example
 ((rose red) (lily white) (buttercup yellow))
 @end example
 
 @noindent
-Here we regard @code{red} as the value associated with @code{rose}.  One
-advantage of this kind of alist is that you can store other related
-information---even a list of other items---in the @sc{cdr} of the
-@sc{cdr}.  One disadvantage is that you cannot use @code{rassq} (see
-below) to find the element containing a given value.  When neither of
-these considerations is important, the choice is a matter of taste, as
-long as you are consistent about it for any given alist.
+这里我们将@code{red}当作与@code{rose}关键的值。这类关联列表的好处之一就是你可以将其他相关信息---即使是一个包含其他项目的列表---
+存储在@sc{cdr}的@sc{cdr}中。一个坏处则是你不能用@code{rassq}（见下）来查找包含指定值的元素。当这些考虑都不重要时，则可视口味选择，
+只要你对任意关联列表都考虑完备。
 
-  The same alist shown above could be regarded as having the
-associated value in the @sc{cdr} of the element; the value associated
-with @code{rose} would be the list @code{(red)}.
 
-  Association lists are often used to record information that you might
-otherwise keep on a stack, since new associations may be added easily to
-the front of the list.  When searching an association list for an
-association with a given key, the first one found is returned, if there
-is more than one.
+  上面的属性列表可以被认为关联值存储在元素的@sc{cdr}处；与@code{rose}关联的值是列表@code{(red)}。
 
-  In Emacs Lisp, it is @emph{not} an error if an element of an
-association list is not a cons cell.  The alist search functions simply
-ignore such elements.  Many other versions of Lisp signal errors in such
-cases.
+  关联列表通常用于存储那些你可能存储在栈上的信息，因为新的关联关系可以轻松地添加在列表前面。当在关联列表中以指定关键字查找关联时，
+如果有多个匹配结果，第一次查找到的结果将被返回。
 
-  Note that property lists are similar to association lists in several
-respects.  A property list behaves like an association list in which
-each key can occur only once.  @xref{Property Lists}, for a comparison
-of property lists and association lists.
+  在Emacs Lisp中，如果关联列表中的元素不是cons cell时它产@emph{不}是一个错误。关联列表搜索函数简单地忽略这些元素。许多Lisp版本
+在这种情况下都触发错误。
+
+  注意在某些方面属性列表与关联列表相似。在每个关键字只能出现一次时，属性列表和关联列表行为相似。关于属性列表和关联列表的比较，请参
+考@xref{Property Lists}.一节。
 
 @defun assoc key alist
-This function returns the first association for @var{key} in
-@var{alist}, comparing @var{key} against the alist elements using
-@code{equal} (@pxref{相等判定}).  It returns @code{nil} if no
-association in @var{alist} has a @sc{car} @code{equal} to @var{key}.
-For example:
+此函数返回@var{key}在@var{alist}中的首次关联，使用@equal}来比较关联列表中的元素和@var{key}（@pxref{相等判定}.）。
+强果在@var{alist}中没有元素的@sc{car}和@var{key}用@code{equal}比较相等，则返回@code{nil}。
+
+例如：
 
 @smallexample
 (setq trees '((pine . cones) (oak . acorns) (maple . seeds)))
@@ -1402,7 +1367,7 @@ For example:
      @result{} nil
 @end smallexample
 
-Here is another example, in which the keys and values are not symbols:
+下面是另外一个例子，该例子中关键了和值都不是符号：
 
 @smallexample
 (setq needles-per-cluster
@@ -1417,26 +1382,22 @@ Here is another example, in which the keys and values are not symbols:
 @end smallexample
 @end defun
 
-  The function @code{assoc-string} is much like @code{assoc} except
-that it ignores certain differences between strings.  @xref{文本比较}.
+  函数@code{assoc-string}和@code{assoc}非常相似，除了它忽略字符串的某些差异。
+@xref{文本比较}.。
 
 @defun rassoc value alist
-This function returns the first association with value @var{value} in
-@var{alist}.  It returns @code{nil} if no association in @var{alist} has
-a @sc{cdr} @code{equal} to @var{value}.
+此函数返回具有@var{alist}中具有值为@var{value}的首次关联。如果@var{alist}中没有关联的@sc{cdr}
+和@var{value}用@code{equal}比较相等，则返回@code{nil}。
 
-@code{rassoc} is like @code{assoc} except that it compares the @sc{cdr} of
-each @var{alist} association instead of the @sc{car}.  You can think of
-this as ``reverse @code{assoc},'' finding the key for a given value.
+@code{rassoc}和@code{assoc}相似，除了它比较@var{alist}中每个关联的@sc{cdr}，而不是@sc{car}。
+你可以将它当作``反向@code{assoc}''，根据指定值来找key。
 @end defun
 
 @defun assq key alist
-This function is like @code{assoc} in that it returns the first
-association for @var{key} in @var{alist}, but it makes the comparison
-using @code{eq} instead of @code{equal}.  @code{assq} returns @code{nil}
-if no association in @var{alist} has a @sc{car} @code{eq} to @var{key}.
-This function is used more often than @code{assoc}, since @code{eq} is
-faster than @code{equal} and most alists use symbols as keys.
+此函数与@code{assoc}相似，它返回在@var{alist}中与@var{key}的第一个关联，但它使用@code{eq}而不是
+@code{equal}来比较。@code{assq}在@var{alist}中没有关联的@sc{car}与@var{key}用@code{eq}比较相等
+时返回@code{nil}。这个函数用的比@code{assoc}要频繁，因为@code{eq}比@code{equal}要快，并且大部分
+关联列表使用符号做关键字。
 @xref{相等判定}.
 
 @smallexample
@@ -1446,8 +1407,7 @@ faster than @code{equal} and most alists use symbols as keys.
      @result{} (pine . cones)
 @end smallexample
 
-On the other hand, @code{assq} is not usually useful in alists where the
-keys may not be symbols:
+另一方面，@code{assq}对于关键字不是符号的关联列表则不那么有用：
 
 @smallexample
 (setq leaves
@@ -1462,15 +1422,13 @@ keys may not be symbols:
 @end defun
 
 @defun rassq value alist
-This function returns the first association with value @var{value} in
-@var{alist}.  It returns @code{nil} if no association in @var{alist} has
-a @sc{cdr} @code{eq} to @var{value}.
+此函数返回@var{alist}中值为@var{value}的第一个关联。它在@var{alist}中没有@sc{cdr}和@var{value}
+用@code{eq}比较相等的关联时返回@code{nil}。
 
-@code{rassq} is like @code{assq} except that it compares the @sc{cdr} of
-each @var{alist} association instead of the @sc{car}.  You can think of
-this as ``reverse @code{assq},'' finding the key for a given value.
+@code{rassq}和@code{assq}相似，除了它比较@var{alist}中每个关联的@sc{cdr}，而不是@sc{car}。
+你可以将它当作``反向@code{assoq}''，根据指定值来找key。
 
-For example:
+例如：
 
 @smallexample
 (setq trees '((pine . cones) (oak . acorns) (maple . seeds)))
@@ -1481,8 +1439,7 @@ For example:
      @result{} nil
 @end smallexample
 
-@code{rassq} cannot search for a value stored in the @sc{car}
-of the @sc{cdr} of an element:
+@code{rassq}不能用来搜索存在元素的@sc{cdr}的@sc{car}里的值：
 
 @smallexample
 (setq colors '((rose red) (lily white) (buttercup yellow)))
@@ -1491,9 +1448,8 @@ of the @sc{cdr} of an element:
      @result{} nil
 @end smallexample
 
-In this case, the @sc{cdr} of the association @code{(lily white)} is not
-the symbol @code{white}, but rather the list @code{(white)}.  This
-becomes clearer if the association is written in dotted pair notation:
+在此情况下，关联@code{(lily white)}的@sc{cdr}并不是符号@code{white}，而是列表@code{(white)}。
+这在关联列表使用点分记法时更加清楚：
 
 @smallexample
 (lily white) @equiv{} (lily . (white))
@@ -1501,29 +1457,20 @@ becomes clearer if the association is written in dotted pair notation:
 @end defun
 
 @defun assoc-default key alist &optional test default
-This function searches @var{alist} for a match for @var{key}.  For each
-element of @var{alist}, it compares the element (if it is an atom) or
-the element's @sc{car} (if it is a cons) against @var{key}, by calling
-@var{test} with two arguments: the element or its @sc{car}, and
-@var{key}.  The arguments are passed in that order so that you can get
-useful results using @code{string-match} with an alist that contains
-regular expressions (@pxref{Regexp Search}).  If @var{test} is omitted
-or @code{nil}, @code{equal} is used for comparison.
+此函数在@var{alist}中搜索@var{key}的一个匹配。对于@var{alist}的每个元素，它用@var{key}和元素（如果它是一个原子）或
+其@sc{car}（如果它是一个cons）比较，并提供两个参数调用@var{test}：元素或其@sc{car}，以及@var{key}。它以这样的方式进行
+传递参数以便你对于那些包含正则表达式（参考@pxref{Regexp Search}.）的关联列表可以使用@code{string-match}来获取有用结果。
+如果@var{test}被忽略或为@code{nil}，它将使用@code{equal}进行比较。
 
-If an alist element matches @var{key} by this criterion,
-then @code{assoc-default} returns a value based on this element.
-If the element is a cons, then the value is the element's @sc{cdr}.
-Otherwise, the return value is @var{default}.
+如果关联列表中的一个元素基于这个标准匹配到@var{key}，那么@code{assoc-default}返回基于这个元素的一个值。如果该元素是一个
+cons，那么值是该元素的@sc{cdr}。否则，返回值是@var{default}。
 
-If no alist element matches @var{key}, @code{assoc-default} returns
-@code{nil}.
+如果没有元素匹配到@var{key}，@code{assoc-default}返回@code{nil}。
 @end defun
 
 @defun copy-alist alist
-@cindex copying alists
-This function returns a two-level deep copy of @var{alist}: it creates a
-new copy of each association, so that you can alter the associations of
-the new alist without changing the old one.
+@cindex 拷贝关联列表
+此函数返回@var{alist}的两级深拷贝：它为每个关联创建一个新拷贝，以便你可以新关联列表中的关联而避免改变旧的。
 
 @smallexample
 @group
@@ -1558,8 +1505,7 @@ the new alist without changing the old one.
 @end group
 @end smallexample
 
-  This example shows how @code{copy-alist} makes it possible to change
-the associations of one copy without affecting the other:
+  此例子演示了@code{copy-alist}如何使得在不影响另一个拷贝（译注：可以是原关联列表）的情况下修改拷贝中的关联：
 
 @smallexample
 @group
@@ -1571,12 +1517,9 @@ the associations of one copy without affecting the other:
 @end defun
 
 @defun assq-delete-all key alist
-This function deletes from @var{alist} all the elements whose @sc{car}
-is @code{eq} to @var{key}, much as if you used @code{delq} to delete
-each such element one by one.  It returns the shortened alist, and
-often modifies the original list structure of @var{alist}.  For
-correct results, use the return value of @code{assq-delete-all} rather
-than looking at the saved value of @var{alist}.
+此函数从@var{alist}中移除所有那些@sc{car}与@var{key}用@code{eq}比较相等的元素，像你使用@code{delq}来逐一删除
+这些元素一样。它返回变短后的关联列表，并且通常修改@var{alist}的原有列表结构。为了正确的结果，请使用@code{assq-delete-all}
+的返回结果，而不是查看@var{alist}保存的值。
 
 @example
 (setq alist '((foo 1) (bar 2) (foo 3) (lose 4)))
@@ -1589,90 +1532,73 @@ alist
 @end defun
 
 @defun rassq-delete-all value alist
-This function deletes from @var{alist} all the elements whose @sc{cdr}
-is @code{eq} to @var{value}.  It returns the shortened alist, and
-often modifies the original list structure of @var{alist}.
-@code{rassq-delete-all} is like @code{assq-delete-all} except that it
-compares the @sc{cdr} of each @var{alist} association instead of the
-@sc{car}.
+此函数从@var{alist}中移除所有那些@sc{cdr}与@var{key}用@code{eq}比较相等的元素。它返回变短后的关联列表，并且通常修改
+@var{alist}的原有列表结构。@code{rassq-delete-all}和@code{assq-delete-all}相似，除了它比较@var{alist}中每个关
+联的@sc{cdr}，而不是@sc{car}。
 @end defun
 
-@node Rings
-@section Managing a Fixed-Size Ring of Objects
+@node 环
+@section 管理固定大小的对象环
 
-@cindex ring data structure
-  This section describes functions for operating on rings.  A
-@dfn{ring} is a fixed-size data structure that supports insertion,
-deletion, rotation, and modulo-indexed reference and traversal.
+@cindex 环数据结构
+  这节描述操作环的函数。一个@dfn{环}指的是固定长度的数据结构，它支持插入、删除、旋转、基于模的索引以及遍历。
 
 @defun make-ring size
-This returns a new ring capable of holding @var{size} objects.
-@var{size} should be an integer.
+此函数创建一个能持有@var{size}个对象的新环。
+@var{size}应当是一个整数。
 @end defun
 
 @defun ring-p object
-This returns @code{t} if @var{object} is a ring, @code{nil} otherwise.
+如果@var{object}是一个环，此函数返回@code{t}，否则返回@code{nil}。
 @end defun
 
 @defun ring-size ring
-This returns the maximum capacity of the @var{ring}.
+此函数返回@var{ring}的最大容量。
 @end defun
 
 @defun ring-length ring
-This returns the number of objects that @var{ring} currently contains.
-The value will never exceed that returned by @code{ring-size}.
+此函数返回@var{ring}当前包含的对象个数。它永远不会超出@code{ring-size}的返回值。
 @end defun
 
 @defun ring-elements ring
-This returns a list of the objects in @var{ring}, in order, newest first.
+此函数返回@var{ring}中对象的一个列表，按照最新优先的顺序。
 @end defun
 
 @defun ring-copy ring
-This returns a new ring which is a copy of @var{ring}.
-The new ring contains the same (@code{eq}) objects as @var{ring}.
+此函数返回一个是@var{ring}拷贝的新环。它含有与var{ring}相同（@code{eq}）的对象。
 @end defun
 
 @defun ring-empty-p ring
-This returns @code{t} if @var{ring} is empty, @code{nil} otherwise.
+如果@var{ring}为空，则返回@code{t}，否则返回@code{nil}。
 @end defun
 
-  The newest element in the ring always has index 0.  Higher indices
-correspond to older elements.  Indices are computed modulo the ring
-length.  Index @minus{}1 corresponds to the oldest element, @minus{}2
-to the next-oldest, and so forth.
+  环中最新的元素总是具有索引0。较高索引对应较旧元素。索引对环大小求模。索引@minus{}1对应于
+最旧的元素，索引@minus{}2对应于次旧的，依次类推。
 
 @defun ring-ref ring index
-This returns the object in @var{ring} found at index @var{index}.
-@var{index} may be negative or greater than the ring length.  If
-@var{ring} is empty, @code{ring-ref} signals an error.
+此函数返回@var{ring}中索引@var{index}处的对象。@var{index}可以是否值或大于环长度的值。如果
+@var{ring}是空的，@code{ring-ref}产生一个错误。
 @end defun
 
 @defun ring-insert ring object
-This inserts @var{object} into @var{ring}, making it the newest
-element, and returns @var{object}.
+此函数将@var{object}插入至@var{ring}，使它成为最新的元素，并返回@var{object}。
 
-If the ring is full, insertion removes the oldest element to
-make room for the new element.
+如果环已满，插入将移除最旧的元素给新元素腾空间。
 @end defun
 
 @defun ring-remove ring &optional index
-Remove an object from @var{ring}, and return that object.  The
-argument @var{index} specifies which item to remove; if it is
-@code{nil}, that means to remove the oldest item.  If @var{ring} is
-empty, @code{ring-remove} signals an error.
+此函数从@var{ring}中移除对象，并返回该对象。参数@var{index}指明要被移除的元素；如果它是@code{nil}，
+这意味着移除旧最的元素。如果@var{ring}是空的，@code{ring-remove}产生一个错误。
 @end defun
 
 @defun ring-insert-at-beginning ring object
-This inserts @var{object} into @var{ring}, treating it as the oldest
-element.  The return value is not significant.
+此函数将@var{object}插入至@var{ring}中，将其做为最旧的元素。返回值并不重要。
 
-If the ring is full, this function removes the newest element to make
-room for the inserted element.
+如果环是空的，此函数移除最新的元素以及给待插入的元素腾空间。
 @end defun
 
-@cindex fifo data structure
-  If you are careful not to exceed the ring size, you can
-use the ring as a first-in-first-out queue.  For example:
+@cindex fifo数据结构
+  如果你小心的不要越过环的大小，你可以将环当做先进先出队列。例如：
 
 @lisp
 (let ((fifo (make-ring 5)))

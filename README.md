@@ -24,6 +24,8 @@
 修正了一下makefile，将生成elisp.html的命令合入，修改完毕后，可以直接在lispref目录下执行rm elisp.html;make elisp.html生成新的html文档即可。
 * 20111124
 更新README语法为MARKDOWN。
+* 20120204
+完成第5章lists.texi的翻译。
 
 遗留问题
 =========
