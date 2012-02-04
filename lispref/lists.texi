@@ -558,14 +558,13 @@ x
 @end example
 @end defun
 
-@node List Variables
-@section Modifying List Variables
+@node 列表变量
+@section 修改列表变量
 
-  These functions, and one macro, provide convenient ways
-to modify a list which is stored in a variable.
+  下面的这些函数以及一个宏，提供用来修改存储在变量中的列表的便捷手段。
 
 @defmac push newelt listname
-This macro provides an alternative way to write
+这个宏提供了如下代码的另一种写法：
 @code{(setq @var{listname} (cons @var{newelt} @var{listname}))}.
 
 @example
@@ -578,27 +577,22 @@ l
 @end example
 @end defmac
 
-  Two functions modify lists that are the values of variables.
+   如下是两个修改作为变量值的列表的函数。
 
 @defun add-to-list symbol element &optional append compare-fn
-This function sets the variable @var{symbol} by consing @var{element}
-onto the old value, if @var{element} is not already a member of that
-value.  It returns the resulting list, whether updated or not.  The
-value of @var{symbol} had better be a list already before the call.
-@code{add-to-list} uses @var{compare-fn} to compare @var{element}
-against existing list members; if @var{compare-fn} is @code{nil}, it
-uses @code{equal}.
+此函数在@var{element}不是变量@var{symbol}值（译注：指一个列表）的成员时，将通过对@var{elment}和旧值进行
+cons设置@var{symbol}。不论值是否被更新，它都返回结果列表。在调用前，@var{symbol}的值最好是一个列表。
+@code{add-to-list}使用@var{compare-fn}来将@var{element}与表的既有元素作比；如果@var{compare-fn}是
+@code{nil}，它使用@code{equal}。
 
-Normally, if @var{element} is added, it is added to the front of
-@var{symbol}, but if the optional argument @var{append} is
-non-@code{nil}, it is added at the end.
+一般地，如果@var{element}被添加，它将被添加在@var{symbol}值对应的列表头部，但如果可选参数@var{append}是
+非@code{nil}，它将被添加在尾部。
 
-The argument @var{symbol} is not implicitly quoted; @code{add-to-list}
-is an ordinary function, like @code{set} and unlike @code{setq}.  Quote
-the argument yourself if that is what you want.
+参数@var{symbol}不被隐式引用；@code{add-to-list}是一个普通函数，像@code{set}但不像@code{setq}。如果这
+是你期望的，你需要自行引用该参数。
 @end defun
 
-Here's a scenario showing how to use @code{add-to-list}:
+下面展示如何使用@code{add-to-list}的几个场景：
 
 @example
 (setq foo '(a b))
@@ -614,8 +608,7 @@ foo                       ;; @r{@code{foo} was changed.}
      @result{} (c a b)
 @end example
 
-  An equivalent expression for @code{(add-to-list '@var{var}
-@var{value})} is this:
+  和@code{(add-to-list '@var{var} @var{value})}等价的一个表达式如下：
 
 @example
 (or (member @var{value} @var{var})
@@ -623,34 +616,26 @@ foo                       ;; @r{@code{foo} was changed.}
 @end example
 
 @defun add-to-ordered-list symbol element &optional order
-This function sets the variable @var{symbol} by inserting
-@var{element} into the old value, which must be a list, at the
-position specified by @var{order}.  If @var{element} is already a
-member of the list, its position in the list is adjusted according
-to @var{order}.  Membership is tested using @code{eq}.
-This function returns the resulting list, whether updated or not.
+此函数通过将@var{elemtn}插入在@var{symbol}的旧值（译注：一个列表）中由@var{order}所指定的位置上，
+从而设置@var{symbol}变量，该旧值必须是一个列表。如果@var{element}已经是该列表的一个成员，它在列表
+中的位置将根据@var{order}进行调整。成员关系通过@code{eq}来进行测试。不论更新与否，都返回结果列表。
 
-The @var{order} is typically a number (integer or float), and the
-elements of the list are sorted in non-decreasing numerical order.
+@var{order}通常是一个数值（整数或浮点数），此时列表的元素将以非递减数值方式排序。
 
-@var{order} may also be omitted or @code{nil}.  Then the numeric order
-of @var{element} stays unchanged if it already has one; otherwise,
-@var{element} has no numeric order.  Elements without a numeric list
-order are placed at the end of the list, in no particular order.
+@var{order}也可以被忽略或是@code{nil}。那么，如果@var{element}已经在列表中（译注：未避免疑惑，这里
+我补充上了已经在列表中这个条件）且具有数值顺序，它将保持位置不变；否则@var{element}将不具有数值顺序。
+没有数值顺序的元素将无序地被放在列表尾部。
 
-Any other value for @var{order} removes the numeric order of @var{element}
-if it already has one; otherwise, it is equivalent to @code{nil}.
+所有@var{order}的其他值将使得@var{element}在具有数值顺序时，将移除其数值顺序；否则，它等同于@code{nil}
+时的行为。
 
-The argument @var{symbol} is not implicitly quoted;
-@code{add-to-ordered-list} is an ordinary function, like @code{set}
-and unlike @code{setq}.  Quote the argument yourself if that is what
-you want.
+参数@var{symbol}不被隐式引用；@code{add-to-ordered-list}是一个普通函数，像@code{set}但不像@code{setq}。如果这
+是你期望的，你需要自行引用该参数。
 
-The ordering information is stored in a hash table on @var{symbol}'s
-@code{list-order} property.
+顺序信息将被存储在@var{symbol}的名为@code{list-order}属性对应的哈希表中。
 @end defun
 
-Here's a scenario showing how to use @code{add-to-ordered-list}:
+下面展示如何使用@code{add-to-orderedlist}的几个场景：
 
 @example
 (setq foo '())
@@ -672,50 +657,44 @@ Here's a scenario showing how to use @code{add-to-ordered-list}:
      @result{} (a c b d)
 
 (add-to-ordered-list 'foo 'e)       ;; @r{Add @code{e}}.
-     @result{} (a c b e d)
+     @result{} (a c b e d)          ;; 译注：未指定@var{order}，并且'e不具有数值顺序，
+                                    ;; 而d也没有数值顺序，故d和e无序的放在一起。
 
 foo                       ;; @r{@code{foo} was changed.}
      @result{} (a c b e d)
 @end example
 
-@node Modifying Lists
-@section Modifying Existing List Structure
-@cindex destructive list operations
+@node 修改列表
+@section 修改既有的列表结构
+@cindex 破坏性列表操作
 
-  You can modify the @sc{car} and @sc{cdr} contents of a cons cell with the
-primitives @code{setcar} and @code{setcdr}.  We call these ``destructive''
-operations because they change existing list structure.
+  你可以利用原始函数@code{setcar}和@code{setcdr}来修改一个cons cell的@sc{car}和@sc{cdr}。由于它们修改了
+既有的列表结构，我们称它们是``破坏性''的操作。
 
 @cindex CL note---@code{rplaca} vs @code{setcar}
 @quotation
 @findex rplaca
 @findex rplacd
-@b{Common Lisp note:} Common Lisp uses functions @code{rplaca} and
-@code{rplacd} to alter list structure; they change structure the same
-way as @code{setcar} and @code{setcdr}, but the Common Lisp functions
-return the cons cell while @code{setcar} and @code{setcdr} return the
-new @sc{car} or @sc{cdr}.
+@b{Common Lisp注释:} Common Lisp使用函数@code{rplaca}和@code{rplacd}来替换列表结构；它们和@code{setcar}和
+@code{setcdr}用相同的方式改变列表结构，但Common Lisp函数返回cons cell而@code{setcar}和@code{setcdr}返回新的
+@sc{car}或@sc{cdr}。
 @end quotation
 
 @menu
-* Setcar::          Replacing an element in a list.
-* Setcdr::          Replacing part of the list backbone.
-                      This can be used to remove or add elements.
-* Rearrangement::   Reordering the elements in a list; combining lists.
+* Setcar::          替换列表中的一个元素。
+* Setcdr::          替换列表骨干中的一部分。
+  　　　　　　　　　　　　它可以用来移除和添加元素。
+* Rearrangement::   重新排序列表中的元素；合并列表。
 @end menu
 
 @node Setcar
-@subsection Altering List Elements with @code{setcar}
+@subsection 使用@code{setcar}替换列表元素
 
-  Changing the @sc{car} of a cons cell is done with @code{setcar}.  When
-used on a list, @code{setcar} replaces one element of a list with a
-different element.
+  通过@code{setcar}改变一个cons cell的@sc{car}。当对列表使用时，@code{setcar}用一个不同的元素替换列表的一个元素。
 
 @defun setcar cons object
-This function stores @var{object} as the new @sc{car} of @var{cons},
-replacing its previous @sc{car}.  In other words, it changes the
-@sc{car} slot of @var{cons} to refer to @var{object}.  It returns the
-value @var{object}.  For example:
+此函数将@var{object}作为@var{cons}的新@sc{car}存储起来，替换它原来的@sc{car}。换句话说，它改变@var{cons}的@sc{car}槽使
+其指向@var{object}。它返回@var{object}的值。例如：
 
 @example
 @group
@@ -733,13 +712,11 @@ x
 @end example
 @end defun
 
-  When a cons cell is part of the shared structure of several lists,
-storing a new @sc{car} into the cons changes one element of each of
-these lists.  Here is an example:
+  它cons cell是几个列表的共享结构时，向cons中存储一个新的@sc{car}将改变每个列表的一个元素。下面是一个例子：
 
 @example
 @group
-;; @r{Create two lists that are partly shared.}
+;; @r{创建两个部分共享的列表。}
 (setq x1 '(a b c))
      @result{} (a b c)
 (setq x2 (cons 'z (cdr x1)))
@@ -747,29 +724,27 @@ these lists.  Here is an example:
 @end group
 
 @group
-;; @r{Replace the @sc{car} of a shared link.}
+;; @r{替换共享cons的@sc{car}。}
 (setcar (cdr x1) 'foo)
      @result{} foo
-x1                           ; @r{Both lists are changed.}
+x1                           ; @r{两个列表同时被改变。}
      @result{} (a foo c)
 x2
      @result{} (z foo c)
 @end group
 
 @group
-;; @r{Replace the @sc{car} of a link that is not shared.}
+;; @r{替换非共享cons的@sc{car}。}
 (setcar x1 'baz)
      @result{} baz
-x1                           ; @r{Only one list is changed.}
+x1                           ; @r{只有一个列表被改变。}
      @result{} (baz foo c)
 x2
      @result{} (z foo c)
 @end group
 @end example
 
-  Here is a graphical depiction of the shared structure of the two lists
-in the variables @code{x1} and @code{x2}, showing why replacing @code{b}
-changes them both:
+  下面是两个共享结构的的列表的图解，展示了为何替换@code{b}将同时修改它们：
 
 @example
 @group
@@ -789,7 +764,7 @@ x2--> |   |   |--
 @end group
 @end example
 
-  Here is an alternative form of box diagram, showing the same relationship:
+  下面时盒式记法的另一种形式，展示了相同的关系：
 
 @example
 @group
@@ -810,22 +785,17 @@ x2:              |
 @end example
 
 @node Setcdr
-@subsection Altering the CDR of a List
+@subsection 替换列表的CDR
 
-  The lowest-level primitive for modifying a @sc{cdr} is @code{setcdr}:
+  用来修改@sc{cdr}的最底层原子函数是@sc{cdr}。
 
 @defun setcdr cons object
-This function stores @var{object} as the new @sc{cdr} of @var{cons},
-replacing its previous @sc{cdr}.  In other words, it changes the
-@sc{cdr} slot of @var{cons} to refer to @var{object}.  It returns the
-value @var{object}.
+此函数将@var{object}作为@var{cons}新的@sc{cdr}进行存储，替换原来的@sc{cdr}。换句话说，
+它改变@var{cons}的@sc{cdr}结构，让其指向@var{object}。它返回@var{object}的值。
 @end defun
 
-  Here is an example of replacing the @sc{cdr} of a list with a
-different list.  All but the first element of the list are removed in
-favor of a different sequence of elements.  The first element is
-unchanged, because it resides in the @sc{car} of the list, and is not
-reached via the @sc{cdr}.
+　下面是用一个新列表来替换列表的@sc{cdr}的示例。因为要建立一个不同的元素序列，该列表除了第一个元素外的所有元素
+都被移除。第一个元素未被修改，因为它保存在该列表的@sc{car}中，不被@sc{cdr}访问到。
 
 @example
 @group
@@ -842,10 +812,8 @@ x
 @end group
 @end example
 
-  You can delete elements from the middle of a list by altering the
-@sc{cdr}s of the cons cells in the list.  For example, here we delete
-the second element, @code{b}, from the list @code{(a b c)}, by changing
-the @sc{cdr} of the first cons cell:
+  你可以通过替换列表中cons cell的@sc{cdr}来从列表中间删除元素。例如，这里我们通过修改第一个cons cell的@sc{cdr}，
+从列表@code{(a b c)}中删除第二个元素@code{b}。
 
 @example
 @group
@@ -858,7 +826,7 @@ x1
 @end group
 @end example
 
-  Here is the result in box notation:
+　下面是用盒式记法演示的结果：
 
 @smallexample
 @group
@@ -873,11 +841,10 @@ x1
 @end smallexample
 
 @noindent
-The second cons cell, which previously held the element @code{b}, still
-exists and its @sc{car} is still @code{b}, but it no longer forms part
-of this list.
+第二个曾经持有元素@code{b}的cons cell，仍然存在并且其@sc{car}仍然是@code{b}，但它不是在该列
+表的一部分。
 
-  It is equally easy to insert a new element by changing @sc{cdr}s:
+  同样地很容易通过改变@sc{cdr}来插入新元素。
 
 @example
 @group
@@ -890,7 +857,7 @@ x1
 @end group
 @end example
 
-  Here is this result in box notation:
+　下面是用盒式记法演示的结果：
 
 @smallexample
 @group
@@ -910,34 +877,28 @@ x1
 @end group
 @end smallexample
 
-@node Rearrangement
-@subsection Functions that Rearrange Lists
-@cindex rearrangement of lists
-@cindex modification of lists
+@node 重组
+@subsection 重组列表函数
+@cindex 列表重组
+@cindex 列表修改
 
-  Here are some functions that rearrange lists ``destructively'' by
-modifying the @sc{cdr}s of their component cons cells.  We call these
-functions ``destructive'' because they chew up the original lists passed
-to them as arguments, relinking their cons cells to form a new list that
-is the returned value.
+  下面是一些通过修改列表中cons cell的@sc{cdr}从而``破坏性''地重组列表的函数。我们之所以称这些
+函数为``破坏性''地，是因为它们对作为参数传递给它们的列表，重新连接列表中的cons cell，并返回修改
+后的列表。
 
 @ifnottex
-  See @code{delq}, in @ref{Sets And Lists}, for another function
-that modifies cons cells.
+  关于另外一个修改cons cell的函数，请参考@ref{Sets And Lists}.一节中的@code{delq}。
 @end ifnottex
 @iftex
-   The function @code{delq} in the following section is another example
-of destructive list manipulation.
+   在后续章节中的@coe{delq}是另外一个破坏性列表操作的示例。   
 @end iftex
 
 @defun nconc &rest lists
-@cindex concatenating lists
-@cindex joining lists
-This function returns a list containing all the elements of @var{lists}.
-Unlike @code{append} (@pxref{Building Lists}), the @var{lists} are
-@emph{not} copied.  Instead, the last @sc{cdr} of each of the
-@var{lists} is changed to refer to the following list.  The last of the
-@var{lists} is not altered.  For example:
+@cindex 联结列表
+@cindex 合并列表
+此函数返回包含@var{lists}中所有元素的列表。不像@code{append}（参考@pxref{Building Lists}.），@var{lists}
+并@emph{不}被拷贝，而是将@var{lists}中的每个列表最后的@sc{cdr}修改为指向下一个列表。@var{lists}中最后一个列
+表不被替换。例如：
 
 @example
 @group
@@ -954,10 +915,8 @@ x
 @end group
 @end example
 
-   Since the last argument of @code{nconc} is not itself modified, it is
-reasonable to use a constant list, such as @code{'(4 5)}, as in the
-above example.  For the same reason, the last argument need not be a
-list:
+   因为@code{nconc}最后一个参数并不被修改，因此使用一个常量列表是合理的，例如@code{'(4 5)}，就像上面的例子一样。
+基于同样的原因，最后一个参数可以不是列表：
 
 @example
 @group
@@ -974,16 +933,15 @@ x
 @end group
 @end example
 
-However, the other arguments (all but the last) must be lists.
+然后，其他参数（除了最后一个参数的所有参数）必须是列表。
 
-A common pitfall is to use a quoted constant list as a non-last
-argument to @code{nconc}.  If you do this, your program will change
-each time you run it!  Here is what happens:
+一个通常的陷阱是用一个被引用的常量列表做为非最后一个参数传递给@code{nconc}。如果你这样做，你的程序每次执行时都将变化！
+下面演示了将发生什么：
 
 @smallexample
 @group
-(defun add-foo (x)            ; @r{We want this function to add}
-  (nconc '(foo) x))           ;   @r{@code{foo} to the front of its arg.}
+(defun add-foo (x)            ; @r{我们使用这个函数
+  (nconc '(foo) x))           ;   @r{将@code{foo}插入至其参数头部。}
 @end group
 
 @group
@@ -992,11 +950,11 @@ each time you run it!  Here is what happens:
 @end group
 
 @group
-(setq xx (add-foo '(1 2)))    ; @r{It seems to work.}
+(setq xx (add-foo '(1 2)))    ; @r{看起来工作正常。}
      @result{} (foo 1 2)
 @end group
 @group
-(setq xy (add-foo '(3 4)))    ; @r{What happened?}
+(setq xy (add-foo '(3 4)))    ; @r{发生了什么？}
      @result{} (foo 1 2 3 4)
 @end group
 @group
@@ -1013,13 +971,10 @@ each time you run it!  Here is what happens:
 
 @defun nreverse list
 @cindex reversing a list
-  This function reverses the order of the elements of @var{list}.
-Unlike @code{reverse}, @code{nreverse} alters its argument by reversing
-the @sc{cdr}s in the cons cells forming the list.  The cons cell that
-used to be the last one in @var{list} becomes the first cons cell of the
-value.
+  此函数将反转@var{list}中元素的顺序。不像@code{revert}，@code{nreverse}通过反转构造列表的cons cell的@sc{cdr}来
+修改其参数。作为@var{list}的最后一个cons cell将变成新列表的第一个元素。
 
-  For example:
+  例如：
 
 @example
 @group
@@ -1033,25 +988,23 @@ x
      @result{} (c b a)
 @end group
 @group
-;; @r{The cons cell that was first is now last.}
+;; @r{第一个cons cell变成了最后一个。}
 x
      @result{} (a)
 @end group
 @end example
 
-  To avoid confusion, we usually store the result of @code{nreverse}
-back in the same variable which held the original list:
+  为避免混淆，我们通常将@code{nreverse}的结构存回保存原列表的变量里。
 
 @example
 (setq x (nreverse x))
 @end example
 
-  Here is the @code{nreverse} of our favorite example, @code{(a b c)},
-presented graphically:
+  下面是对我们最喜欢的例子@code{(a b c)}执行@code{nreverse}的图示：
 
 @smallexample
 @group
-@r{Original list head:}                       @r{Reversed list:}
+@r{原始列表头：}                       @r{反转列表：}
  -------------        -------------        ------------
 | car  | cdr  |      | car  | cdr  |      | car | cdr  |
 |   a  |  nil |<--   |   b  |   o  |<--   |   c |   o  |
@@ -1064,40 +1017,28 @@ presented graphically:
 @end defun
 
 @defun sort list predicate
-@cindex stable sort
-@cindex sorting lists
-This function sorts @var{list} stably, though destructively, and
-returns the sorted list.  It compares elements using @var{predicate}.  A
-stable sort is one in which elements with equal sort keys maintain their
-relative order before and after the sort.  Stability is important when
-successive sorts are used to order elements according to different
-criteria.
+@cindex 稳定排序
+@cindex 排序列表
+此函数稳定地对@var{list}进行排序，尽管是破坏性地，它返回排序后列表。它使用@var{predicate}进行排序。
+稳定的列排序指的那些具有相同的比较键值的元素将在排序前后维持他们的相对顺序。当根据不同的标准对元素进行
+连续的排序时，稳定性很重要。
 
-The argument @var{predicate} must be a function that accepts two
-arguments.  It is called with two elements of @var{list}.  To get an
-increasing order sort, the @var{predicate} should return non-@code{nil} if the
-first element is ``less than'' the second, or @code{nil} if not.
 
-The comparison function @var{predicate} must give reliable results for
-any given pair of arguments, at least within a single call to
-@code{sort}.  It must be @dfn{antisymmetric}; that is, if @var{a} is
-less than @var{b}, @var{b} must not be less than @var{a}.  It must be
-@dfn{transitive}---that is, if @var{a} is less than @var{b}, and @var{b}
-is less than @var{c}, then @var{a} must be less than @var{c}.  If you
-use a comparison function which does not meet these requirements, the
-result of @code{sort} is unpredictable.
+参数@var{predicate}必须是一个接受两个参数的函数。以两个来自@var{list}中的元素做为参数被调用。
+要进行升序排序，@var{predicate}必须在第一个参数``小于''第二个参数时返回非@code{nil}，否则返回
+@code{nil}。
 
-The destructive aspect of @code{sort} is that it rearranges the cons
-cells forming @var{list} by changing @sc{cdr}s.  A nondestructive sort
-function would create new cons cells to store the elements in their
-sorted order.  If you wish to make a sorted copy without destroying the
-original, copy it first with @code{copy-sequence} and then sort.
 
-Sorting does not change the @sc{car}s of the cons cells in @var{list};
-the cons cell that originally contained the element @code{a} in
-@var{list} still has @code{a} in its @sc{car} after sorting, but it now
-appears in a different position in the list due to the change of
-@sc{cdr}s.  For example:
+函数@var{predicate}必须对任意的参数对都给出可靠的结果，至少在一次@code{sort}调用期间。它必须是@dfn{反对称的}，
+也即如果@var{a}小于@var{b}，则@var{b}不能小于@var{a}。它必须是@dfn{传递的}，也即如果@var{a}小于@var{b}，并
+且@var{b}小于@var{c}，那么@var{a}必须小于@var{c}。如果使用一个不满足这些要求的函数，那么排序结果将是不可预知的。
+
+@code{sort}的破坏性特质是指它以修改cons cell的@sc{cdr}来重排构成列表的cons cell。非破坏性的排序将按其顺序创建
+新的cons cell来存储元素。如果你期望避免破坏原始列表而是创建一个排序后的拷贝的话，先用@code{copy-sequence}来拷贝
+然后再进行排序。
+
+排序并不改变@var{list}中的cons cell的@sc{car}；在@var{list}中原来在@sc{car}中持有@code{a}的cons cell将在
+排序后仍在@sc{car}中持有@code{a}，但因@sc{cdr}的修改它将出现在列表的另外位置上。例如：
 
 @example
 @group
@@ -1115,50 +1056,39 @@ nums
 @end example
 
 @noindent
-@strong{Warning}: Note that the list in @code{nums} no longer contains
-0; this is the same cons cell that it was before, but it is no longer
-the first one in the list.  Don't assume a variable that formerly held
-the argument now holds the entire sorted list!  Instead, save the result
-of @code{sort} and use that.  Most often we store the result back into
-the variable that held the original list:
+@strong{警告}: 注意在列表中将不在包含０;它仍在原来的cons cell中，但它不在是列表中的第一个了。不要假定原来持有参数
+的变量将持有排序后的整个列表！你可以将@code{sort}的结构保存起来并使用它。大多数情况下我们将结果存回持有原来列表的
+变量中。
 
 @example
 (setq nums (sort nums '<))
 @end example
 
-@xref{Sorting}, for more functions that perform sorting.
-See @code{documentation} in @ref{Accessing Documentation}, for a
-useful example of @code{sort}.
+关于进行排序的更多函数，请参考@xref{Sorting}.一节。
+对于@code{sort}的一个有用的例子，请参考@ref{Accessing Documentation}一节中的@code{documentation}.。
 @end defun
 
-@node Sets And Lists
-@section Using Lists as Sets
-@cindex lists as sets
-@cindex sets
+@node 集合和列表
+@section 将列表当作集合使用
+@cindex 将列表当作集合
+@cindex 集合
 
-  A list can represent an unordered mathematical set---simply consider a
-value an element of a set if it appears in the list, and ignore the
-order of the list.  To form the union of two sets, use @code{append} (as
-long as you don't mind having duplicate elements).  You can remove
-@code{equal} duplicates using @code{delete-dups}.  Other useful
-functions for sets include @code{memq} and @code{delq}, and their
-@code{equal} versions, @code{member} and @code{delete}.
+  列表可以表达一个无序的数学集合。如果一个值出现在列表中，就简单地将其作为集合的一个元素，并忽略列表的顺序。
+要形成两个集合的联合，可以使用@code{append}（只要你不在意产生重复元素）。你可以使用@code{delete-dups}
+移除@code{equal}（译注：这里指的是用@code{equal}函数来确定是否重复，下面的@code{equal}版本也是如此
+，可以用describe-function查看具体差异）的重复元素。对于集合而言，其他的有用函数包括@code{memq}和
+@code{delq}，以及他们的@code{equal}版本，即@code{member}和@code{delete}。
 
-@cindex CL note---lack @code{union}, @code{intersection}
+@cindex CL注释---缺乏@code{union}、@code{intersection}
 @quotation
-@b{Common Lisp note:} Common Lisp has functions @code{union} (which
-avoids duplicate elements) and @code{intersection} for set operations,
-but GNU Emacs Lisp does not have them.  You can write them in Lisp if
-you wish.
+@b{Common Lisp注释：} Common Lisp有用于集合操作的@code{union}（它避免产生重复元素）以及@code{intersection}。
+但GNU Emacs Lisp不提供它们。你可以按你希望的方式实现它们。
 @end quotation
 
 @defun memq object list
-@cindex membership in a list
-This function tests to see whether @var{object} is a member of
-@var{list}.  If it is, @code{memq} returns a list starting with the
-first occurrence of @var{object}.  Otherwise, it returns @code{nil}.
-The letter @samp{q} in @code{memq} says that it uses @code{eq} to
-compare @var{object} against the elements of the list.  For example:
+@cindex 列表的成员关系
+此函数测试@var{object}是否是@var{list}的成员。如果它是，@code{memq}返回一个包含@var{object}首次出现开始的列表。
+否则，它返回@code{nil}。@code{memq}中的字母@samp{q}说明它使用@code{eq}来比较@var{object}和列表中的元素。例如：
 
 @example
 @group
@@ -1166,23 +1096,19 @@ compare @var{object} against the elements of the list.  For example:
      @result{} (b c b a)
 @end group
 @group
-(memq '(2) '((1) (2)))    ; @r{@code{(2)} and @code{(2)} are not @code{eq}.}
+(memq '(2) '((1) (2)))    ; @r{@code{(2)}和@code{(2)}用@code{eq}比较时并不相等。　}
      @result{} nil
 @end group
 @end example
 @end defun
 
 @defun delq object list
-@cindex deleting list elements
-This function destructively removes all elements @code{eq} to
-@var{object} from @var{list}.  The letter @samp{q} in @code{delq} says
-that it uses @code{eq} to compare @var{object} against the elements of
-the list, like @code{memq} and @code{remq}.
+@cindex 删除列表元素
+此函数破坏性地删除列表中和@var{object}用@code{eq}比较相等的所有元素。@code{delq}中的@samp{q}说明
+它使用@code{eq}来比较@var{object}和列表中的元素，像@code{memq}和@code{remq}一样。
 @end defun
 
-When @code{delq} deletes elements from the front of the list, it does so
-simply by advancing down the list and returning a sublist that starts
-after those elements:
+当@code{delq}从列表前面删除元素时，它简单地向列表后前进并返回自删除的元素后开始的子列表：
 
 @example
 @group
@@ -1190,8 +1116,7 @@ after those elements:
 @end group
 @end example
 
-When an element to be deleted appears in the middle of the list,
-removing it involves changing the @sc{cdr}s (@pxref{Setcdr}).
+当待删除的元素处理于列表中间时，删除它将导致改变@sc{cdr}（请参考@pxref{Setcdr}.）。
 
 @example
 @group
@@ -1216,20 +1141,17 @@ sample-list
 @end group
 @end example
 
-Note that @code{(delq 'c sample-list)} modifies @code{sample-list} to
-splice out the third element, but @code{(delq 'a sample-list)} does not
-splice anything---it just returns a shorter list.  Don't assume that a
-variable which formerly held the argument @var{list} now has fewer
-elements, or that it still holds the original list!  Instead, save the
-result of @code{delq} and use that.  Most often we store the result back
-into the variable that held the original list:
+注意@code{(delq 'c sample-list)}修改@code{sample-list}以便将第三个元素分出，但@code{(delq 'a sample-list)}
+却未分出任何东西---它只是返回一个较短的列表。不要假定先前存有参数@var{list}的变量将含有较少的元素，或它仍持有原有的
+列表！替代地，将@code{delq}的结果存起来再使用它。大多数情况下我们将结果存持有原来列表的变量：
 
 @example
 (setq flowers (delq 'rose flowers))
 @end example
 
-In the following example, the @code{(4)} that @code{delq} attempts to match
-and the @code{(4)} in the @code{sample-list} are not @code{eq}:
+在下面的例子中，@code{delq}尝试删除的@code{(4)}和@code{sample-list}中的@code{(4)}用@code{eq}测试并不相等：
+（译注：注意前面提到的读取语法，@code{eq}比较的是对象相等性，而调用时每次@code{(4)}都会创建一个新的列表对象，故而
+@code{eq}测试失败。）
 
 @example
 @group
@@ -1237,15 +1159,12 @@ and the @code{(4)} in the @code{sample-list} are not @code{eq}:
      @result{} (a c (4))
 @end group
 
-If you want to delete elements that are @code{equal} to a given value,
-use @code{delete} (see below).
+如果你要删除与给定值@code{equal}测试相等的元素，使用@code{delete}函数（见下）。
 @end example
 
 @defun remq object list
-This function returns a copy of @var{list}, with all elements removed
-which are @code{eq} to @var{object}.  The letter @samp{q} in @code{remq}
-says that it uses @code{eq} to compare @var{object} against the elements
-of @code{list}.
+此函数返回@var{list}的一个拷贝，该拷贝的所有与@var{object}用@code{eq}测试相等的元素被删除。@code{remq}中的@samp{q}说明
+它使用@code{eq}来比较@var{object}和列表中的元素。
 
 @example
 @group
@@ -1264,49 +1183,46 @@ sample-list
 @end defun
 
 @defun memql object list
-The function @code{memql} tests to see whether @var{object} is a member
-of @var{list}, comparing members with @var{object} using @code{eql},
-so floating point elements are compared by value.
-If @var{object} is a member, @code{memql} returns a list starting with
-its first occurrence in @var{list}.  Otherwise, it returns @code{nil}.
+函数@code{memql}测试@var{object}是否是@var{list}的一个成员，它使用@code{eql}
+来比较列表成员和@var{object}，因此将以数值比较浮点数。如果@var{object}是列表的成员，
+@code{memql}返回以它第一次在列表中出现开始的子列表。否则，它返回@code{nil}。
 
-Compare this with @code{memq}:
+将下面这个和@code{memq}相比：
 
 @example
 @group
-(memql 1.2 '(1.1 1.2 1.3))  ; @r{@code{1.2} and @code{1.2} are @code{eql}.}
+(memql 1.2 '(1.1 1.2 1.3))  ; @r{@code{1.2}和@code{1.2}用@code{eql}比较相等。}
      @result{} (1.2 1.3)
 @end group
 @group
-(memq 1.2 '(1.1 1.2 1.3))  ; @r{@code{1.2} and @code{1.2} are not @code{eq}.}
+(memq 1.2 '(1.1 1.2 1.3))  ; @r{@code{1.2}和@code{1.2}用@code{eq}比较不等。}
      @result{} nil
 @end group
 @end example
 @end defun
 
-The following three functions are like @code{memq}, @code{delq} and
-@code{remq}, but use @code{equal} rather than @code{eq} to compare
-elements.  @xref{相等判定}.
+下面这三个函数和@code{memq}、@code{delq}以及@code{remq}相似，但使用@code{equal}而不是
+@code{eq}来比较元素。@xref{相等判定}.
 
 @defun member object list
-The function @code{member} tests to see whether @var{object} is a member
-of @var{list}, comparing members with @var{object} using @code{equal}.
-If @var{object} is a member, @code{member} returns a list starting with
-its first occurrence in @var{list}.  Otherwise, it returns @code{nil}.
+函数@code{member}用@code{equal}比较@var{object}和列表元素，来测试@var{list}是否
+包含@var{object}。如果@var{object}是其成员，则返回以它第一次在列表中出现开始的子列表。
+否则返回@code{nil}。
 
-Compare this with @code{memq}:
+
+以下面与@code{memq}作比较：
 
 @example
 @group
-(member '(2) '((1) (2)))  ; @r{@code{(2)} and @code{(2)} are @code{equal}.}
+(member '(2) '((1) (2)))  ; @r{@code{(2)}和@code{(2)}用@code{equal}比较相等。}
      @result{} ((2))
 @end group
 @group
-(memq '(2) '((1) (2)))    ; @r{@code{(2)} and @code{(2)} are not @code{eq}.}
+(memq '(2) '((1) (2)))    ; @r{@code{(2)}和@code{(2)}用@code{eq}比较相等。}
      @result{} nil
 @end group
 @group
-;; @r{Two strings with the same contents are @code{equal}.}
+;; @r{两个具有相同内容的字符串用@code{equal}比较相等。}
 (member "foo" '("foo" "bar"))
      @result{} ("foo" "bar")
 @end group
