@@ -1,5 +1,6 @@
 #!/bin/sh
 
-rm ELISP.html
-makeinfo --html  --no-split -o ELISP.html elisp.texi
+rm -Rf html
+mkdir html
+makeinfo --html -o html elisp.texi
 

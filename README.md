@@ -7,6 +7,7 @@
 ========
 
 * lispref：翻译后的Texinfo源文件。
+* lispref/html/index.html：生成的中文html文档首页。
 * orig：原始Texinfo源文件，用于校对。
 * README：读我文件。
 
@@ -26,6 +27,8 @@
 更新README语法为MARKDOWN。
 * 20120204
 完成第5章lists.texi的翻译。
+* 20120623
+完成第6章lists.texi的编译。
 
 遗留问题
 =========

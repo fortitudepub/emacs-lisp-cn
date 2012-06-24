@@ -1,0 +1,111 @@
+<html lang="en">
+<head>
+<title>随机数 - GNU Emacs Lisp 参考文档</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Emacs Lisp 参考文档">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="_00e6_0095_00b0_00e5_00ad_0097.html#g_t_00e6_0095_00b0_00e5_00ad_0097" title="数字">
+<link rel="prev" href="_00e6_0095_00b0_00e5_00ad_00a6_00e5_0087_00bd_00e6_0095_00b0.html#g_t_00e6_0095_00b0_00e5_00ad_00a6_00e5_0087_00bd_00e6_0095_00b0" title="数学函数">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+这是GNU Emacs Lisp参考文档的3.0版本，对应于Emacs23.3版本。
+
+由张东亚汉化，汉化版本为0.1。
+
+更新记录：
+
+2011/06/22：启动第二章的翻译，待完成。
+
+2011/07/02：完成第二章的翻译。
+
+2011/08/07：启动第三章的翻译。
+
+2011/09/19：完成第三章的翻译。
+
+2011/11/28：启动第四章的翻译，待完成。
+
+2012/06/23：完成lists.texi的翻译。
+Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998,
+1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software
+Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with the Invariant Sections being ``GNU General Public
+     License,'' with the Front-Cover texts being ``A GNU Manual,'' and
+     with the Back-Cover Texts as in (a) below.  A copy of the license
+     is included in the section entitled ``GNU Free Documentation
+     License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have the freedom to copy
+     and modify this GNU manual.  Buying copies from the FSF supports
+     it in developing GNU and promoting software freedom.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="%e9%9a%8f%e6%9c%ba%e6%95%b0"></a>
+<a name="g_t_00e9_009a_008f_00e6_009c_00ba_00e6_0095_00b0"></a>
+<p>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="_00e6_0095_00b0_00e5_00ad_00a6_00e5_0087_00bd_00e6_0095_00b0.html#g_t_00e6_0095_00b0_00e5_00ad_00a6_00e5_0087_00bd_00e6_0095_00b0">数学函数</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="_00e6_0095_00b0_00e5_00ad_0097.html#g_t_00e6_0095_00b0_00e5_00ad_0097">数字</a>
+<hr>
+</div>
+
+<h3 class="section">3.10 随机数</h3>
+
+<p><a name="index-g_t_00e9_009a_008f_00e6_009c_00ba_00e6_0095_00b0-215"></a>
+    确定性计算机不可能产生真正的随机数。大多数情况下，<dfn>伪随机数</dfn>已经足够使用。一系列的随机数以确定
+性的方式被生成。这些数字并不真正的随机，但它们具有某些特性可以用来模拟随机序列。例如，在伪随机数序列中，
+所有可能的值以相同的频率出现。
+（译注：关于确定性计算机与不确定性计算机的说明，从网络上摘了以下文档，可供理解：
+LinkedIn上的原文：There are at present no non-deterministic computers,all our current ones are deterministic,
+although a few can "mimic" non-deterministic reasoning.There is research on quantum computing
+that should lead to a non-deterministic computer, but it is still some way from producing a
+working prototype. 
+翻译：当前并没有不确定性计算机，所有当前的计算机都是确定性的，尽管少量可“模仿”非确定性推理。而对于量子计算的研究应该
+可以导致不确性计算机的产生，但目前离可用的原型还有一定距离。
+根据最近我所看到的一篇文章，美国已经有公司在卖量子计算机了，所以也许非确定性计算机可能已经出现了）
+
+   <p>在Emacs中，伪随机数从一个&ldquo;种子&rdquo;数字生成。从一个给定的种子，<code>random</code>函数总是产生相同序列的数字。Emacs总是从同一个
+种子数值开始，所以<code>random</code>产生的序列在每次Emacs运算时实际上是相同的！例如，在一个操作系统上，对于<code>(random)</code>的调用
+总是返回&minus;1457731，而第二次调用总是返回&minus;7692030。这种重复性在调试时很有帮助。
+
+   <p>如果你想随机数不总以相同方式出现，那么执行<code>(random t)</code>。这将基于当前时间和Emacs进程<acronym>ID</acronym>编程重新选取一个
+种子。
+
+<div class="defun">
+&mdash; Function: <b>random</b><var> &amp;optional limit<a name="index-random-216"></a></var><br>
+<blockquote><p>此函数返回一个伪随机数。重新调用可产生一系列的伪随机数。
+
+        <p>如果<var>limit</var>是一个正值，则生成的随机数为非负且小于<var>limit</var>。
+
+        <p>如果<var>limit</var>是<code>t</code>，这意味着要基于当前时间和Emacs进程<acronym>ID</acronym>编程重新选取一个
+种子。
+
+     <!-- "Emacs'" is incorrect usage! -->
+        <p>在某些机器上，任何Lisp可表示的整数都可能是<code>random</code>有结果。在其他某些机器上，结果可能总不大于某个特定的最大值或小于某个特定（负数）的最小值。
+</p></blockquote></div>
+
+<!-- *-texinfo-*- -->
+<!-- This is part of the GNU Emacs Lisp Reference Manual. -->
+<!-- Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1998, 1999, 2001, -->
+<!-- 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011 -->
+<!-- Free Software Foundation, Inc. -->
+<!-- See the file elisp.texi for copying conditions. -->
+   </body></html>
+

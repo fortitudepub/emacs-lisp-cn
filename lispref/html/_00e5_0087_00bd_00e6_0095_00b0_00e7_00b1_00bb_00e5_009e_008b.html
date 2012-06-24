@@ -1,0 +1,84 @@
+<html lang="en">
+<head>
+<title>函数类型 - GNU Emacs Lisp 参考文档</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Emacs Lisp 参考文档">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="_00e7_00bc_0096_00e7_00a8_008b_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e7_00bc_0096_00e7_00a8_008b_00e7_00b1_00bb_00e5_009e_008b" title="编程类型">
+<link rel="prev" href="_00e5_0093_0088_00e5_00b8_008c_00e8_00a1_00a8_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e5_0093_0088_00e5_00b8_008c_00e8_00a1_00a8_00e7_00b1_00bb_00e5_009e_008b" title="哈希表类型">
+<link rel="next" href="_00e5_00ae_008f_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e5_00ae_008f_00e7_00b1_00bb_00e5_009e_008b" title="宏类型">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+这是GNU Emacs Lisp参考文档的3.0版本，对应于Emacs23.3版本。
+
+由张东亚汉化，汉化版本为0.1。
+
+更新记录：
+
+2011/06/22：启动第二章的翻译，待完成。
+
+2011/07/02：完成第二章的翻译。
+
+2011/08/07：启动第三章的翻译。
+
+2011/09/19：完成第三章的翻译。
+
+2011/11/28：启动第四章的翻译，待完成。
+
+2012/06/23：完成lists.texi的翻译。
+Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998,
+1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software
+Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with the Invariant Sections being ``GNU General Public
+     License,'' with the Front-Cover texts being ``A GNU Manual,'' and
+     with the Back-Cover Texts as in (a) below.  A copy of the license
+     is included in the section entitled ``GNU Free Documentation
+     License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have the freedom to copy
+     and modify this GNU manual.  Buying copies from the FSF supports
+     it in developing GNU and promoting software freedom.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="%e5%87%bd%e6%95%b0%e7%b1%bb%e5%9e%8b"></a>
+<a name="g_t_00e5_0087_00bd_00e6_0095_00b0_00e7_00b1_00bb_00e5_009e_008b"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="_00e5_00ae_008f_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e5_00ae_008f_00e7_00b1_00bb_00e5_009e_008b">宏类型</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="_00e5_0093_0088_00e5_00b8_008c_00e8_00a1_00a8_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e5_0093_0088_00e5_00b8_008c_00e8_00a1_00a8_00e7_00b1_00bb_00e5_009e_008b">哈希表类型</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="_00e7_00bc_0096_00e7_00a8_008b_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e7_00bc_0096_00e7_00a8_008b_00e7_00b1_00bb_00e5_009e_008b">编程类型</a>
+<hr>
+</div>
+
+<h4 class="subsection">2.3.13 函数类型</h4>
+
+<p>Lisp函数是可执行的做戏，就像其他语言中的函数一样。在Lisp中，不同于其他语言，函数也是Lisp对象。Lisp中未编译
+的函数是一个lambda表达式：即第一个元素的符号<code>lambda</code>的表（请参考see <a href="Lambda-Expressions.html#Lambda-Expressions">Lambda Expressions</a>.）。
+
+   <p>在大多数编程语言中，不可能存在一个没有名字的函数。在Lisp中，函数没有固有的名字。一个lambda表达式可以被当
+作函数被调用，即使它没有名字。为了强调这个概念，我们也将这个函数称作<dfn>匿名函数</dfn>（请参考see <a href="Anonymous-Functions.html#Anonymous-Functions">Anonymous Functions</a>）。
+Lisp中具有名字的函数只是函数单元具有一个有效函数的符号而已（请参考see <a href="Defining-Functions.html#Defining-Functions">Defining Functions</a>）。
+
+   <p>大多数情况下，在Lisp程序中，函数以在Lisp表达式中写下其名字地方式被调用。然而，你可以在运行时构造或获取一个函数对
+象，然而使用原子函数<code>funccall</code>有<code>apply</code>调用它。（请参考See <a href="Calling-Functions.html#Calling-Functions">Calling Functions</a>.）
+
+   </body></html>
+

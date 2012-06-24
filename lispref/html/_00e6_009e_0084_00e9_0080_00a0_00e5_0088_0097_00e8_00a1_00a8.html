@@ -1,0 +1,265 @@
+<html lang="en">
+<head>
+<title>构造列表 - GNU Emacs Lisp 参考文档</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Emacs Lisp 参考文档">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="_00e5_0088_0097_00e8_00a1_00a8.html#g_t_00e5_0088_0097_00e8_00a1_00a8" title="列表">
+<link rel="prev" href="_00e5_0088_0097_00e8_00a1_00a8_00e5_0085_0083_00e7_00b4_00a0.html#g_t_00e5_0088_0097_00e8_00a1_00a8_00e5_0085_0083_00e7_00b4_00a0" title="列表元素">
+<link rel="next" href="_00e5_0088_0097_00e8_00a1_00a8_00e5_008f_0098_00e9_0087_008f.html#g_t_00e5_0088_0097_00e8_00a1_00a8_00e5_008f_0098_00e9_0087_008f" title="列表变量">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+这是GNU Emacs Lisp参考文档的3.0版本，对应于Emacs23.3版本。
+
+由张东亚汉化，汉化版本为0.1。
+
+更新记录：
+
+2011/06/22：启动第二章的翻译，待完成。
+
+2011/07/02：完成第二章的翻译。
+
+2011/08/07：启动第三章的翻译。
+
+2011/09/19：完成第三章的翻译。
+
+2011/11/28：启动第四章的翻译，待完成。
+
+2012/06/23：完成lists.texi的翻译。
+Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998,
+1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software
+Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with the Invariant Sections being ``GNU General Public
+     License,'' with the Front-Cover texts being ``A GNU Manual,'' and
+     with the Back-Cover Texts as in (a) below.  A copy of the license
+     is included in the section entitled ``GNU Free Documentation
+     License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have the freedom to copy
+     and modify this GNU manual.  Buying copies from the FSF supports
+     it in developing GNU and promoting software freedom.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="%e6%9e%84%e9%80%a0%e5%88%97%e8%a1%a8"></a>
+<a name="g_t_00e6_009e_0084_00e9_0080_00a0_00e5_0088_0097_00e8_00a1_00a8"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="_00e5_0088_0097_00e8_00a1_00a8_00e5_008f_0098_00e9_0087_008f.html#g_t_00e5_0088_0097_00e8_00a1_00a8_00e5_008f_0098_00e9_0087_008f">列表变量</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="_00e5_0088_0097_00e8_00a1_00a8_00e5_0085_0083_00e7_00b4_00a0.html#g_t_00e5_0088_0097_00e8_00a1_00a8_00e5_0085_0083_00e7_00b4_00a0">列表元素</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="_00e5_0088_0097_00e8_00a1_00a8.html#g_t_00e5_0088_0097_00e8_00a1_00a8">列表</a>
+<hr>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h3 class="section">5.4 构造Cons cell和列表</h3>
+
+<p><a name="index-cons-cells-314"></a><a name="index-g_t_00e6_009e_0084_00e9_0080_00a0_00e5_0088_0097_00e8_00a1_00a8-315"></a>
+  列表在Lisp中居核心地位，许多函数可以用来创建列表。<code>cons</code>是创建列表的基础函数；然而有趣的是，在Emacs的源码中，<code>list</code>
+要比<code>cons</code>用得多。
+
+<div class="defun">
+&mdash; Function: <b>cons</b><var> object1 object2<a name="index-cons-316"></a></var><br>
+<blockquote><p>此函数用来创建新列表结构的最基本函数。它创建一个新的cons cell，用<var>object1</var>作<span class="sc">car</span>，而<code>object2</code>作<span class="sc">cdr</span>，之后返回
+新创建的cons cell。参数<var>object1</var>和<var>object2</var>可以是任意的cons cell，但通常<var>object2</var>是一个列表。
+
+     <pre class="example">          (cons 1 '(2))
+               &rArr; (1 2)
+          (cons 1 '())
+               &rArr; (1)
+          (cons 1 2)
+               &rArr; (1 . 2)
+</pre>
+        <p><a name="index-consing-317"></a><code>cons</code>通常用于向列表头插入一个单个元素。这称为<dfn>向列表中consing</dfn>。
+<a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>
+例如：
+
+     <pre class="example">          (setq list (cons newelt list))
+</pre>
+        <p>注意在此例中使用到的名为<code>list</code>的变量与下面描述的函数<code>list</code>之间并没有冲突；任何符号都可以即做为变量名又作为函数。
+
+        </blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>list</b><var> &amp;rest objects<a name="index-list-318"></a></var><br>
+<blockquote><p>此函数使用<var>objects</var>作为元素创建一个列表。生成的列表总是以<code>nil</code>结尾。如果没有<var>objects</var>给出，将返回空表。
+
+     <pre class="example">          (list 1 2 3 4 5)
+               &rArr; (1 2 3 4 5)
+          (list 1 2 '(3 4 5) 'foo)
+               &rArr; (1 2 (3 4 5) foo)
+          (list)
+               &rArr; nil
+</pre>
+        </blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>make-list</b><var> length object<a name="index-make_002dlist-319"></a></var><br>
+<blockquote><p>此函数创建具有<var>length</var>个元素的一个列表，它的每个元素都是<var>object</var>。请将<code>make-list</code>和<code>make-string</code>作下比较（see <a href="_00e5_0088_009b_00e5_00bb_00ba_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2.html#g_t_00e5_0088_009b_00e5_00bb_00ba_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2">创建字符串</a>）。
+
+     <pre class="example">          (make-list 3 'pigs)
+               &rArr; (pigs pigs pigs)
+          (make-list 0 'pigs)
+               &rArr; nil
+          (setq l (make-list 3 '(a b)))
+               &rArr; ((a b) (a b) (a b))
+          (eq (car l) (cadr l))
+               &rArr; t
+</pre>
+        </blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>append</b><var> &amp;rest sequences<a name="index-append-320"></a></var><br>
+<blockquote><p><a name="index-g_t_00e6_008b_00b7_00e8_00b4_009d_00e5_0088_0097_00e8_00a1_00a8-321"></a>此函数返回一个包含<var>sequences</var>中所有元素的列表。<var>sequences</var>可以是列表、容器、布尔容器或字符串，但最后一个通常是一个列表。
+所有参数除了最后一个外都将被拷贝，所以任一参数都不会被替换。（关于非拷贝方式合并两表的方式，请参考<a href="_00e9_0087_008d_00e7_00bb_0084.html#g_t_00e9_0087_008d_00e7_00bb_0084">重组</a>.一节中的<code>nconc</code>。）
+
+        <p>更通俗的来说，<code>append</code>的最后一个元素可以是任意Lisp对象。最后一个元素不被拷贝或转换；它变成新列表中的最后一个cons cell。如果最后一个参数
+本身是一个列表，那么它的元素实际上变成了结果列表中的有效元素。如果最后一个元素不是列表，则结果列表是一个点分式的列表，因为真列表表要求最终的<span class="sc">cdr</span>是<code>nil</code>，
+而它不满足这个要求。
+</p></blockquote></div>
+
+   <p>以下是一个使用<code>append</code>的例子：
+
+<pre class="example">     (setq trees '(pine oak))
+          &rArr; (pine oak)
+     (setq more-trees (append '(maple birch) trees))
+          &rArr; (maple birch pine oak)
+     
+     trees
+          &rArr; (pine oak)
+     more-trees
+          &rArr; (maple birch pine oak)
+     (eq trees (cdr (cdr more-trees)))
+          &rArr; t
+</pre>
+   <p>你可通过观察盒子图解来了解<code>append</code>如何工作。变量<code>trees</code>被设置为列表<code>(pine oak)</code>，继而
+变量<code>more-trees</code>被设置为<code>(maple birch pine oak)</code>。然而，<code>trees</code>继续指向原表：
+
+<pre class="smallexample">     more-trees                trees
+     |                           |
+     |     --- ---      --- ---   -&gt; --- ---      --- ---
+      --&gt; |   |   |--&gt; |   |   |--&gt; |   |   |--&gt; |   |   |--&gt; nil
+           --- ---      --- ---      --- ---      --- ---
+            |            |            |            |
+            |            |            |            |
+             --&gt; maple    --&gt;birch     --&gt; pine     --&gt; oak
+</pre>
+   <p>一个空序列对<code>appned</code>的返回值不起作用。因此，<code>nil</code>使得强制拷贝前一个参数。
+
+<pre class="example">     trees
+          &rArr; (pine oak)
+     (setq wood (append trees nil))
+          &rArr; (pine oak)
+     wood
+          &rArr; (pine oak)
+     (eq wood trees)
+          &rArr; nil
+</pre>
+   <p class="noindent">在函数<code>copy-sequence</code>发明前，这曾经是一种拷贝列表的常用方式。（请参考See <a href="Sequences-Arrays-Vectors.html#Sequences-Arrays-Vectors">Sequences Arrays Vectors</a>.）
+
+   <p>以下说明如何用容器和字符串做为<code>append</code>的参数：
+
+<pre class="example">     (append [a b] "cd" nil)
+          &rArr; (a b 99 100)
+</pre>
+   <p>借助于<code>apply</code>（see <a href="Calling-Functions.html#Calling-Functions">Calling Functions</a>.），我们可以补加在一个列表的列表的所有列表：
+
+<pre class="example">     (apply 'append '((a b c) nil (x y z) nil))
+          &rArr; (a b c x y z)
+</pre>
+   <p>如果未给出<var>sequences</var>，<code>append</code>函数将返回<code>nil</code>：
+
+<pre class="example">     (append)
+          &rArr; nil
+</pre>
+   <p>以下是最后一个参数不是列表的示例：
+
+<pre class="example">     (append '(x y) 'z)
+          &rArr; (x y . z)
+     (append '(x y) [z])
+          &rArr; (x y . [z])
+</pre>
+   <p class="noindent">第二个示例演示了当最后一个参数不是列表的情况，该序列的元素并未成为结果列表的元素。相反的，像其他任意非列表的参数一样，
+它成为最后的<span class="sc">cdr</span>。
+
+<div class="defun">
+&mdash; Function: <b>reverse</b><var> list<a name="index-reverse-322"></a></var><br>
+<blockquote><p>此函数创建一个与原列表元素相反的新列表。原参数<var>list</var>并<em>未</em>被替换。
+
+     <pre class="example">          (setq x '(1 2 3 4))
+               &rArr; (1 2 3 4)
+          (reverse x)
+               &rArr; (4 3 2 1)
+          x
+               &rArr; (1 2 3 4)
+</pre>
+        </blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>copy-tree</b><var> tree &amp;optional vecp<a name="index-copy_002dtree-323"></a></var><br>
+<blockquote><p>此函数返回<code>tree</code>树的拷贝。如果<var>tree</var>是一个cons cell，它用同样的<span class="sc">car</span>和<span class="sc">cdr</span>创建一个新的cons cell，
+然后用同样的方式递归地拷贝<span class="sc">car</span>和<span class="sc">cdr</span>。
+
+        <p>通常，当<var>tree</var>是非cons cell的任意对象，<code>copy-tree</code>直接返回<var>tree</var>。然而，如果<var>vecp</var>非空，它也拷贝
+容器（并递归拷贝容器的元素）。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>number-sequence</b><var> from &amp;optional to separation<a name="index-number_002dsequence-324"></a></var><br>
+<blockquote><p>此函数返回以<var>from</var>起始并以<var>separation</var>步长增加的一个列表，并在<var>to</var>或恰好在<var>to</var>之前终结。<var>separation</var>
+可以是正数或负数，默认是1。如果<var>to</var>是<code>nil</code>或在数值上与<var>from</var>相等，结果列表是单元素的列表<code>(</code><var>from</var><code>)</code>。
+如果<var>to</var>小于<var>from</var>并且<var>separation</var>是正数，或大于<var>from</var>并且<var>separation</var>是负数，则结果是<code>nil</code>，
+这是因为这些参数指明了一个空序列。
+
+        <p>如果<var>separation</var>是0并且<var>to</var>即不是<code>nil</code>或在数值上与<var>from</var>相等，<code>number-sequence</code>将产生一个错误，
+因为这些参数指明了一个无限的序列。
+
+        <p>所有参数即可以是整数，也可以是浮点数。然后，浮点数将会很棘手，因为浮点算数不是精确的。例如，依赖于机器实现，<code>(number-sequence 0.4 0.6 0.2)</code>
+很可能返回具有一个元素的列表<code>(0.4)</code>，而<code>(number-sequence 0.4 0.8 0.2)</code>返回一个具有三个元素的列表。列表的第<var>n</var>个元素用精确的工式
+<code>(+ </code><var>from</var><code> (* </code><var>n</var> <var>separation</var><code>))</code>计算。因此，如果你想确保<var>to</var>在列表中被包含，你可以传递一个像这样精确的表达式做为参数
+<var>to</var>。或者，你可以用一个稍大的值替换<var>to</var>（或在<var>separation</var>是负值的情况下用稍小的负值替换）。
+
+        <p>一些例子:
+
+     <pre class="example">          (number-sequence 4 9)
+               &rArr; (4 5 6 7 8 9)
+          (number-sequence 9 4 -1)
+               &rArr; (9 8 7 6 5 4)
+          (number-sequence 9 4 -2)
+               &rArr; (9 7 5)
+          (number-sequence 8)
+               &rArr; (8)
+          (number-sequence 8 5)
+               &rArr; nil
+          (number-sequence 5 8 -1)
+               &rArr; nil
+          (number-sequence 1.5 6 2)
+               &rArr; (1.5 3.5 5.5)
+</pre>
+        </blockquote></div>
+
+   <div class="footnote">
+<hr>
+<h4>脚注</h4><p class="footnote"><small>[<a name="fn-1" href="#fnd-1">1</a>]</small> 没有严格相等地向列表尾插入元素的方法。你可以使用<code>(append </code><var>listname</var><code> (list </code><var>newelt</var><code>))</code>，它通过拷贝<var>listname</var>创建一个新的列表，并将<var>newelt</var>插入其尾部。或者你可以使用<code>(nconc </code><var>listname</var><code> (list </code><var>newelt</var><code>))</code>，它通过跟踪<var>listname</var>的所有<span class="sc">cdr</span>，并替换终结的<code>nil</code>。请比较使用<code>cons</code>向列表头插入元素，它即不拷贝，也不修改列表。</p>
+
+   <hr></div>
+
+   </body></html>
+

@@ -6,7 +6,7 @@
 @c   Free Software Foundation, Inc.
 @c See the file elisp.texi for copying conditions.
 @setfilename ../../info/strings
-@node 字符串与字符, Lists, 数字, Top
+@node 字符串与字符, 列表, 数字, Top
 @comment  node-name,  next,  previous,  up
 @chapter 字符串与字符
 @cindex 字符串
@@ -95,7 +95,7 @@ Representations}）。在大多数Lisp编程过程中，你不需要关注这两
      @result{} ""
 @end example
 
-  与之相比的函数包括@code{make-vector}（请参考@pxref{Vectors}）以及@code{make-list}（请参考@pxref{Building Lists}）。
+  与之相比的函数包括@code{make-vector}（请参考@pxref{Vectors}）以及@code{make-list}（请参考@pxref{构造列表}）。
 @end defun
 
 @defun string &rest characters
@@ -206,7 +206,7 @@ Representations}）。在大多数Lisp编程过程中，你不需要关注这两
 此函数永远返回与任何即有字符串@code{eq}的新字符串（译注：@code{eq}表示两个待比参数是同一Lisp对象），除非结果是一个
 空字符串（为了节省空间，Emacs只创建一个空的多字节字符串）。
 
-关于其他连接函数的信息，请参考@ref{Mapping Functions}一节中的@code{mapconcat}及@ref{Building Lists}一节
+关于其他连接函数的信息，请参考@ref{Mapping Functions}一节中的@code{mapconcat}及@ref{构造列表}一节
 中@code{vconcat}的介绍。关于将独立的命令行参数连接成一个供shell命令使用的字符串，请参考@ref{Shell Arguments,
 combine-and-quote-strings}。
 @end defun
@@ -433,7 +433,7 @@ conversion to multibyte are always regarded as equal.  有些不太理解，感�
 符号在测试前被转换为字符串。如果@var{case-fold}是非@code{nil}，它将忽略大小写差异。不像@code{assoc}，此函数
 还比较属性列表中那些是字符串或符号的元素，而非cons。特别地，@var{alist}可以是一个由字符串和符号构成的列表，而非
 一个真正的属性列表。
-@xref{Association Lists}.
+@xref{关联列表}.
 @end defun
 
   请一并参考@ref{Comparing Text}中的@code{compare-buffer-substrings}函数，该函数用于比较缓冲区中的文本。
@@ -525,7 +525,7 @@ Lisp对象的的字符串表示``转换''为对象。函数@code{string-make-mul
 此函数将一个字符串转换为一个容器。@xref{Vector Functions}.。
 
 @item append
-此函数将一个字符串转换为一个列表。@xref{Building Lists}.。
+此函数将一个字符串转换为一个列表。@xref{构造列表}.。
 （译注：当只向append传递一个字符串参数时，你将不会得到一个列表，而仍得到该字符串，关于这个现象，在Emacs IRC上
 得到pjb的指点，原因如下：
 append builds a list, and the tail of that list is its last argument. If the last argument is not a list, 

@@ -10,7 +10,7 @@
 @cindex lookup tables
 
   A hash table is a very fast kind of lookup table, somewhat like an
-alist (@pxref{Association Lists}) in that it maps keys to
+alist (@pxref{关联列表}) in that it maps keys to
 corresponding values.  It differs from an alist in these ways:
 
 @itemize @bullet

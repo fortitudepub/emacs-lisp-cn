@@ -1,0 +1,105 @@
+<html lang="en">
+<head>
+<title>缓冲区类型 - GNU Emacs Lisp 参考文档</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Emacs Lisp 参考文档">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="_00e7_00bc_0096_00e8_00be_0091_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e7_00bc_0096_00e8_00be_0091_00e7_00b1_00bb_00e5_009e_008b" title="编辑类型">
+<link rel="next" href="_00e6_00a0_0087_00e8_00ae_00b0_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e6_00a0_0087_00e8_00ae_00b0_00e7_00b1_00bb_00e5_009e_008b" title="标记类型">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+这是GNU Emacs Lisp参考文档的3.0版本，对应于Emacs23.3版本。
+
+由张东亚汉化，汉化版本为0.1。
+
+更新记录：
+
+2011/06/22：启动第二章的翻译，待完成。
+
+2011/07/02：完成第二章的翻译。
+
+2011/08/07：启动第三章的翻译。
+
+2011/09/19：完成第三章的翻译。
+
+2011/11/28：启动第四章的翻译，待完成。
+
+2012/06/23：完成lists.texi的翻译。
+Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998,
+1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software
+Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with the Invariant Sections being ``GNU General Public
+     License,'' with the Front-Cover texts being ``A GNU Manual,'' and
+     with the Back-Cover Texts as in (a) below.  A copy of the license
+     is included in the section entitled ``GNU Free Documentation
+     License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have the freedom to copy
+     and modify this GNU manual.  Buying copies from the FSF supports
+     it in developing GNU and promoting software freedom.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="%e7%bc%93%e5%86%b2%e5%8c%ba%e7%b1%bb%e5%9e%8b"></a>
+<a name="g_t_00e7_00bc_0093_00e5_0086_00b2_00e5_008c_00ba_00e7_00b1_00bb_00e5_009e_008b"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="_00e6_00a0_0087_00e8_00ae_00b0_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e6_00a0_0087_00e8_00ae_00b0_00e7_00b1_00bb_00e5_009e_008b">标记类型</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="_00e7_00bc_0096_00e8_00be_0091_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e7_00bc_0096_00e8_00be_0091_00e7_00b1_00bb_00e5_009e_008b">编辑类型</a>
+<hr>
+</div>
+
+<h4 class="subsection">2.4.1 缓冲区类型</h4>
+
+<p><dfn>缓冲区</dfn>是一个持有可编辑文本的对象（请参考（see <a href="Buffers.html#Buffers">Buffers</a>）。大多数缓冲区持有硬盘文件的内容，以便它们可以被编辑，
+但某些缓冲区用于其他目的。大多数缓冲区也意味着用户可见，因此某些时候显示在一个窗口里（see <a href="Windows.html#Windows">Windows</a>.）。 但缓冲并非必需显示
+在任何窗口里。每个缓冲区具有一个分配的位置，称作<dfn>点</dfn>（请参考see <a href="Positions.html#Positions">Positions</a>）；大多数编辑命令在操作当前缓冲区点周围的
+内容。无论何时，只有一个缓冲区是<dfn>当前缓冲区</dfn>。
+
+   <p>缓冲区的内容和字符串很像，但缓冲区的操作并不像Emacs Lisp中操作字符串一样，它可用的操作是不同的。例如，你可以高效地向既有
+的缓冲中插入文本，替换缓冲区内容，而&ldquo;插入&rdquo;文本到字符串则需要连结子字符串，而结果是一个全新的字符串对象。
+
+   <p>许多标准Emacs函数操作或测试当前缓冲区的字符；本文档专门有整个章节来描述这些函数（请参考see <a href="Text.html#Text">Text</a>）。
+
+   <p>每个缓冲区都关联了一些其他数据结构：
+
+     <ul>
+<li>一个局部语法表(see <a href="Syntax-Tables.html#Syntax-Tables">Syntax Tables</a>)；
+
+     <li>一个局部按键射(see <a href="Keymaps.html#Keymaps">Keymaps</a>)；和
+
+     <li>一个缓冲区局部范围的变量绑定表(see <a href="Buffer_002dLocal-Variables.html#Buffer_002dLocal-Variables">Buffer-Local Variables</a>)。
+
+     <li>覆盖(see <a href="Overlays.html#Overlays">Overlays</a>).
+
+     <li>缓冲区文本的文本属性(see <a href="Text-Properties.html#Text-Properties">Text Properties</a>)。
+</ul>
+
+<p class="noindent">局部按键映射和变量表包含用于独立改写全局绑定或值的表项。它们用于定制程序在不同缓冲中的形为，而不影响该程序。
+
+   <p>缓冲区可以是<dfn>间接的</dfn>，意味着它可以与另一个缓冲共享文本，但用不同的方式呈现。（请参考See <a href="Indirect-Buffers.html#Indirect-Buffers">Indirect Buffers</a>.）
+
+   <p>缓冲区没有读取语法。它们用哈希记法打印，显示缓冲区名。
+
+<pre class="example">     (current-buffer)
+          &rArr; #&lt;buffer objects.texi&gt;
+</pre>
+   </body></html>
+

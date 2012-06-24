@@ -1,0 +1,98 @@
+<html lang="en">
+<head>
+<title>修改字符串 - GNU Emacs Lisp 参考文档</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Emacs Lisp 参考文档">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e4_00b8_008e_00e5_00ad_0097_00e7_00ac_00a6.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e4_00b8_008e_00e5_00ad_0097_00e7_00ac_00a6" title="字符串与字符">
+<link rel="prev" href="_00e5_0088_009b_00e5_00bb_00ba_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2.html#g_t_00e5_0088_009b_00e5_00bb_00ba_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2" title="创建字符串">
+<link rel="next" href="_00e6_0096_0087_00e6_009c_00ac_00e6_00af_0094_00e8_00be_0083.html#g_t_00e6_0096_0087_00e6_009c_00ac_00e6_00af_0094_00e8_00be_0083" title="文本比较">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+这是GNU Emacs Lisp参考文档的3.0版本，对应于Emacs23.3版本。
+
+由张东亚汉化，汉化版本为0.1。
+
+更新记录：
+
+2011/06/22：启动第二章的翻译，待完成。
+
+2011/07/02：完成第二章的翻译。
+
+2011/08/07：启动第三章的翻译。
+
+2011/09/19：完成第三章的翻译。
+
+2011/11/28：启动第四章的翻译，待完成。
+
+2012/06/23：完成lists.texi的翻译。
+Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998,
+1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software
+Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with the Invariant Sections being ``GNU General Public
+     License,'' with the Front-Cover texts being ``A GNU Manual,'' and
+     with the Back-Cover Texts as in (a) below.  A copy of the license
+     is included in the section entitled ``GNU Free Documentation
+     License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have the freedom to copy
+     and modify this GNU manual.  Buying copies from the FSF supports
+     it in developing GNU and promoting software freedom.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="%e4%bf%ae%e6%94%b9%e5%ad%97%e7%ac%a6%e4%b8%b2"></a>
+<a name="g_t_00e4_00bf_00ae_00e6_0094_00b9_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="_00e6_0096_0087_00e6_009c_00ac_00e6_00af_0094_00e8_00be_0083.html#g_t_00e6_0096_0087_00e6_009c_00ac_00e6_00af_0094_00e8_00be_0083">文本比较</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="_00e5_0088_009b_00e5_00bb_00ba_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2.html#g_t_00e5_0088_009b_00e5_00bb_00ba_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2">创建字符串</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e4_00b8_008e_00e5_00ad_0097_00e7_00ac_00a6.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e4_00b8_008e_00e5_00ad_0097_00e7_00ac_00a6">字符串与字符</a>
+<hr>
+</div>
+
+<h3 class="section">4.4 修改字符串</h3>
+
+<p>替换即有字符串内容的基本方式就是使用<code>aset</code>（请参考see <a href="Array-Functions.html#Array-Functions">Array Functions</a>）。<code>(aset </code><var>string</var>
+<var>index</var> <var>char</var><code>)</code>将<var>char</var>存入<var>string</var><var>idx</var>索引的位置上。每一个字符占用一个或多个字节，并且
+如果<var>char</var>需要与该索引上即有字符不同的字节数时，<code>aset</code>产生一个错误。
+
+   <p>更强大的一个函数是<code>store-substring</code>：
+
+<div class="defun">
+&mdash; Function: <b>store-substring</b><var> string idx obj<a name="index-store_002dsubstring-233"></a></var><br>
+<blockquote><p>此函数用<var>obj</var>替换字符串<var>string</var>中以<var>idx</var>起始的部分内容。<var>obj</var>既可以是字符，也可以是一个（小的）字符串。
+
+        <p>由于即有字符串的长度不能更改，因而在<var>obj</var>不在<var>string</var>的实际长度内时，或者在任何一个新字符要求比原字符串中对应字符
+更多的字节时，将产生一个错误。
+</p></blockquote></div>
+
+   <p>为清除一个包含密码的字符串时，使用
+<code>clear-string</code>:
+
+<div class="defun">
+&mdash; Function: <b>clear-string</b><var> string<a name="index-clear_002dstring-234"></a></var><br>
+<blockquote><p>此函数将使得<var>string</var>成为单字节字符串，并清空其每个字符为0，它还有可能改变<var>string</var>的长度。（译注：理论上说字符串
+长度不可更改，但从理论上说，这里的改动是合法的，因为如原字符串是单字节的，则转换出的单字节等长，而如原字符串是多字节的，转换
+成稍小的单字节字符串也不会有什么问题。）
+</p></blockquote></div>
+
+   </body></html>
+

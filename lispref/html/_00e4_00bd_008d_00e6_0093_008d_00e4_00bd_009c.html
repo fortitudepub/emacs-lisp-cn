@@ -1,0 +1,271 @@
+<html lang="en">
+<head>
+<title>位操作 - GNU Emacs Lisp 参考文档</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Emacs Lisp 参考文档">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="_00e6_0095_00b0_00e5_00ad_0097.html#g_t_00e6_0095_00b0_00e5_00ad_0097" title="数字">
+<link rel="prev" href="_00e8_0088_008d_00e5_0085_00a5_00e6_0093_008d_00e4_00bd_009c.html#g_t_00e8_0088_008d_00e5_0085_00a5_00e6_0093_008d_00e4_00bd_009c" title="舍入操作">
+<link rel="next" href="_00e6_0095_00b0_00e5_00ad_00a6_00e5_0087_00bd_00e6_0095_00b0.html#g_t_00e6_0095_00b0_00e5_00ad_00a6_00e5_0087_00bd_00e6_0095_00b0" title="数学函数">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+这是GNU Emacs Lisp参考文档的3.0版本，对应于Emacs23.3版本。
+
+由张东亚汉化，汉化版本为0.1。
+
+更新记录：
+
+2011/06/22：启动第二章的翻译，待完成。
+
+2011/07/02：完成第二章的翻译。
+
+2011/08/07：启动第三章的翻译。
+
+2011/09/19：完成第三章的翻译。
+
+2011/11/28：启动第四章的翻译，待完成。
+
+2012/06/23：完成lists.texi的翻译。
+Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998,
+1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software
+Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with the Invariant Sections being ``GNU General Public
+     License,'' with the Front-Cover texts being ``A GNU Manual,'' and
+     with the Back-Cover Texts as in (a) below.  A copy of the license
+     is included in the section entitled ``GNU Free Documentation
+     License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have the freedom to copy
+     and modify this GNU manual.  Buying copies from the FSF supports
+     it in developing GNU and promoting software freedom.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="%e4%bd%8d%e6%93%8d%e4%bd%9c"></a>
+<a name="g_t_00e4_00bd_008d_00e6_0093_008d_00e4_00bd_009c"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="_00e6_0095_00b0_00e5_00ad_00a6_00e5_0087_00bd_00e6_0095_00b0.html#g_t_00e6_0095_00b0_00e5_00ad_00a6_00e5_0087_00bd_00e6_0095_00b0">数学函数</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="_00e8_0088_008d_00e5_0085_00a5_00e6_0093_008d_00e4_00bd_009c.html#g_t_00e8_0088_008d_00e5_0085_00a5_00e6_0093_008d_00e4_00bd_009c">舍入操作</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="_00e6_0095_00b0_00e5_00ad_0097.html#g_t_00e6_0095_00b0_00e5_00ad_0097">数字</a>
+<hr>
+</div>
+
+<h3 class="section">3.8 整数位操作</h3>
+
+<p><a name="index-g_t_00e7_00ae_0097_00e6_009c_00af_00e4_00bd_008d_00e6_0093_008d_00e4_00bd_009c-191"></a><a name="index-g_t_00e9_0080_00bb_00e8_00be_0091_00e4_00bd_008d_00e6_0093_008d_00e4_00bd_009c-192"></a>
+    在计算机中，整数被表示成一个二进制数，即一个由<dfn>位</dfn>（数字或是0,或是1）组成的序列。
+位操作作用于这种序列的单个位。例如，<dfn>移位</dfn>将整个序列向左或向右移动一个或多个位置，呈现
+出整个序列被移动的情形。
+
+   <p>Emacs Lisp中的位操作只应用于整数。
+
+<div class="defun">
+&mdash; Function: <b>lsh</b><var> integer1 count<a name="index-lsh-193"></a></var><br>
+<blockquote><p><a name="index-g_t_00e9_0080_00bb_00e8_00be_0091_00e7_00a7_00bb_00e4_00bd_008d-194"></a><code>lsh</code>，其是<dfn>逻辑移位</dfn>的一个简称，它将<var>integer1</var>中的位向左侧移动<var>count</var>个位置，
+或在<var>count</var>是负数的情况下向右移动<var>count</var>（译注：需要对<var>count</var>求绝对值）个位置，对于
+腾出的空位，则用0填充。如果<var>count</var>是负值，<code>lsh</code>将向左侧有效位上移入0，使得<var>integer1</var>
+是负值的情况下产生正值。对比于下面的<code>ash</code>，
+
+        <p>以下是<code>lsh</code>的两个例子，将一系列的位向左移。我们将只显示二进制式样的低8位，其余全是0。
+
+     <pre class="example">          (lsh 5 1)
+               &rArr; 10
+          ;; <span class="roman">十进制的5变成了10。</span>
+          00000101 &rArr; 00001010
+          
+          (lsh 7 1)
+               &rArr; 14
+          ;; <span class="roman">十进制的7变成了14。</span>
+          00000111 &rArr; 00001110
+</pre>
+        <p class="noindent">像上面的例子所演示的那样，对于位的偏移将生产一个是原来数字2倍的数字。
+
+        <p>向左侧移2位产生的结果如下（以8位二进制数为例）：
+
+     <pre class="example">          (lsh 3 2)
+               &rArr; 12
+          ;; <span class="roman">十进制的3变成了12。</span>
+          00000011 &rArr; 00001100
+</pre>
+        <p>另一方面，向右移位如下：
+
+     <pre class="example">          (lsh 6 -1)
+               &rArr; 3
+          ;; <span class="roman">十进制的6变成了3。</span>
+          00000110 &rArr; 00000011
+          
+          (lsh 5 -1)
+               &rArr; 2
+          ;; <span class="roman">十进制的5变成了2.</span>
+          00000101 &rArr; 00000010
+</pre>
+        <p class="noindent">像上面的例子演示的那样，向右移1位等于将正整数除以2，并向下做舍入。
+
+        <p>函数<code>lsn</code>，像其他的Emacs Lisp算术操作函数那样，并不检查溢出，所以向左移位将丢失符号位并改变数字的
+符号。例如，在30-bit机器上将536,870,911向左移将产生&minus;2。
+
+     <pre class="example">          (lsh 536870911 1)          ; <span class="roman">左移1位</span>
+               &rArr; -2
+</pre>
+        <p>在二进制上，用30位的实现，参数的样子如下：
+
+     <pre class="example">          ;; <span class="roman">十进制536,870,911</span>
+          01 1111  1111 1111  1111 1111  1111 1111
+</pre>
+        <p class="noindent">向左移时将变成下面这样：
+
+     <pre class="example">          ;; <span class="roman">Decimal &minus;2</span>
+          11 1111  1111 1111  1111 1111  1111 1110
+</pre>
+        </blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>ash</b><var> integer1 count<a name="index-ash-195"></a></var><br>
+<blockquote><p><a name="index-g_t_00e7_00ae_0097_00e6_009c_00af_00e7_00a7_00bb_00e4_00bd_008d-196"></a><code>ash</code>（<dfn>算术移位</dfn>）将<var>integer1</var>中的位向左移<var>count</var>个位置，在<var>count</var>是负值的情况下
+向右移<var>count</var>（译注：需要对<var>count</var>求绝对值）个位置。
+
+        <p>除了<var>integer1</var>和<var>count</var>都是负数时，<code>ash</code>与<code>lsh</code>产生相同的结果。在两个参数都是负数的情况下，
+<code>ash</code>在左侧空位上填充1,而<code>lsh</code>则填充0。
+
+        <p>因此，对于<code>ash</code>，向右移1位如下：
+
+     <pre class="example">          (ash -6 -1) &rArr; -3
+          ;; <span class="roman">十进制的&minus;6变成了十进制的&minus;3。</span>
+          11 1111  1111 1111  1111 1111  1111 1010
+               &rArr;
+          11 1111  1111 1111  1111 1111  1111 1101
+</pre>
+        <p>相比之下，向右移1位如下：
+
+     <pre class="example">          (lsh -6 -1) &rArr; 536870909
+          ;; <span class="roman">十进制的&minus;6变成了536807909</span>
+          11 1111  1111 1111  1111 1111  1111 1010
+               &rArr;
+          01 1111  1111 1111  1111 1111  1111 1101
+</pre>
+        <p>以下是其他例子：
+
+     <!-- !!! Check if lined up in smallbook format!  XDVI shows problem -->
+     <!-- with smallbook but not with regular book! -rjc 16mar92 -->
+     <pre class="smallexample">                             ;  <span class="roman">             30位的二进制数</span>
+          
+          (lsh 5 2)          ;   5  =  <span class="roman">00 0000  0000 0000  0000 0000  0000 0101</span>
+               &rArr; 20         ;      =  <span class="roman">00 0000  0000 0000  0000 0000  0001 0100</span>
+          (ash 5 2)
+               &rArr; 20
+          (lsh -5 2)         ;  -5  =  <span class="roman">11 1111  1111 1111  1111 1111  1111 1011</span>
+               &rArr; -20        ;      =  <span class="roman">11 1111  1111 1111  1111 1111  1110 1100</span>
+          (ash -5 2)
+               &rArr; -20
+          (lsh 5 -2)         ;   5  =  <span class="roman">00 0000  0000 0000  0000 0000  0000 0101</span>
+               &rArr; 1          ;      =  <span class="roman">00 0000  0000 0000  0000 0000  0000 0001</span>
+          (ash 5 -2)
+               &rArr; 1
+          (lsh -5 -2)        ;  -5  =  <span class="roman">11 1111  1111 1111  1111 1111  1111 1011</span>
+               &rArr; 268435454  ;      =  <span class="roman">00 0111  1111 1111  1111 1111  1111 1110</span>
+          (ash -5 -2)        ;  -5  =  <span class="roman">11 1111  1111 1111  1111 1111  1111 1011</span>
+               &rArr; -2         ;      =  <span class="roman">11 1111  1111 1111  1111 1111  1111 1110</span>
+</pre>
+        </blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>logand</b><var> &amp;rest ints-or-markers<a name="index-logand-197"></a></var><br>
+<blockquote><p>此函数返回参数&ldquo;逻辑与&rdquo;的结果：第<var>n</var>位当且仅当所有参数的第<var>n</var>位都被设置时被设置。
+（&ldquo;设置&rdquo;表示该位的值为1而不是0。）
+
+        <p>例如，对于4位的二进制数，13和12的&ldquo;逻辑与&rdquo;的结果是12：1101与1100组合成1100。在两个二进制数，最左
+侧两位都被设置（即它们都是1）,所以返回值的最左侧两位被设置。然而，对于右侧的两位，两个参数中至少有一个
+是0，因此返回值的最右侧两位都是0。
+
+     <p class="noindent">因此，
+
+     <pre class="example">          (logand 13 12)
+               &rArr; 12
+</pre>
+        <p>如果未向<code>logand</code>传递任何参数，则其返回&minus;1。此数是<code>logand</code>的一个身份元素，因为它的二进制表示是全1。
+如果仅向<code>logand</code>传递一个参数，它返回该参数。
+
+     <pre class="smallexample">                             ; <span class="roman">               30位二进制数</span>
+          
+          (logand 14 13)     ; 14  =  <span class="roman">00 0000  0000 0000  0000 0000  0000 1110</span>
+                             ; 13  =  <span class="roman">00 0000  0000 0000  0000 0000  0000 1101</span>
+               &rArr; 12         ; 12  =  <span class="roman">00 0000  0000 0000  0000 0000  0000 1100</span>
+          
+          (logand 14 13 4)   ; 14  =  <span class="roman">00 0000  0000 0000  0000 0000  0000 1110</span>
+                             ; 13  =  <span class="roman">00 0000  0000 0000  0000 0000  0000 1101</span>
+                             ;  4  =  <span class="roman">00 0000  0000 0000  0000 0000  0000 0100</span>
+               &rArr; 4          ;  4  =  <span class="roman">00 0000  0000 0000  0000 0000  0000 0100</span>
+          
+          (logand)
+               &rArr; -1         ; -1  =  <span class="roman">11 1111  1111 1111  1111 1111  1111 1111</span>
+</pre>
+        </blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>logior</b><var> &amp;rest ints-or-markers<a name="index-logior-198"></a></var><br>
+<blockquote><p>此函数返回各参数&ldquo;或&rdquo;的结果：第<var>n</var>位当且仅当至少有一个参数的第<var>n</var>位被设置。如果没有参数
+传入，结果为0，即此操作的身份元素。如果仅向<code>logior</code>传递一个参数，它返回该参数。
+p
+     <pre class="smallexample">                             ; <span class="roman">              30位二进制数</span>
+          
+          (logior 12 5)      ; 12  =  <span class="roman">00 0000  0000 0000  0000 0000  0000 1100</span>
+                             ;  5  =  <span class="roman">00 0000  0000 0000  0000 0000  0000 0101</span>
+               &rArr; 13         ; 13  =  <span class="roman">00 0000  0000 0000  0000 0000  0000 1101</span>
+          
+          (logior 12 5 7)    ; 12  =  <span class="roman">00 0000  0000 0000  0000 0000  0000 1100</span>
+                             ;  5  =  <span class="roman">00 0000  0000 0000  0000 0000  0000 0101</span>
+                             ;  7  =  <span class="roman">00 0000  0000 0000  0000 0000  0000 0111</span>
+               &rArr; 15         ; 15  =  <span class="roman">00 0000  0000 0000  0000 0000  0000 1111</span>
+</pre>
+        </blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>logxor</b><var> &amp;rest ints-or-markers<a name="index-logxor-199"></a></var><br>
+<blockquote><p>此函数返回各参数&ldquo;异或&rdquo;的结果：：第<var>n</var>位当且仅当有奇数个参数的第<var>n</var>位被设置。如果没有参数
+传入，结果为0，即此操作的身份元素。如果仅向<code>logior</code>传递一个参数，它返回该参数。
+
+     <pre class="smallexample">                             ; <span class="roman">              30位二进制数</span>
+          
+          (logxor 12 5)      ; 12  =  <span class="roman">00 0000  0000 0000  0000 0000  0000 1100</span>
+                             ;  5  =  <span class="roman">00 0000  0000 0000  0000 0000  0000 0101</span>
+               &rArr; 9          ;  9  =  <span class="roman">00 0000  0000 0000  0000 0000  0000 1001</span>
+          
+          (logxor 12 5 7)    ; 12  =  <span class="roman">00 0000  0000 0000  0000 0000  0000 1100</span>
+                             ;  5  =  <span class="roman">00 0000  0000 0000  0000 0000  0000 0101</span>
+                             ;  7  =  <span class="roman">00 0000  0000 0000  0000 0000  0000 0111</span>
+               &rArr; 14         ; 14  =  <span class="roman">00 0000  0000 0000  0000 0000  0000 1110</span>
+</pre>
+        </blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>lognot</b><var> integer<a name="index-lognot-200"></a></var><br>
+<blockquote><p>此函数返回其参数的逻辑补码：第<var>n</var>位在该参数的第<var>n</var>位是0时是1，反之是0。
+
+     <pre class="example">          (lognot 5)
+               &rArr; -6
+          ;;  5  =  <span class="roman">00 0000  0000 0000  0000 0000  0000 0101</span>
+          ;; <span class="roman">becomes</span>
+          ;; -6  =  <span class="roman">11 1111  1111 1111  1111 1111  1111 1010</span>
+</pre>
+        </blockquote></div>
+
+   </body></html>
+

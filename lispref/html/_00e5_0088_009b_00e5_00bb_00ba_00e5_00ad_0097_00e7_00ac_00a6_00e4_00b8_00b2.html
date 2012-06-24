@@ -1,0 +1,247 @@
+<html lang="en">
+<head>
+<title>创建字符串 - GNU Emacs Lisp 参考文档</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Emacs Lisp 参考文档">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e4_00b8_008e_00e5_00ad_0097_00e7_00ac_00a6.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e4_00b8_008e_00e5_00ad_0097_00e7_00ac_00a6" title="字符串与字符">
+<link rel="prev" href="_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e5_0088_00a4_00e5_00ae_009a.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e5_0088_00a4_00e5_00ae_009a" title="字符串判定">
+<link rel="next" href="_00e4_00bf_00ae_00e6_0094_00b9_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2.html#g_t_00e4_00bf_00ae_00e6_0094_00b9_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2" title="修改字符串">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+这是GNU Emacs Lisp参考文档的3.0版本，对应于Emacs23.3版本。
+
+由张东亚汉化，汉化版本为0.1。
+
+更新记录：
+
+2011/06/22：启动第二章的翻译，待完成。
+
+2011/07/02：完成第二章的翻译。
+
+2011/08/07：启动第三章的翻译。
+
+2011/09/19：完成第三章的翻译。
+
+2011/11/28：启动第四章的翻译，待完成。
+
+2012/06/23：完成lists.texi的翻译。
+Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998,
+1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software
+Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with the Invariant Sections being ``GNU General Public
+     License,'' with the Front-Cover texts being ``A GNU Manual,'' and
+     with the Back-Cover Texts as in (a) below.  A copy of the license
+     is included in the section entitled ``GNU Free Documentation
+     License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have the freedom to copy
+     and modify this GNU manual.  Buying copies from the FSF supports
+     it in developing GNU and promoting software freedom.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="%e5%88%9b%e5%bb%ba%e5%ad%97%e7%ac%a6%e4%b8%b2"></a>
+<a name="g_t_00e5_0088_009b_00e5_00bb_00ba_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="_00e4_00bf_00ae_00e6_0094_00b9_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2.html#g_t_00e4_00bf_00ae_00e6_0094_00b9_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2">修改字符串</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e5_0088_00a4_00e5_00ae_009a.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e5_0088_00a4_00e5_00ae_009a">字符串判定</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e4_00b8_008e_00e5_00ad_0097_00e7_00ac_00a6.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e4_00b8_008e_00e5_00ad_0097_00e7_00ac_00a6">字符串与字符</a>
+<hr>
+</div>
+
+<h3 class="section">4.3 创建字符串</h3>
+
+<p>下面的函数创建字符串，或直接创建，或合并字符串，或拆开字符串。
+
+<div class="defun">
+&mdash; Function: <b>make-string</b><var> count character<a name="index-make_002dstring-224"></a></var><br>
+<blockquote><p>此函数返回由<var>count</var>个重复<var>character</var>字符构成的字符串。如果<var>count</var>是负数，将会产生
+一个错误。
+
+     <pre class="example">          (make-string 5 ?x)
+               &rArr; "xxxxx"
+          (make-string 0 ?x)
+               &rArr; ""
+</pre>
+        <p>与之相比的函数包括<code>make-vector</code>（请参考see <a href="Vectors.html#Vectors">Vectors</a>）以及<code>make-list</code>（请参考see <a href="_00e6_009e_0084_00e9_0080_00a0_00e5_0088_0097_00e8_00a1_00a8.html#g_t_00e6_009e_0084_00e9_0080_00a0_00e5_0088_0097_00e8_00a1_00a8">构造列表</a>）。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>string</b><var> &amp;rest characters<a name="index-string-225"></a></var><br>
+<blockquote><p>此函数返回由<var>characters</var>（译注：Emacs Lisp中，&amp;rest后的参数将被构造成一个表）表中字符组成的字符串。
+
+     <pre class="example">          (string ?a ?b ?c)
+               &rArr; "abc"
+</pre>
+        </blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>substring</b><var> string start &amp;optional end<a name="index-substring-226"></a></var><br>
+<blockquote><p>此函数返回一个新的字符串，该字符串包含那些从<var>string</var>字符串中指定范围内提取出的字符，该范围从<var>start</var>开始，包括
+<var>start</var>对应字符，至<var>end</var>结束，但不包括<var>end</var>对应字符。第一个字符以0索引。
+
+     <pre class="example">          (substring "abcdefg" 0 3)
+               &rArr; "abc"
+</pre>
+        <p class="noindent">在上一个例子中，&lsquo;<samp><span class="samp">a</span></samp>&rsquo;的索引是0，&lsquo;<samp><span class="samp">b</span></samp>&rsquo;的索引是1，而&lsquo;<samp><span class="samp">c</span></samp>&rsquo;的索引是2。字符串中第四个字符的索引3，标识了子字符串
+拷贝的终点。因此，&lsquo;<samp><span class="samp">abc</span></samp>&rsquo;从字符串<code>"abcdefg"</code>中被拷贝出来。
+
+        <p>负数从字符串末尾开始计数，因此&minus;1标识字符串的最后一个字符（译注：-1标明子串应当结束在最后一个字符，但不包含该字符
+）。例如：
+
+     <pre class="example">          (substring "abcdefg" -3 -1)
+               &rArr; "ef"
+</pre>
+        <p class="noindent">在这个例子中，&lsquo;<samp><span class="samp">e</span></samp>&rsquo;的索引是&minus;3，而&lsquo;<samp><span class="samp">f</span></samp>&rsquo;的索引是&minus;2，而&lsquo;<samp><span class="samp">g</span></samp>&rsquo;的索引是&minus;1。因此，&lsquo;<samp><span class="samp">e</span></samp>&rsquo;
+和&lsquo;<samp><span class="samp">f</span></samp>&rsquo;被包含，而&lsquo;<samp><span class="samp">g</span></samp>&rsquo;则被排除。
+
+        <p>当<code>nil</code>被用于<var>end</var>时，它代表字符串的长度。因此：
+
+     <pre class="example">          (substring "abcdefg" -3 nil)
+               &rArr; "efg"
+</pre>
+        <p>忽略参数<var>end</var>等待同于将其指定为<code>nil</code>。因而<code>(substring </code><var>string</var><code> 0)</code>返回包含<code>string</code>所有内容
+的一个拷贝。
+
+     <pre class="example">          (substring "abcdefg" 0)
+               &rArr; "abcdefg"
+</pre>
+        <p class="noindent">但对于这个目的（译注：指复制字符串），我们推荐<code>copy-sequence</code>。（参考see <a href="Sequence-Functions.html#Sequence-Functions">Sequence Functions</a>）
+
+        <p>如果从<var>string</var>拷贝的字符具有文本属性，则该属性也将被拷贝至新的字符串中。参考See <a href="Text-Properties.html#Text-Properties">Text Properties</a>.。
+
+        <p><code>substring</code>同样也接受以容器作为其第一个参数。
+如：
+
+     <pre class="example">          (substring [a b (c) "d"] 1 3)
+               &rArr; [b (c)]
+</pre>
+        <p>当<var>start</var>不是一个整数，或<var>end</var>即不是整数也不是<code>nil</code>时，将产生一个<code>wrong-type-argument</code>错误。
+而当<var>start</var>标识一个在<var>end</var>对应字符之后的字符，或两个索引都超出了<var>string</var>的范围时，将产生一个
+<code>args-out-of-range</code>错误。
+
+        <p>对比<code>buffer-substring</code>函数（参考see <a href="Buffer-Contents.html#Buffer-Contents">Buffer Contents</a>），该函数返回包含当前缓冲区中一定范围内文本的字符串，。
+字符串以索引0开始，而缓冲则以索引1开始。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>substring-no-properties</b><var> string &amp;optional start end<a name="index-substring_002dno_002dproperties-227"></a></var><br>
+<blockquote><p>此函数与<code>substring</code>相似，但丢弃所有文本属性。同样地，<var>start</var>可以被忽略，或指定为与之等价的<code>nil</code>。
+因此<code>(substring-no-properties&nbsp;</code><var>string</var><code>)</code><!-- /@w -->返回<var>string</var>的一个拷贝，但所有文本属性被移除。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>concat</b><var> &amp;rest sequences<a name="index-concat-228"></a></var><br>
+<blockquote><p><a name="index-g_t_00e6_008b_00b7_00e8_00b4_009d_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2-229"></a><a name="index-g_t_00e8_00bf_009e_00e6_008e_00a5_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2-230"></a>此函数返回由其参数中指定的字符构成的字符串（包括它们的文本属性）。参数可以是字符串，数字列表，数字容器。它们本身不会被
+改变。如果未向<code>concat</code>传递参数，它返回一个空字符串。
+
+     <pre class="example">          (concat "abc" "-def")
+               &rArr; "abc-def"
+          (concat "abc" (list 120 121) [122])
+               &rArr; "abcxyz"
+          ;; <code>nil</code><span class="roman">是一个空序列。</span>
+          (concat "abc" nil "-def")
+               &rArr; "abc-def"
+          (concat "The " "quick brown " "fox.")
+               &rArr; "The quick brown fox."
+          (concat)
+               &rArr; ""
+</pre>
+        <p class="noindent">此函数永远返回与任何即有字符串<code>eq</code>的新字符串（译注：<code>eq</code>表示两个待比参数是同一Lisp对象），除非结果是一个
+空字符串（为了节省空间，Emacs只创建一个空的多字节字符串）。
+
+        <p>关于其他连接函数的信息，请参考<a href="Mapping-Functions.html#Mapping-Functions">Mapping Functions</a>一节中的<code>mapconcat</code>及<a href="_00e6_009e_0084_00e9_0080_00a0_00e5_0088_0097_00e8_00a1_00a8.html#g_t_00e6_009e_0084_00e9_0080_00a0_00e5_0088_0097_00e8_00a1_00a8">构造列表</a>一节
+中<code>vconcat</code>的介绍。关于将独立的命令行参数连接成一个供shell命令使用的字符串，请参考<a href="Shell-Arguments.html#Shell-Arguments">combine-and-quote-strings</a>。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>split-string</b><var> string &amp;optional separators omit-nulls<a name="index-split_002dstring-231"></a></var><br>
+<blockquote><p>此函数将字符串<var>string</var>基于正则表达式<var>separators</var>（请参考see <a href="Regular-Expressions.html#Regular-Expressions">Regular Expressions</a>）分割成子字符
+串。每一个对于<var>separators</var>的匹配定义了一个分割点；分割点间的子字符串被构造成一个列表作为返回值返回。
+
+        <p>如果<var>omit-nulls</var>是<code>nil</code>（或忽略），此函数将在存在针对<var>seperators</var>两个连接的匹配时，或者匹配
+与<var>string</var>字符串的起始或终结相邻时，返回包含空字符串的结果。如果<var>omit-nulls</var>是<code>t</code>，则空字符串将
+被忽略。
+
+        <p>如果<var>seperators</var>是<code>nil</code>（或忽略），其默认值将是<code>split-string-default-separators</code>。
+
+        <p>作为特例，当<var>separators</var>是<code>nil</code>（或忽略），空字符串将总被结果所忽略。
+
+     <pre class="example">          (split-string "  two words ")
+               &rArr; ("two" "words")
+</pre>
+        <p>其结果并非<code>("" "two" "words" "")</code>这种非常少用的形式，如果你需要这种结果，请显式指定<var>separators</var>：
+
+     <pre class="example">          (split-string "  two words "
+                        split-string-default-separators)
+               &rArr; ("" "two" "words" "")
+</pre>
+        <p>更多例子：
+
+     <pre class="example">          (split-string "Soup is good food" "o")
+               &rArr; ("S" "up is g" "" "d f" "" "d")
+          (split-string "Soup is good food" "o" t)
+               &rArr; ("S" "up is g" "d f" "d")
+          (split-string "Soup is good food" "o+")
+               &rArr; ("S" "up is g" "d f" "d")
+</pre>
+        <p>除了<code>split-string</code>不会关注在使用非空匹配（译注：注意，在下面的第一个例子中，"o*"这个正则表达式实际支持空匹配，
+因而即使到了字符串结尾，也会根据前面的规则增加一个""字符串）匹配到的字符串结尾、或<var>string</var>是空字符串时的
+空匹配结果之外，空匹配结果也需被纳入函数结果。
+
+     <pre class="example">          (split-string "aooob" "o*")
+               &rArr; ("" "a" "" "b" "")
+          (split-string "ooaboo" "o*")
+               &rArr; ("" "" "a" "b" "")
+          (split-string "" "")
+               &rArr; ("")
+</pre>
+        <p>然而，当<var>seperators</var>可以匹配空字符串时，<var>omit-nulls</var>通常为<code>t</code>，因而上面三个例子的细微差别显得
+不那么重要。
+
+     <pre class="example">          (split-string "Soup is good food" "o*" t)
+               &rArr; ("S" "u" "p" " " "i" "s" " " "g" "d" " " "f" "d")
+          (split-string "Nice doggy!" "" t)
+               &rArr; ("N" "i" "c" "e" " " "d" "o" "g" "g" "y" "!")
+          (split-string "" "" t)
+               &rArr; nil
+</pre>
+        <p>有些奇怪，但是可以预见出来，对于<var>separators</var>的某些&ldquo;非贪心&rdquo;值（如下面的例子中，"\\|o+"这个正则表达式
+，显然空字符串为&ldquo;非贪心值&rdquo;），将会产生相比非空匹配优选空匹配的行为。
+再次说明，这些值在实际应用中很少出现：
+
+     <pre class="example">          (split-string "ooo" "o*" t)
+               &rArr; nil
+          (split-string "ooo" "\\|o+" t)
+               &rArr; ("o" "o" "o")
+</pre>
+        <p>如果你需要将一个字符串分解成一个适合<code>call-process</code>或<code>start-process</code>使用的独立命令行参数，
+请参考<a href="Shell-Arguments.html#Shell-Arguments">combine-and-quote-strings</a>。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Variable: <b>split-string-default-separators</b><var><a name="index-split_002dstring_002ddefault_002dseparators-232"></a></var><br>
+<blockquote><p>针对于<code>split-string</code>的<var>separators</var>参数的默认值。它的值通常是<code>"[&nbsp;\f\t\n\r\v]+"</code><!-- /@w -->。
+</p></blockquote></div>
+
+   </body></html>
+

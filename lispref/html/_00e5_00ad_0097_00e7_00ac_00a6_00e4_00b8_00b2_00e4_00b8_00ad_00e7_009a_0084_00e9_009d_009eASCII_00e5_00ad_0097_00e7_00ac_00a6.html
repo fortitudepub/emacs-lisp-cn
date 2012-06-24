@@ -1,0 +1,94 @@
+<html lang="en">
+<head>
+<title>字符串中的非ASCII字符 - GNU Emacs Lisp 参考文档</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Emacs Lisp 参考文档">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e7_00b1_00bb_00e5_009e_008b" title="字符串类型">
+<link rel="prev" href="_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e8_00af_00ad_00e6_00b3_0095.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e8_00af_00ad_00e6_00b3_0095" title="字符串语法">
+<link rel="next" href="_00e9_009d_009e_00e6_0089_0093_00e5_008d_00b0_00e5_00ad_0097_00e7_00ac_00a6.html#g_t_00e9_009d_009e_00e6_0089_0093_00e5_008d_00b0_00e5_00ad_0097_00e7_00ac_00a6" title="非打印字符">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+这是GNU Emacs Lisp参考文档的3.0版本，对应于Emacs23.3版本。
+
+由张东亚汉化，汉化版本为0.1。
+
+更新记录：
+
+2011/06/22：启动第二章的翻译，待完成。
+
+2011/07/02：完成第二章的翻译。
+
+2011/08/07：启动第三章的翻译。
+
+2011/09/19：完成第三章的翻译。
+
+2011/11/28：启动第四章的翻译，待完成。
+
+2012/06/23：完成lists.texi的翻译。
+Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998,
+1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software
+Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with the Invariant Sections being ``GNU General Public
+     License,'' with the Front-Cover texts being ``A GNU Manual,'' and
+     with the Back-Cover Texts as in (a) below.  A copy of the license
+     is included in the section entitled ``GNU Free Documentation
+     License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have the freedom to copy
+     and modify this GNU manual.  Buying copies from the FSF supports
+     it in developing GNU and promoting software freedom.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="%e5%ad%97%e7%ac%a6%e4%b8%b2%e4%b8%ad%e7%9a%84%e9%9d%9eASCII%e5%ad%97%e7%ac%a6"></a>
+<a name="g_t_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e4_00b8_00ad_00e7_009a_0084_00e9_009d_009eASCII_00e5_00ad_0097_00e7_00ac_00a6"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="_00e9_009d_009e_00e6_0089_0093_00e5_008d_00b0_00e5_00ad_0097_00e7_00ac_00a6.html#g_t_00e9_009d_009e_00e6_0089_0093_00e5_008d_00b0_00e5_00ad_0097_00e7_00ac_00a6">非打印字符</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e8_00af_00ad_00e6_00b3_0095.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e8_00af_00ad_00e6_00b3_0095">字符串语法</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e7_00b1_00bb_00e5_009e_008b">字符串类型</a>
+<hr>
+</div>
+
+<h5 class="subsubsection">2.3.8.2 字符串中的非<acronym>ASCII</acronym>字符</h5>
+
+<p>你可以在字符串常量中逐字地写下非ASCII国际化字符。在Emacs字符串（和缓冲区中），对于非<acronym>ASCII</acronym>字符，
+有两种表示：单字节或多字符。如果字符串常量从多字节源中读取，如多字节缓冲区或多字节字符串，或一个可以以多字节方式
+访问的文件，那么字符将以多字节字符地形式被读取，进而使得字符串成为多字节的。如果字符串常量从单字节源中读取，那么
+字符将以单字节形式读取，进而使得字符串成为单字节的。
+
+   <p>对于多字节非<acronym>ASCII</acronym>字符，你还可以用其字符编码表示它：使用一个十六进制转义，&lsquo;<samp><span class="samp">\x</span><var>nnnnnnn</var></samp>&rsquo;，
+必要时可以用任意的数字。（多字节非<acronym>ASCII</acronym>字符的编码都大于256。）任意下一个字符如果其十六进制数字无效，将
+使得停止读取字符串。如果下一个字符可以被解释成十六进制数字，写一个&lsquo;<samp><span class="samp">\&nbsp;</span></samp>&rsquo;<!-- /@w -->（反斜线加上空格）来终止这个十六进制
+转义&mdash;例如，字符串中的&lsquo;<samp><span class="samp">\x8e0\&nbsp;</span></samp>&rsquo;<!-- /@w -->代表加上重音符的&lsquo;<samp><span class="samp">a</span></samp>&rsquo;。字符串中的&lsquo;<samp><span class="samp">\&nbsp;</span></samp>&rsquo;<!-- /@w -->就像转义后的换行符
+一样，它并不在字符串中产生任何字符，但它可以终止前面的十六进制转义。
+
+   <p>对于单字节非<acronym>ASCII</acronym>字符，你可以用其字符编码表示它，字符编码必须介于128(八进制的0200)至255（八进制
+的0377）。如果你在字符串中写的全部是这种字符，没有其他使得字符串强制变为多字节字符串的字符，则产生一个单字节字符串，
+然而。在字符串中使用任何十六进制转义（即使是一个<acronym>ASCII</acronym>字符的十六进制转义），也将使字符串强制成为多字符
+字符串。
+
+   <p>通过&lsquo;<samp><span class="samp">\u</span></samp>&rsquo;和&lsquo;<samp><span class="samp">\U</span></samp>&rsquo;，你还可以在字符串以字符串的Unicode数值指定字符。（请参考see <a href="_00e5_00ad_0097_00e7_00ac_00a6_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e7_00b1_00bb_00e5_009e_008b">字符类型</a>）。
+
+   <p>要了解更多关于单字节和多字节的文本表示，请参考See <a href="Text-Representations.html#Text-Representations">Text Representations</a>.一节。
+
+   </body></html>
+

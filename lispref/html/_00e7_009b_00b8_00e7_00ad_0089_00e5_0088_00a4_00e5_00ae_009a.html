@@ -1,0 +1,191 @@
+<html lang="en">
+<head>
+<title>相等判定 - GNU Emacs Lisp 参考文档</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Emacs Lisp 参考文档">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Lisp_00e6_0095_00b0_00e6_008d_00ae_00e7_00b1_00bb_00e5_009e_008b.html#Lisp_00e6_0095_00b0_00e6_008d_00ae_00e7_00b1_00bb_00e5_009e_008b" title="Lisp数据类型">
+<link rel="prev" href="_00e7_00b1_00bb_00e5_009e_008b_00e5_0088_00a4_00e5_00ae_009a.html#g_t_00e7_00b1_00bb_00e5_009e_008b_00e5_0088_00a4_00e5_00ae_009a" title="类型判定">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+这是GNU Emacs Lisp参考文档的3.0版本，对应于Emacs23.3版本。
+
+由张东亚汉化，汉化版本为0.1。
+
+更新记录：
+
+2011/06/22：启动第二章的翻译，待完成。
+
+2011/07/02：完成第二章的翻译。
+
+2011/08/07：启动第三章的翻译。
+
+2011/09/19：完成第三章的翻译。
+
+2011/11/28：启动第四章的翻译，待完成。
+
+2012/06/23：完成lists.texi的翻译。
+Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998,
+1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software
+Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with the Invariant Sections being ``GNU General Public
+     License,'' with the Front-Cover texts being ``A GNU Manual,'' and
+     with the Back-Cover Texts as in (a) below.  A copy of the license
+     is included in the section entitled ``GNU Free Documentation
+     License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have the freedom to copy
+     and modify this GNU manual.  Buying copies from the FSF supports
+     it in developing GNU and promoting software freedom.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="%e7%9b%b8%e7%ad%89%e5%88%a4%e5%ae%9a"></a>
+<a name="g_t_00e7_009b_00b8_00e7_00ad_0089_00e5_0088_00a4_00e5_00ae_009a"></a>
+<p>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="_00e7_00b1_00bb_00e5_009e_008b_00e5_0088_00a4_00e5_00ae_009a.html#g_t_00e7_00b1_00bb_00e5_009e_008b_00e5_0088_00a4_00e5_00ae_009a">类型判定</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Lisp_00e6_0095_00b0_00e6_008d_00ae_00e7_00b1_00bb_00e5_009e_008b.html#Lisp_00e6_0095_00b0_00e6_008d_00ae_00e7_00b1_00bb_00e5_009e_008b">Lisp数据类型</a>
+<hr>
+</div>
+
+<h3 class="section">2.7 相等判定</h3>
+
+<p><a name="index-g_t_00e7_009b_00b8_00e7_00ad_0089-121"></a>
+    下面我们描述用于测试两个对象相等性的函数。 其他函数测试特定类型对象的内容相等性，如字符串。对于这些判定，请参考后续描述
+相应数据类型的章节。
+
+<div class="defun">
+&mdash; Function: <b>eq</b><var> object1 object2<a name="index-eq-122"></a></var><br>
+<blockquote><p>如果<var>object1</var>与<code>object2</code>是同一个对象，此函数返回<code>t</code>，否则返回<code>nil</code>。
+
+        <p>如果<var>object1</var>与<code>object2</code>是等值的两个整，<code>eq</code> returns <code>t</code>。因为符号名通常是唯一的，
+如果两个参数是具有同名的符号，它们是<code>eq</code>的。对于其他类型（如表、容器、字符串等），仅仅内容或元素相等并不
+使得它们<code>eq</code>对方：它们仅在是同一个对象时是<code>eq</code>的，即意味着内容的修改会在另外一个上反射出来。
+
+     <pre class="example">          (eq 'foo 'foo)
+               &rArr; t
+          
+          (eq 456 456)
+               &rArr; t
+          
+          (eq "asdf" "asdf")
+               &rArr; nil
+          
+          (eq "" "")
+               &rArr; t
+          ;; <span class="roman">此特例发生的原因是Emacs Lisp</span>
+          ;; <span class="roman">为了节省空间，只产生一个多字节空字符串。</span>
+          
+          (eq '(1 (2 (3))) '(1 (2 (3))))
+               &rArr; nil
+          
+          (setq foo '(1 (2 (3))))
+               &rArr; (1 (2 (3)))
+          (eq foo foo)
+               &rArr; t
+          (eq foo '(1 (2 (3))))
+               &rArr; nil
+          
+          (eq [(1 2) 3] [(1 2) 3])
+               &rArr; nil
+          
+          (eq (point-marker) (point-marker))
+               &rArr; nil
+</pre>
+        <p><code>make-symbol</code>函数产生一个未扣留的符号，不同于你用来在Lisp表达式中写下名字的符号。具有相同名字但不同的符号是不<code>eq</code>的。
+（请参考See <a href="Creating-Symbols.html#Creating-Symbols">Creating Symbols</a>.一节）
+
+     <pre class="example">          (eq (make-symbol "foo") 'foo)
+               &rArr; nil
+</pre>
+        </blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>equal</b><var> object1 object2<a name="index-equal-123"></a></var><br>
+<blockquote><p>如果<var>object1</var>和<var>object2</var>具有相同的内容，此函数返回<code>t</code>，否则返回<code>nil</code>。<code>eq</code>测试两个参数是否是
+同一个对象，而<code>equal</code>查看两个不相等的参数对应的内容是否相同。所以，如果两个对象<code>eq</code>，那么它们也<code>equal</code>，反过来
+并不一定成立。
+
+     <pre class="example">          (equal 'foo 'foo)
+               &rArr; t
+          
+          (equal 456 456)
+               &rArr; t
+          
+          (equal "asdf" "asdf")
+               &rArr; t
+          (eq "asdf" "asdf")
+               &rArr; nil
+          
+          (equal '(1 (2 (3))) '(1 (2 (3))))
+               &rArr; t
+          (eq '(1 (2 (3))) '(1 (2 (3))))
+               &rArr; nil
+          
+          (equal [(1 2) 3] [(1 2) 3])
+               &rArr; t
+          (eq [(1 2) 3] [(1 2) 3])
+               &rArr; nil
+          
+          (equal (point-marker) (point-marker))
+               &rArr; t
+          
+          (eq (point-marker) (point-marker))
+               &rArr; nil
+</pre>
+        <p>字符串比较是区分大小写的，但并不考虑文本属性&mdash;它只比较字符串中的字符。考虑技术层面的原因，仅在具有相同的字符码序列并且
+字符码在0到127（<acronym>ASCII</acronym>）或160到255（<code>eight-bit-graphic</code>）范围内，我们可以说一个单字节字符串和多字
+节字符串是<code>equal</code>的。（请参考see <a href="Text-Representations.html#Text-Representations">Text Representations</a>）。
+
+     <pre class="example">          (equal "asdf" "ASDF")
+               &rArr; nil
+</pre>
+        <p>然而，两个不同的缓冲区永远不<code>equal</code>，即使它们的文本内容相同。
+</p></blockquote></div>
+
+   <p>相等测试是用递归实现的；如，给定两个cons cell<var>x</var>和<var>y</var>，<code>(equal </code><var>x</var> <var>y</var><code>)</code>
+仅在下面的两个表达式返回<code>t</code>时返回<code>t</code>：
+
+<pre class="example">     (equal (car <var>x</var>) (car <var>y</var>))
+     (equal (cdr <var>x</var>) (cdr <var>y</var>))
+</pre>
+   <p>由于这种递归方式，循环表因此可能导致无穷循环（导致一个错误）。
+
+<div class="defun">
+&mdash; Function: <b>equal-including-properties</b><var> object1 object2<a name="index-equal_002dincluding_002dproperties-124"></a></var><br>
+<blockquote><p>此函数在大多数情况下与<code>equal</code>相似，但要求两个字符串除相等外，它们还必须具有相同的文本属性。
+
+     <pre class="example">          (equal "asdf" (propertize "asdf" '(asdf t)))
+               &rArr; t
+          (equal-including-properties "asdf"
+                                      (propertize "asdf" '(asdf t)))
+               &rArr; nil
+</pre>
+        </blockquote></div>
+
+<!-- *-texinfo-*- -->
+<!-- This is part of the GNU Emacs Lisp Reference Manual. -->
+<!-- Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1998, 1999, 2001, -->
+<!-- 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011 -->
+<!-- Free Software Foundation, Inc. -->
+<!-- See the file elisp.texi for copying conditions. -->
+   </body></html>
+

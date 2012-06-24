@@ -1,0 +1,84 @@
+<html lang="en">
+<head>
+<title>注释 - GNU Emacs Lisp 参考文档</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Emacs Lisp 参考文档">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Lisp_00e6_0095_00b0_00e6_008d_00ae_00e7_00b1_00bb_00e5_009e_008b.html#Lisp_00e6_0095_00b0_00e6_008d_00ae_00e7_00b1_00bb_00e5_009e_008b" title="Lisp数据类型">
+<link rel="prev" href="_00e6_0089_0093_00e5_008d_00b0_00e8_00a1_00a8_00e7_00a4_00ba.html#g_t_00e6_0089_0093_00e5_008d_00b0_00e8_00a1_00a8_00e7_00a4_00ba" title="打印表示">
+<link rel="next" href="_00e7_00bc_0096_00e7_00a8_008b_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e7_00bc_0096_00e7_00a8_008b_00e7_00b1_00bb_00e5_009e_008b" title="编程类型">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+这是GNU Emacs Lisp参考文档的3.0版本，对应于Emacs23.3版本。
+
+由张东亚汉化，汉化版本为0.1。
+
+更新记录：
+
+2011/06/22：启动第二章的翻译，待完成。
+
+2011/07/02：完成第二章的翻译。
+
+2011/08/07：启动第三章的翻译。
+
+2011/09/19：完成第三章的翻译。
+
+2011/11/28：启动第四章的翻译，待完成。
+
+2012/06/23：完成lists.texi的翻译。
+Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998,
+1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software
+Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with the Invariant Sections being ``GNU General Public
+     License,'' with the Front-Cover texts being ``A GNU Manual,'' and
+     with the Back-Cover Texts as in (a) below.  A copy of the license
+     is included in the section entitled ``GNU Free Documentation
+     License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have the freedom to copy
+     and modify this GNU manual.  Buying copies from the FSF supports
+     it in developing GNU and promoting software freedom.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="%e6%b3%a8%e9%87%8a"></a>
+<a name="g_t_00e6_00b3_00a8_00e9_0087_008a"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="_00e7_00bc_0096_00e7_00a8_008b_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e7_00bc_0096_00e7_00a8_008b_00e7_00b1_00bb_00e5_009e_008b">编程类型</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="_00e6_0089_0093_00e5_008d_00b0_00e8_00a1_00a8_00e7_00a4_00ba.html#g_t_00e6_0089_0093_00e5_008d_00b0_00e8_00a1_00a8_00e7_00a4_00ba">打印表示</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Lisp_00e6_0095_00b0_00e6_008d_00ae_00e7_00b1_00bb_00e5_009e_008b.html#Lisp_00e6_0095_00b0_00e6_008d_00ae_00e7_00b1_00bb_00e5_009e_008b">Lisp数据类型</a>
+<hr>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h3 class="section">2.2 注释</h3>
+
+<p><a name="index-g_t_00e6_00b3_00a8_00e9_0087_008a-46"></a><a name="index-g_t_00e6_00b3_00a8_00e9_0087_008a_00e4_00b8_00ad_00e7_009a_0084_0040samp_007b_003b_007d-47"></a>
+    <dfn>注释</dfn>是那些在程序中为了供人阅读程序的文本，对于程序本身没有任何影响。在Lisp中，不在一个字符串或字符常量中出现的一个分号（&lsquo;<samp><span class="samp">;</span></samp>&rsquo;），表明注释开始直至行尾。Lisp读取器丢弃注释，
+它们在Lisp系统中并不成为表示程序的Lisp对象的一部分。
+
+   <p>&lsquo;<samp><span class="samp">#@</span><var>count</var></samp>&rsquo;构造器，跳过后继<var>count</var>个字符，适用于程序产生的包含二进制数据的注释。Emacs Lisp字节编译器在其输出文件中使用该构造器（参考see <a href="Byte-Compilation.html#Byte-Compilation">Byte Compilation</a>），
+但它并非为源文件所设计。
+
+   <p>想要了解格式注释的惯例，请参考See <a href="Comment-Tips.html#Comment-Tips">Comment Tips</a>.一节。
+
+   </body></html>
+

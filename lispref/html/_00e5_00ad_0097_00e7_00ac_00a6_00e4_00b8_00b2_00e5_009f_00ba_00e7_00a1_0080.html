@@ -1,0 +1,98 @@
+<html lang="en">
+<head>
+<title>字符串基础 - GNU Emacs Lisp 参考文档</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Emacs Lisp 参考文档">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e4_00b8_008e_00e5_00ad_0097_00e7_00ac_00a6.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e4_00b8_008e_00e5_00ad_0097_00e7_00ac_00a6" title="字符串与字符">
+<link rel="next" href="_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e5_0088_00a4_00e5_00ae_009a.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e5_0088_00a4_00e5_00ae_009a" title="字符串判定">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+这是GNU Emacs Lisp参考文档的3.0版本，对应于Emacs23.3版本。
+
+由张东亚汉化，汉化版本为0.1。
+
+更新记录：
+
+2011/06/22：启动第二章的翻译，待完成。
+
+2011/07/02：完成第二章的翻译。
+
+2011/08/07：启动第三章的翻译。
+
+2011/09/19：完成第三章的翻译。
+
+2011/11/28：启动第四章的翻译，待完成。
+
+2012/06/23：完成lists.texi的翻译。
+Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998,
+1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software
+Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with the Invariant Sections being ``GNU General Public
+     License,'' with the Front-Cover texts being ``A GNU Manual,'' and
+     with the Back-Cover Texts as in (a) below.  A copy of the license
+     is included in the section entitled ``GNU Free Documentation
+     License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have the freedom to copy
+     and modify this GNU manual.  Buying copies from the FSF supports
+     it in developing GNU and promoting software freedom.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="%e5%ad%97%e7%ac%a6%e4%b8%b2%e5%9f%ba%e7%a1%80"></a>
+<a name="g_t_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e5_009f_00ba_00e7_00a1_0080"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e5_0088_00a4_00e5_00ae_009a.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e5_0088_00a4_00e5_00ae_009a">字符串判定</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e4_00b8_008e_00e5_00ad_0097_00e7_00ac_00a6.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e4_00b8_008e_00e5_00ad_0097_00e7_00ac_00a6">字符串与字符</a>
+<hr>
+</div>
+
+<h3 class="section">4.1 字符串和字符基础</h3>
+
+<p>Emacs Lisp中以整数表示字符；整数是否是字符由其使用方式决定。因此，字符串实际上包含的是整数。关于Emacs中字符表示的详细内容，请
+参考See <a href="Character-Codes.html#Character-Codes">Character Codes</a>.一节。
+
+   <p>字符串（象其他任何数组一样）的长度是固定的，一旦字符串存在就不能被改变（译注：不能改变其长度）。Lisp中的字符串<em>不</em>被特殊
+的字符码终结。（相比之下，C语言中的字符串由<acronym>ASCII</acronym>码0终结。）
+
+   <p>由于字符串是数组，因而它也是序列，你可以使用通用的字符串和序列函数操作它们。（请参考See <a href="Sequences-Arrays-Vectors.html#Sequences-Arrays-Vectors">Sequences Arrays Vectors</a>.）例如，
+你可以使用<code>aref</code>和<code>aset</code>访问或改变字符串中的单个字符（请参考see <a href="Array-Functions.html#Array-Functions">Array Functions</a>）。
+
+   <p>在Emacs字符串（以及在缓冲区中）非<acronym>ASCII</acronym>字符有两种文本表示：单字节或多字节（请参考see <a href="Text-Representations.html#Text-Representations">Text Representations</a>）。在大多数Lisp编程过程中，你不需要关注这两种表示形式。
+
+   <p>有时按键序列以单字节字符串形式存储。当单字节字符串是一个按键序列时，在128至255之间的字符串元素是元字符（它们是较大的整数），而
+非在128至255之间的普通字符编码。字符串不能持有hyper、super或alt修饰符，它们可以持有<acronym>ASCII</acronym>控制字符，但不能持有其他的
+控制字符，并且它们不区分<acronym>ASCII</acronym>控制字符的大小写。如果你想在一个序列中存储这些字符（译注：指yper、super或alt修饰符），
+例如按键序列，你必须使用容器而非字符串存储它们。要了解关于键盘输入字符的更多内容，请参考See <a href="_00e5_00ad_0097_00e7_00ac_00a6_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e7_00b1_00bb_00e5_009e_008b">字符类型</a>.一节。
+
+   <p>字符串适用于在存储正则表达式。你还可以对字符串使用<code>string-match</code>匹配正则表达式（请参考see <a href="Regexp-Search.html#Regexp-Search">Regexp Search</a>）。
+函数<code>match-string</code>（请参考see <a href="Simple-Match-Data.html#Simple-Match-Data">Simple Match Data</a>）以及<code>replace-match</code>（请参考see <a href="Replacing-Match.html#Replacing-Match">Replacing Match</a>）
+适用于对用正则表达式匹配过的字符串进行分解和修改。
+
+   <p>像缓冲区一样，字符串可以持有针对于其存储字符的字符属性，就像它存储字符一样。请参考See <a href="Text-Properties.html#Text-Properties">Text Properties</a>.。所有从字符串向缓冲
+区或其他字缓串拷贝文本的Lisp原子函数同样会拷贝字符串的属性。
+
+   <p>关于显示字符串以及向缓冲区中拷贝字符串的信息，See <a href="Text.html#Text">Text</a>.一节。关于字符串以及字符的语法信息，See <a href="_00e5_00ad_0097_00e7_00ac_00a6_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e7_00b1_00bb_00e5_009e_008b">字符类型</a>.以及<a href="_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e7_00b1_00bb_00e5_009e_008b">字符串类型</a>.。
+关于文本转换函数以及字符码的编码解码函数，See <a href="Non_002dASCII-Characters.html#Non_002dASCII-Characters">Non-ASCII Characters</a>.一节。
+
+   </body></html>
+

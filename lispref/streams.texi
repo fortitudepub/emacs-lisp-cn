@@ -475,9 +475,8 @@ m
 
   Finally, we show the use of a function as an output stream.  The
 function @code{eat-output} takes each character that it is given and
-conses it onto the front of the list @code{last-output} (@pxref{Building
-Lists}).  At the end, the list contains all the characters output, but
-in reverse order.
+conses it onto the front of the list @code{last-output} (@pxref{构造列表}).  
+At the end, the list contains all the characters output, but in reverse order.
 
 @example
 @group

@@ -1,0 +1,86 @@
+<html lang="en">
+<head>
+<title>变量描述示例 - GNU Emacs Lisp 参考文档</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Emacs Lisp 参考文档">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="_00e6_008f_008f_00e8_00bf_00b0_00e4_00bf_00a1_00e6_0081_00af_00e6_00a0_00bc_00e5_00bc_008f.html#g_t_00e6_008f_008f_00e8_00bf_00b0_00e4_00bf_00a1_00e6_0081_00af_00e6_00a0_00bc_00e5_00bc_008f" title="描述信息格式">
+<link rel="prev" href="_00e5_0087_00bd_00e6_0095_00b0_00e6_008f_008f_00e8_00bf_00b0_00e7_00a4_00ba_00e4_00be_008b.html#g_t_00e5_0087_00bd_00e6_0095_00b0_00e6_008f_008f_00e8_00bf_00b0_00e7_00a4_00ba_00e4_00be_008b" title="函数描述示例">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+这是GNU Emacs Lisp参考文档的3.0版本，对应于Emacs23.3版本。
+
+由张东亚汉化，汉化版本为0.1。
+
+更新记录：
+
+2011/06/22：启动第二章的翻译，待完成。
+
+2011/07/02：完成第二章的翻译。
+
+2011/08/07：启动第三章的翻译。
+
+2011/09/19：完成第三章的翻译。
+
+2011/11/28：启动第四章的翻译，待完成。
+
+2012/06/23：完成lists.texi的翻译。
+Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998,
+1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software
+Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with the Invariant Sections being ``GNU General Public
+     License,'' with the Front-Cover texts being ``A GNU Manual,'' and
+     with the Back-Cover Texts as in (a) below.  A copy of the license
+     is included in the section entitled ``GNU Free Documentation
+     License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have the freedom to copy
+     and modify this GNU manual.  Buying copies from the FSF supports
+     it in developing GNU and promoting software freedom.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="%e5%8f%98%e9%87%8f%e6%8f%8f%e8%bf%b0%e7%a4%ba%e4%be%8b"></a>
+<a name="g_t_00e5_008f_0098_00e9_0087_008f_00e6_008f_008f_00e8_00bf_00b0_00e7_00a4_00ba_00e4_00be_008b"></a>
+<p>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="_00e5_0087_00bd_00e6_0095_00b0_00e6_008f_008f_00e8_00bf_00b0_00e7_00a4_00ba_00e4_00be_008b.html#g_t_00e5_0087_00bd_00e6_0095_00b0_00e6_008f_008f_00e8_00bf_00b0_00e7_00a4_00ba_00e4_00be_008b">函数描述示例</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="_00e6_008f_008f_00e8_00bf_00b0_00e4_00bf_00a1_00e6_0081_00af_00e6_00a0_00bc_00e5_00bc_008f.html#g_t_00e6_008f_008f_00e8_00bf_00b0_00e4_00bf_00a1_00e6_0081_00af_00e6_00a0_00bc_00e5_00bc_008f">描述信息格式</a>
+<hr>
+</div>
+
+<h5 class="subsubsection">1.3.7.2 变量描述示例</h5>
+
+<p><a name="index-g_t_00e5_008f_0098_00e9_0087_008f_00e6_008f_008f_00e8_00bf_00b0-29"></a><a name="index-g_t_00e9_0080_0089_00e9_00a1_00b9_00e6_008f_008f_00e8_00bf_00b0-30"></a>
+    <dfn>变量</dfn>指可以持有值的名字。尽管接近所有的变量都可以由用户设置，部分变量专门用来由用户改变，这些变量称为<dfn>用户选项</dfn>，常规变量和
+用户选项使用和函数相同的描述，除了没有参数列表外。
+
+   <p>下面是一个虚构的<code>electric-future-map</code>变量的描述：
+variable.
+
+<div class="defun">
+&mdash; Variable: <b>electric-future-map</b><var><a name="index-electric_002dfuture_002dmap-31"></a></var><br>
+<blockquote><p>    此变量的值是一个被Electric Command Future Mode使用的完整键盘映射，这个映射中的函数允许你编辑你还未考虑执行的命令。
+</p></blockquote></div>
+
+   <p>用户选项的描述与上面的变量描述相同，只不过`Variable'将被替换为`User Option'。
+
+   </body></html>
+

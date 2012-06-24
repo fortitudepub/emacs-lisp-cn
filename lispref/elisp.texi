@@ -52,12 +52,13 @@
 
 2011/07/02：完成第二章的翻译。
 
-2011/08/07：完成第三章的翻译。
+2011/08/07：启动第三章的翻译。
 
-2011/09/19：完成第章的翻译。
+2011/09/19：完成第三章的翻译。
 
 2011/11/28：启动第四章的翻译，待完成。
 
+2012/06/23：完成lists.texi的翻译。
 Copyright @copyright{} 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998,
 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software
 Foundation, Inc.
@@ -125,7 +126,7 @@ Cover art by Etienne Suvasa.
 * Lisp数据类型::             Emacs Lisp中的数据类型。
 * 数字::                    数值与算术运算函数。
 * 字符串与字符::             字符串，以及操作字符串的函数。
-* Lists::                   Lists, cons cells, and related functions.
+* 列表::                      列表，cons cell以及相关函数。
 * Sequences Arrays Vectors::  Lists, strings and vectors are called sequences.
                                 Certain functions act on any kind of sequence.
                                 The description of vectors is here as well.
@@ -309,9 +310,9 @@ Cons Cell和表类型
 * 数学函数::     三角运算、指数或对数运算。
 * 随机数::       生成随机数，是否伪随机数。
 
-Strings and Characters
+字符串与字符
 
-* 基础: 字符串基础.             字符串和字符的基础属性。
+* 字符串基础::                  字符串和字符的基础属性。
 * 字符串判定::                  测试对象是否是字符串或字符。
 * 创建字符串::                  用于分配字符串的函数。
 * 修改字符串::                  替换即有字符串的内容。
@@ -321,24 +322,24 @@ Strings and Characters
 * 大小写转换::                 大小写转换函数。
 * 大小写表::                   定制大小写转换。
 
-Lists
+列表
 
-* Cons Cells::              How lists are made out of cons cells.
-* List-related Predicates:: Is this object a list?  Comparing two lists.
-* List Elements::           Extracting the pieces of a list.
-* Building Lists::          Creating list structure.
-* List Variables::          Modifying lists stored in variables.
-* Modifying Lists::         Storing new pieces into an existing list.
-* Sets And Lists::          A list can represent a finite mathematical set.
-* Association Lists::       A list can represent a finite relation or mapping.
-* Rings::                   Managing a fixed-size ring of objects.
+* Cons Cells::          如何由cons cell构造列表。
+* 列表相关的判定::        这个对象是列表吗？比如两个列表。
+* 列表元素::             从列表中提取元素。
+* 构造列表::             创建列表结构。
+* 列表变量::             修改存储在变量里的列表。
+* 修改列表::             向既有列表中存储新元素。
+* 集合与列表::           列表可表示一个有限的数学集合。
+* 关联列表::             列表可表示一个有效的关系或映射。
+* 环::                  管理有个固定大小的对对象环。
 
-Modifying Existing List Structure
+修改既有的列表结构
 
-* Setcar::                  Replacing an element in a list.
-* Setcdr::                  Replacing part of the list backbone.
-                              This can be used to remove or add elements.
-* Rearrangement::           Reordering the elements in a list; combining lists.
+* Setcar::          替换列表中的一个元素。
+* Setcdr::          替换列表骨干中的一部分。
+  　　　　　　　　　　　　它可以用来移除和添加元素。
+* 重组::   重新排序列表中的元素；合并列表。
 
 Sequences, Arrays, and Vectors
 

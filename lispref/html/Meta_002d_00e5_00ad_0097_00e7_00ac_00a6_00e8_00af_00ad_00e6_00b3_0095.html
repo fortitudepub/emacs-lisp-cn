@@ -1,0 +1,87 @@
+<html lang="en">
+<head>
+<title>Meta-字符语法 - GNU Emacs Lisp 参考文档</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Emacs Lisp 参考文档">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="_00e5_00ad_0097_00e7_00ac_00a6_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e7_00b1_00bb_00e5_009e_008b" title="字符类型">
+<link rel="prev" href="Ctl_002d_00e5_00ad_0097_00e7_00ac_00a6_00e8_00af_00ad_00e6_00b3_0095.html#Ctl_002d_00e5_00ad_0097_00e7_00ac_00a6_00e8_00af_00ad_00e6_00b3_0095" title="Ctl-字符语法">
+<link rel="next" href="_00e5_0085_00b6_00e4_00bb_0096_00e5_00ad_0097_00e7_00ac_00a6_00e4_00bf_00ae_00e9_00a5_00b0_00e4_00bd_008d.html#g_t_00e5_0085_00b6_00e4_00bb_0096_00e5_00ad_0097_00e7_00ac_00a6_00e4_00bf_00ae_00e9_00a5_00b0_00e4_00bd_008d" title="其他字符修饰位">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+这是GNU Emacs Lisp参考文档的3.0版本，对应于Emacs23.3版本。
+
+由张东亚汉化，汉化版本为0.1。
+
+更新记录：
+
+2011/06/22：启动第二章的翻译，待完成。
+
+2011/07/02：完成第二章的翻译。
+
+2011/08/07：启动第三章的翻译。
+
+2011/09/19：完成第三章的翻译。
+
+2011/11/28：启动第四章的翻译，待完成。
+
+2012/06/23：完成lists.texi的翻译。
+Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998,
+1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software
+Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with the Invariant Sections being ``GNU General Public
+     License,'' with the Front-Cover texts being ``A GNU Manual,'' and
+     with the Back-Cover Texts as in (a) below.  A copy of the license
+     is included in the section entitled ``GNU Free Documentation
+     License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have the freedom to copy
+     and modify this GNU manual.  Buying copies from the FSF supports
+     it in developing GNU and promoting software freedom.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Meta-%e5%ad%97%e7%ac%a6%e8%af%ad%e6%b3%95"></a>
+<a name="Meta_002d_00e5_00ad_0097_00e7_00ac_00a6_00e8_00af_00ad_00e6_00b3_0095"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="_00e5_0085_00b6_00e4_00bb_0096_00e5_00ad_0097_00e7_00ac_00a6_00e4_00bf_00ae_00e9_00a5_00b0_00e4_00bd_008d.html#g_t_00e5_0085_00b6_00e4_00bb_0096_00e5_00ad_0097_00e7_00ac_00a6_00e4_00bf_00ae_00e9_00a5_00b0_00e4_00bd_008d">其他字符修饰位</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Ctl_002d_00e5_00ad_0097_00e7_00ac_00a6_00e8_00af_00ad_00e6_00b3_0095.html#Ctl_002d_00e5_00ad_0097_00e7_00ac_00a6_00e8_00af_00ad_00e6_00b3_0095">Ctl-字符语法</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="_00e5_00ad_0097_00e7_00ac_00a6_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e7_00b1_00bb_00e5_009e_008b">字符类型</a>
+<hr>
+</div>
+
+<h5 class="subsubsection">2.3.3.4 Meta-字符语法</h5>
+
+<p><a name="index-meta_00e5_00ad_0097_00e7_00ac_00a6-79"></a>    <dfn>meta字符</dfn>指那些用&lt;META&gt;修饰的字符，用于表示这种字符的整数，其第
+2**27
+位被设置成上。我们使用高位来表示此修饰符以及其他修饰符，以便得到更宽的基本字符码。
+
+   <p>在字符串里，当一个<acronym>ASCII</acronym>字符第
+2**7
+位被设置上时，表示它是一个meta字符，因此，可以被包含在字符串的meta字符具有128~255的范围，即普通<acronym>ASCII</acronym>字符的meta版本。
+（请参考See <a href="Strings-of-Events.html#Strings-of-Events">Strings of Events</a>.一节，以便了解字符串处理&lt;META&gt;的细节。）
+
+   <p>meta字符的读取语法是&lsquo;<samp><span class="samp">\M-</span></samp>&rsquo;。例如，&lsquo;<samp><span class="samp">?\M-A</span></samp>&rsquo;代表<kbd>M-A</kbd>，你也可以用&lsquo;<samp><span class="samp">\M-</span></samp>&rsquo;加上字符对应的十进制码，或者加上
+&lsquo;<samp><span class="samp">\C-</span></samp>&rsquo;以及其他任意字符的读取语法。因此，你可以把<kbd>M-A</kbd>写做&lsquo;<samp><span class="samp">?\M-A</span></samp>&rsquo;或者写做&lsquo;<samp><span class="samp">?\M-\101</span></samp>&rsquo;，相似地，你可以把<kbd>C-M-b</kbd>
+写做&lsquo;<samp><span class="samp">?\M-\C-b</span></samp>&rsquo;或者写作&lsquo;<samp><span class="samp">?\C-\M-b</span></samp>&rsquo;或者&lsquo;<samp><span class="samp">?\M-\002</span></samp>&rsquo;。
+
+   </body></html>
+

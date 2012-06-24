@@ -461,7 +461,7 @@ FOO                 ; @r{名为@samp{FOO}的符号, 与@samp{foo}不同。}
 @end quotation
 
     表是一系列的cons cell，依次通过@sc{cdr}链接在一起，每个cons cell的@sc{cdr}槽或者引用下一个cons cell，或者
-引用空表。对于那些操作表的函数，空表实际上是符号@code{nil}。（请参考@xref{Lists}.）因为大部分cons cell都作为表的
+引用空表。对于那些操作表的函数，空表实际上是符号@code{nil}。（请参考@xref{列表}.）因为大部分cons cell都作为表的
 一部分，因此短语@dfn{表结构}被用来指代任何由cons cell组成的结构（译注：这里隐含着半句话，即``以便用来和表做区分''）。
 
 @cindex 原子
@@ -674,7 +674,7 @@ cons cell的@sc{cdr}。例如，@code{(rose violet . buttercup)}和@code{(code .
 @noindent
 设置变量@code{alist-of-colors}为一个具有三元素的关联表。在第一个元素中，@code{rose}是关键字，而@code{red}是关联值。
 
-    要进步请了解关联表以及操作它的函数，请参考@xref{Association Lists}.一节。要了解另外一类用于处理大量具有关键字的的查找
+    要进步请了解关联表以及操作它的函数，请参考@xref{关联列表}.一节。要了解另外一类用于处理大量具有关键字的的查找
 表，请参考@xref{Hash Tables}.一节。
 
 @node 数组类型
@@ -1279,7 +1279,7 @@ Area}）。
 
 @table @code
 @item atom
-@xref{List-related Predicates, atom}.
+@xref{列表相关的判定, atom}.
 
 @item arrayp
 @xref{Array Functions, arrayp}.
@@ -1306,7 +1306,7 @@ Area}）。
 @xref{Interactive Call, commandp}.
 
 @item consp
-@xref{List-related Predicates, consp}.
+@xref{列表相关的判定, consp}.
 
 @item display-table-p
 @xref{Display Tables, display-table-p}.
@@ -1345,7 +1345,7 @@ Area}）。
 @xref{Constant Variables}.
 
 @item listp
-@xref{List-related Predicates, listp}.
+@xref{列表相关的判定, listp}.
 
 @item markerp
 @xref{Predicates on Markers, markerp}.
@@ -1354,7 +1354,7 @@ Area}）。
 @xref{数字判定, wholenump}.
 
 @item nlistp
-@xref{List-related Predicates, nlistp}.
+@xref{列表相关的判定, nlistp}.
 
 @item numberp
 @xref{数字判定, numberp}.

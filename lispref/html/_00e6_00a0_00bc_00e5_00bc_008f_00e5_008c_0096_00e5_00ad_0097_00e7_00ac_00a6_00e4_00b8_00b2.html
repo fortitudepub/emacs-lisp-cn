@@ -1,0 +1,209 @@
+<html lang="en">
+<head>
+<title>格式化字符串 - GNU Emacs Lisp 参考文档</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Emacs Lisp 参考文档">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e4_00b8_008e_00e5_00ad_0097_00e7_00ac_00a6.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e4_00b8_008e_00e5_00ad_0097_00e7_00ac_00a6" title="字符串与字符">
+<link rel="prev" href="_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e8_00bd_00ac_00e6_008d_00a2.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e8_00bd_00ac_00e6_008d_00a2" title="字符串转换">
+<link rel="next" href="_00e5_00a4_00a7_00e5_00b0_008f_00e5_0086_0099_00e8_00bd_00ac_00e6_008d_00a2.html#g_t_00e5_00a4_00a7_00e5_00b0_008f_00e5_0086_0099_00e8_00bd_00ac_00e6_008d_00a2" title="大小写转换">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+这是GNU Emacs Lisp参考文档的3.0版本，对应于Emacs23.3版本。
+
+由张东亚汉化，汉化版本为0.1。
+
+更新记录：
+
+2011/06/22：启动第二章的翻译，待完成。
+
+2011/07/02：完成第二章的翻译。
+
+2011/08/07：启动第三章的翻译。
+
+2011/09/19：完成第三章的翻译。
+
+2011/11/28：启动第四章的翻译，待完成。
+
+2012/06/23：完成lists.texi的翻译。
+Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998,
+1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software
+Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with the Invariant Sections being ``GNU General Public
+     License,'' with the Front-Cover texts being ``A GNU Manual,'' and
+     with the Back-Cover Texts as in (a) below.  A copy of the license
+     is included in the section entitled ``GNU Free Documentation
+     License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have the freedom to copy
+     and modify this GNU manual.  Buying copies from the FSF supports
+     it in developing GNU and promoting software freedom.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="%e6%a0%bc%e5%bc%8f%e5%8c%96%e5%ad%97%e7%ac%a6%e4%b8%b2"></a>
+<a name="g_t_00e6_00a0_00bc_00e5_00bc_008f_00e5_008c_0096_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="_00e5_00a4_00a7_00e5_00b0_008f_00e5_0086_0099_00e8_00bd_00ac_00e6_008d_00a2.html#g_t_00e5_00a4_00a7_00e5_00b0_008f_00e5_0086_0099_00e8_00bd_00ac_00e6_008d_00a2">大小写转换</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e8_00bd_00ac_00e6_008d_00a2.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e8_00bd_00ac_00e6_008d_00a2">字符串转换</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e4_00b8_008e_00e5_00ad_0097_00e7_00ac_00a6.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e4_00b8_008e_00e5_00ad_0097_00e7_00ac_00a6">字符串与字符</a>
+<hr>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h3 class="section">4.7 格式化字符串</h3>
+
+<p><a name="index-g_t_00e6_00a0_00bc_00e5_00bc_008f_00e5_008c_0096_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2-255"></a><a name="index-g_t_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00ef_00bc_008c_00e6_00a0_00bc_00e5_00bc_008f_00e5_008c_0096-256"></a>
+  <dfn>格式化</dfn>指通过替换常量字符串中不同地方的值从而构造新的字符串的过程。这个常量字符串控制其他值如何打印，以及它们出现的位置，
+；它被称为<dfn>格式串</dfn>。
+
+   <p>格式化通常用于计算待显示的信息。事实上，<code>message</code>和<code>erro</code>提供了和这里相同的格式化特性；它们与<code>format</code>的
+区别在于如何使用格式化结果。
+
+<div class="defun">
+&mdash; Function: <b>format</b><var> string &amp;rest objects<a name="index-format-257"></a></var><br>
+<blockquote><p>此函数拷贝<var>string</var>，并通过编码对应的<var>objects</var>替换所有的格式说明，将结果字符串返回。
+参数<var>objects</var>是计算过的用于格式化的值。
+
+        <p>字符串<var>string</var>中的字符，与格式说明不同，直接被拷贝至输出字符串中，包括它们可能存在的文本属性。
+</p></blockquote></div>
+
+   <p><a name="index-g_t_00e6_00a0_00bc_00e5_00bc_008f_00e8_00af_00b4_00e6_0098_008e_00e4_00b8_00ad_00e7_009a_0084_0040samp_007b_0025_007d-258"></a><a name="index-g_t_00e6_00a0_00bc_00e5_00bc_008f_00e8_00af_00b4_00e6_0098_008e-259"></a>  格式说明是一个由&lsquo;<samp><span class="samp">%</span></samp>&rsquo;开始的字符序列。因此，如果<var>string</var>中有一个&lsquo;<samp><span class="samp">%d</span></samp>&rsquo;，则<code>format</code>函数将用待格式的
+一个值（<var>objects</var>参数中的一个）的打印表示去替换它。
+
+   <p>例如：
+<pre class="example">     (format "The value of fill-column is %d." fill-column)
+          &rArr; "The value of fill-column is 72."
+</pre>
+   <p>由于<code>format</code>将&lsquo;<samp><span class="samp">%</span></samp>&rsquo;字符解释为格式说明，你应该<em>永远</em>不要向它的传递任意字符串作为其第一个参数。特别是
+在该字符串是由某些Lisp代码产生的情况下。除非该字符串<em>已知</em>永远不会包含任何&lsquo;<samp><span class="samp">%</span></samp>&rsquo;字符，下面描述的那样（译注：
+这里指的是如何规免向<code>format</code>传入任意字符串的方法），最好向它传递<code>"%s"</code>作为第一个参数，而字符串作为第二个参数：
+
+   <p>Since <code>format</code> interprets &lsquo;<samp><span class="samp">%</span></samp>&rsquo; characters as format
+specifications, you should <em>never</em> pass an arbitrary string as
+the first argument.  This is particularly true when the string is
+generated by some Lisp code.  Unless the string is <em>known</em> to
+never include any &lsquo;<samp><span class="samp">%</span></samp>&rsquo; characters, pass <code>"%s"</code>, described
+below, as the first argument, and the string as the second, like this:
+
+<pre class="example">       (format "%s" <var>arbitrary-string</var>)
+</pre>
+   <p>如果<var>string</var>包含超出一个格式说明，它对应于<var>objects</var>中相继的值。因此，<var>string</var>中的第一个格式说明使用
+第一个这样的值，第二个格式说明使用第二个这样的值，依次类推。任何多余的格式说明（那些没有对应值的格式说明）将导致一个错误。
+任何多余的待格式化的值将被忽略。
+
+   <p>某些格式说明要求特定类型的值。如果你提供了一个不满足需求的值，将会产生一个错误。
+
+   <p>下面是有效格式说明的表：
+
+     <dl>
+<dt>&lsquo;<samp><span class="samp">%s</span></samp>&rsquo;<dd>用对象的不带引用的打印表示（也即使用<code>princ</code>，而不是<code>prin1</code>&mdash;see <a href="Output-Functions.html#Output-Functions">Output Functions</a>）替换该规格说明。
+因此，字符串由其内容独自表示，而不带&lsquo;<samp><span class="samp">"</span></samp>&rsquo;字符，并且其中的符号以不带&lsquo;<samp><span class="samp">\</span></samp>&rsquo;字符的形式出现。（译注：这里指的应该是一些转义
+后的字符，直接以转义后的结果输出）
+
+     <p>如果对象是一个字符串，它的文本属性被拷贝至输出中。&lsquo;<samp><span class="samp">%s</span></samp>&rsquo;它本身的文本属性也被拷贝，但对象的文本属性具有较高的优先级。
+
+     <br><dt>&lsquo;<samp><span class="samp">%S</span></samp>&rsquo;<dd>用对象的带引用的打印表示（也即使用<code>prin1</code>&mdash;see <a href="Output-Functions.html#Output-Functions">Output Functions</a>）该格式说明。因此字符串将由&lsquo;<samp><span class="samp">"</span></samp>&rsquo;圈起，并且
+&lsquo;<samp><span class="samp">\</span></samp>&rsquo;在必要时出现在那些特殊字符的前面。
+
+     <br><dt>&lsquo;<samp><span class="samp">%o</span></samp>&rsquo;<dd><a name="index-g_t_00e6_0095_00b4_00e6_0095_00b0_00e8_0087_00b3_00e5_0085_00ab_00e8_00bf_009b_00e5_0088_00b6-260"></a>用整数的八进制表示替换该格式说明。
+
+     <br><dt>&lsquo;<samp><span class="samp">%d</span></samp>&rsquo;<dd>用整数的十进制表示替换该格式说明。
+
+     <br><dt>&lsquo;<samp><span class="samp">%x</span></samp>&rsquo;<dt>&lsquo;<samp><span class="samp">%X</span></samp>&rsquo;<dd><a name="index-g_t_00e6_0095_00b4_00e6_0095_00b0_00e8_0087_00b3_00e5_008d_0081_00e5_0085_00ad_00e8_00bf_009b_00e5_0088_00b6-261"></a>用整数的十六进制表示替换该格式说明。&lsquo;<samp><span class="samp">%x</span></samp>&rsquo;使用小写，而&lsquo;<samp><span class="samp">%X</span></samp>&rsquo;使用大写形式。
+
+     <br><dt>&lsquo;<samp><span class="samp">%c</span></samp>&rsquo;<dd>用数值对应的字符替换该格式说明。
+
+     <br><dt>&lsquo;<samp><span class="samp">%e</span></samp>&rsquo;<dd>用浮点数的指数形式替换该格式说明。
+
+     <br><dt>&lsquo;<samp><span class="samp">%f</span></samp>&rsquo;<dd>用浮点数的点分形式替换该格式说明。
+
+     <br><dt>&lsquo;<samp><span class="samp">%g</span></samp>&rsquo;<dd>或用浮点数指数形式，或用其点分形式替换格式说明，取决于哪个结果更短。
+
+     <br><dt>&lsquo;<samp><span class="samp">%%</span></samp>&rsquo;<dd>用单个&lsquo;<samp><span class="samp">%</span></samp>&rsquo;替换格式说明。这个格式说明不常见并用它不需要一个值。例如，<code>(format "%% %d" 30)</code>返回<code>"% 30"</code>。
+</dl>
+
+   <p>任何其他的格式字符都将产生一个&lsquo;<samp><span class="samp">Invalid format operation</span></samp>&rsquo;错误。
+
+   <p>下面是几个例子：
+
+<pre class="example">     (format "The name of this buffer is %s." (buffer-name))
+          &rArr; "The name of this buffer is strings.texi."
+     
+     (format "The buffer object prints as %s." (current-buffer))
+          &rArr; "The buffer object prints as strings.texi."
+     
+     (format "The octal value of %d is %o,
+              and the hex value is %x." 18 18 18)
+          &rArr; "The octal value of 18 is 22,
+              and the hex value is 12."
+</pre>
+   <p><a name="index-g_t_00e5_009f_009f_00e5_00ae_00bd-262"></a><a name="index-g_t_00e5_00a1_00ab_00e5_0085_0085-263"></a>  格式说明可以包含一个<dfn>宽度</dfn>，它是一个在&lsquo;<samp><span class="samp">%</span></samp>&rsquo;和说明字符之间的十进制数。如果对象的打印表示小于该宽度，
+<code>format</code>用填充扩展它。宽度指定符在&lsquo;<samp><span class="samp">%%</span></samp>&rsquo;说明时被忽略。任意由宽度指定符引入的填充通常
+由在左侧插入的空格组成。
+
+<pre class="example">     (format "%5d is padded on the left with spaces" 123)
+          &rArr; "  123 is padded on the left with spaces"
+</pre>
+   <p class="noindent">如果宽度太小，<code>format</code>并不截断对象的打印表示。因此，你可以使用宽度在列之间指定最小空格而不丢失信息。
+在下面的三个例子中，&lsquo;<samp><span class="samp">%7s</span></samp>&rsquo;指明了为7的最小宽度。在第一个例子中，在&lsquo;<samp><span class="samp">%7s</span></samp>&rsquo;中插入的字符串只有3个字符，
+需要4个空格字符作为填充。在第二个例子中，<code>"specification"</code>有13个字符宽，但并不会被截断。
+
+<pre class="example">     (format "The word `%7s' actually has %d letters in it."
+             "foo" (length "foo"))
+          &rArr; "The word `    foo' actually has 3 letters in it."
+     (format "The word `%7s' actually has %d letters in it."
+             "specification" (length "specification"))
+          &rArr; "The word `specification' actually has 13 letters in it."
+</pre>
+   <p><a name="index-flags-in-format-specifications-264"></a>  紧接着&lsquo;<samp><span class="samp">%</span></samp>&rsquo;并在可选的宽度指定符之前，，你还可以置放一些<dfn>标记字符</dfn>。
+
+   <p>标记&lsquo;<samp><span class="samp">+</span></samp>&rsquo;在正数前插入一个符号，所以它永远具有一个符号。一个作为标记的空格字符将在正数前播入一个空格。
+（否则，正数将以其第一个数字开始。）这些标志在确保正数和负数使用相同列时有用。除了&lsquo;<samp><span class="samp">%d</span></samp>&rsquo;、&lsquo;<samp><span class="samp">%e</span></samp>&rsquo;、
+&lsquo;<samp><span class="samp">%f</span></samp>&rsquo;以及&lsquo;<samp><span class="samp">%g</span></samp>&rsquo;之外，它们将被忽略，如果两个都被使用，&lsquo;<samp><span class="samp">+</span></samp>&rsquo;优先。
+
+   <p>&lsquo;<samp><span class="samp">#</span></samp>&rsquo;标记指定一个依赖于所用的格式的&ldquo;替代形式&rdquo;。对于&lsquo;<samp><span class="samp">%o</span></samp>&rsquo;，它确保结果以&lsquo;<samp><span class="samp">0</span></samp>&rsquo;开始。对于
+&lsquo;<samp><span class="samp">%x</span></samp>&rsquo;和&lsquo;<samp><span class="samp">%X</span></samp>&rsquo;，它在结果前插入&lsquo;<samp><span class="samp">0x</span></samp>&rsquo;或&lsquo;<samp><span class="samp">0X</span></samp>&rsquo;。对于&lsquo;<samp><span class="samp">%e</span></samp>&rsquo;、&lsquo;<samp><span class="samp">%f</span></samp>&rsquo;以及&lsquo;<samp><span class="samp">%g</span></samp>&rsquo;
+，&lsquo;<samp><span class="samp">#</span></samp>&rsquo;标记意味着即使精度是吗，也插入一个点分号。
+
+   <p>&lsquo;<samp><span class="samp">-</span></samp>&rsquo;标记使得， 如果宽度指定符引入填充，将其插入在右侧而非左侧。&lsquo;<samp><span class="samp">0</span></samp>&rsquo;标记确保填充由&lsquo;<samp><span class="samp">0</span></samp>&rsquo;而
+非空格构成并在左侧插入。这些用于那些它们无效的说明字符时，将被忽略：&lsquo;<samp><span class="samp">%s</span></samp>&rsquo;、&lsquo;<samp><span class="samp">%S</span></samp>&rsquo;以及&lsquo;<samp><span class="samp">%c</span></samp>&rsquo;接
+受&lsquo;<samp><span class="samp">0</span></samp>&rsquo;标记，但仍在左侧插入<em>空格</em>。如果&lsquo;<samp><span class="samp">-</span></samp>&rsquo;和&lsquo;<samp><span class="samp">0</span></samp>&rsquo;同时出现并有效，则&lsquo;<samp><span class="samp">-</span></samp>&rsquo;优先。
+（译注：从下面的例子可以看出，原文遗漏说明：对于&lsquo;<samp><span class="samp">%s</span></samp>&rsquo;、&lsquo;<samp><span class="samp">%S</span></samp>&rsquo;以及&lsquo;<samp><span class="samp">%c</span></samp>&rsquo;，&lsquo;<samp><span class="samp">-</span></samp>&rsquo;也能生效。）
+
+<pre class="example">     (format "%06d is padded on the left with zeros" 123)
+          &rArr; "000123 is padded on the left with zeros"
+     
+     (format "%-6d is padded on the right" 123)
+          &rArr; "123    is padded on the right"
+     
+     (format "The word `%-7s' actually has %d letters in it."
+             "foo" (length "foo"))
+          &rArr; "The word `foo    ' actually has 3 letters in it."
+</pre>
+   <p><a name="index-g_t_00e6_00a0_00bc_00e5_00bc_008f_00e8_00af_00b4_00e6_0098_008e_00e4_00b8_00ad_00e7_009a_0084_00e7_00b2_00be_00e5_00ba_00a6-265"></a>  所有格式说明在格式字符前（如果指定宽度，则在宽度之后）都允许一个可选的<dfn>精度</dfn>。精度是一个
+跟在&lsquo;<samp><span class="samp">.</span></samp>&rsquo;之后的数字串。对于浮点数说明（&lsquo;<samp><span class="samp">%e</span></samp>&rsquo;、&lsquo;<samp><span class="samp">%f</span></samp>&rsquo;、&lsquo;<samp><span class="samp">%g</span></samp>&rsquo;），精度指定小数点
+后有多少个十进制数字被显示（译注：原文说明不确，这里更正为小数点后有多少个十进制数字），如果是0，
+则十进点点分也被忽略。对于&lsquo;<samp><span class="samp">%s</span></samp>&rsquo;和&lsquo;<samp><span class="samp">%S</span></samp>&rsquo;，精度将字符串截断成指定宽度，因此&lsquo;<samp><span class="samp">%.3s</span></samp>&rsquo;
+只显示<var>objects</var>的文本表示的前三个字符。精度对其他格式字符无效。
+
+   </body></html>
+

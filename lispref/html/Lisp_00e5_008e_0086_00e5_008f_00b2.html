@@ -1,0 +1,88 @@
+<html lang="en">
+<head>
+<title>Lisp历史 - GNU Emacs Lisp 参考文档</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Emacs Lisp 参考文档">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="_00e4_00bb_008b_00e7_00bb_008d.html#g_t_00e4_00bb_008b_00e7_00bb_008d" title="介绍">
+<link rel="prev" href="_00e6_00b3_00a8_00e6_0084_008f_00e4_00ba_008b_00e9_00a1_00b9.html#g_t_00e6_00b3_00a8_00e6_0084_008f_00e4_00ba_008b_00e9_00a1_00b9" title="注意事项">
+<link rel="next" href="_00e6_0083_00af_00e4_00be_008b.html#g_t_00e6_0083_00af_00e4_00be_008b" title="惯例">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+这是GNU Emacs Lisp参考文档的3.0版本，对应于Emacs23.3版本。
+
+由张东亚汉化，汉化版本为0.1。
+
+更新记录：
+
+2011/06/22：启动第二章的翻译，待完成。
+
+2011/07/02：完成第二章的翻译。
+
+2011/08/07：启动第三章的翻译。
+
+2011/09/19：完成第三章的翻译。
+
+2011/11/28：启动第四章的翻译，待完成。
+
+2012/06/23：完成lists.texi的翻译。
+Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998,
+1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software
+Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with the Invariant Sections being ``GNU General Public
+     License,'' with the Front-Cover texts being ``A GNU Manual,'' and
+     with the Back-Cover Texts as in (a) below.  A copy of the license
+     is included in the section entitled ``GNU Free Documentation
+     License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have the freedom to copy
+     and modify this GNU manual.  Buying copies from the FSF supports
+     it in developing GNU and promoting software freedom.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Lisp%e5%8e%86%e5%8f%b2"></a>
+<a name="Lisp_00e5_008e_0086_00e5_008f_00b2"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="_00e6_0083_00af_00e4_00be_008b.html#g_t_00e6_0083_00af_00e4_00be_008b">惯例</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="_00e6_00b3_00a8_00e6_0084_008f_00e4_00ba_008b_00e9_00a1_00b9.html#g_t_00e6_00b3_00a8_00e6_0084_008f_00e4_00ba_008b_00e9_00a1_00b9">注意事项</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="_00e4_00bb_008b_00e7_00bb_008d.html#g_t_00e4_00bb_008b_00e7_00bb_008d">介绍</a>
+<hr>
+</div>
+
+<h3 class="section">1.2 Lisp历史</h3>
+
+<p><a name="index-Lisp_00e5_008e_0086_00e5_008f_00b2-4"></a>    Lisp（LISt Processing luanguage）于20世纪50年代在麻省理工学院（MIT）为研究人工智能而被首次开发出来。Lisp语言的强大能力使得它也
+能应用于其他目的，如编写编辑命令。
+<a name="index-Maclisp-5"></a><a name="index-Common-Lisp-6"></a>    此后的许多年里，许多不同风格的Lisp实现被开发出来，它们大多数受到了20世纪60年代在MIT的MAC项目编写的Maclisp的启发。最终这些实现者坐到
+了一起，制定了Lisp系统的标准，称作Common Lisp。同时，MIT的Gerry Sussman和Guy Steele开发了一个简单但强大的Lisp方言（译注：这里沿用目前
+翻译中通用的称法，Lisp的各种变种通常被称为方言），称作Scheme。
+
+   <p>GNU Emacs Lisp受到的大部分的启发来自于Maclisp，小部分来自于Common Lisp。如果你熟悉Common Lisp，你将注意到很多相似点，然而，由于为
+了降低GNU Emacs的内存需求，很多Common Lisp的特性被忽略或者简化；有时这些简化变动很大使得Common Lisp用户感到迷惑；我们将不时的指出GNU
+Emacs Lisp与Common Lisp不同，如果你不熟悉Common Lisp，不要紧，本文档是自包含的。
+<a name="index-cl-7"></a>    一部分Common Lisp的仿真可以通过<samp><span class="file">cl</span></samp>库来得到，请查看相应内容see <a href="../cl/index.html#Top">Overview</a>。
+
+   <p>Emacs Lisp并未受到任何来自Scheme的影响，但GNU项目也有一个称作Guile的Scheme实现，为了扩展性，我们新的GNU软件将都使用Guile开发(译注：
+从这点也说明了Lisp的强大，可以用来实现各种软件，比如有名的Reddit网站早期就使用Common Lisp写成)。
+
+   </body></html>
+

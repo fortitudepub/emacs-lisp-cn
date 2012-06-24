@@ -5,7 +5,7 @@
 @c   Free Software Foundation, Inc.
 @c See the file elisp.texi for copying conditions.
 @setfilename ../../info/sequences
-@node Sequences Arrays Vectors, Hash Tables, Lists, Top
+@node Sequences Arrays Vectors, Hash Tables, 列表, Top
 @chapter Sequences, Arrays, and Vectors
 @cindex sequence
 
@@ -82,7 +82,7 @@ signaled.  Circular lists may cause an infinite loop.  For a
 char-table, the value returned is always one more than the maximum
 Emacs character code.
 
-@xref{Definition of safe-length}, for the related function @code{safe-length}.
+@xref{safe-length的定义}, for the related function @code{safe-length}.
 
 @example
 @group
@@ -168,7 +168,7 @@ list.  However, the actual values of the properties are shared.
 This function does not work for dotted lists.  Trying to copy a
 circular list may cause an infinite loop.
 
-See also @code{append} in @ref{Building Lists}, @code{concat} in
+See also @code{append} in @ref{构造列表}, @code{concat} in
 @ref{创建字符串}, and @code{vconcat} in @ref{Vector Functions},
 for other ways to copy sequences.
 
@@ -496,7 +496,7 @@ contents of a byte-code function object.  @xref{Byte-Code Objects}.
 
 For other concatenation functions, see @code{mapconcat} in @ref{Mapping
 Functions}, @code{concat} in @ref{创建字符串}, and @code{append}
-in @ref{Building Lists}.
+in @ref{构造列表}.
 @end defun
 
   The @code{append} function also provides a way to convert a vector into a

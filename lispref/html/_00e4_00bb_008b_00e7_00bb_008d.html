@@ -1,0 +1,93 @@
+<html lang="en">
+<head>
+<title>介绍 - GNU Emacs Lisp 参考文档</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Emacs Lisp 参考文档">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="prev" href="index.html#Top" title="Top">
+<link rel="next" href="Lisp_00e6_0095_00b0_00e6_008d_00ae_00e7_00b1_00bb_00e5_009e_008b.html#Lisp_00e6_0095_00b0_00e6_008d_00ae_00e7_00b1_00bb_00e5_009e_008b" title="Lisp数据类型">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+这是GNU Emacs Lisp参考文档的3.0版本，对应于Emacs23.3版本。
+
+由张东亚汉化，汉化版本为0.1。
+
+更新记录：
+
+2011/06/22：启动第二章的翻译，待完成。
+
+2011/07/02：完成第二章的翻译。
+
+2011/08/07：启动第三章的翻译。
+
+2011/09/19：完成第三章的翻译。
+
+2011/11/28：启动第四章的翻译，待完成。
+
+2012/06/23：完成lists.texi的翻译。
+Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998,
+1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software
+Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with the Invariant Sections being ``GNU General Public
+     License,'' with the Front-Cover texts being ``A GNU Manual,'' and
+     with the Back-Cover Texts as in (a) below.  A copy of the license
+     is included in the section entitled ``GNU Free Documentation
+     License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have the freedom to copy
+     and modify this GNU manual.  Buying copies from the FSF supports
+     it in developing GNU and promoting software freedom.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="%e4%bb%8b%e7%bb%8d"></a>
+<a name="g_t_00e4_00bb_008b_00e7_00bb_008d"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Lisp_00e6_0095_00b0_00e6_008d_00ae_00e7_00b1_00bb_00e5_009e_008b.html#Lisp_00e6_0095_00b0_00e6_008d_00ae_00e7_00b1_00bb_00e5_009e_008b">Lisp数据类型</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="index.html#Top">Top</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="index.html#Top">Top</a>
+<hr>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h2 class="chapter">1 介绍</h2>
+
+<p>GNU Emacs文本编辑器大部分由称为Emacs Lisp的编程语言写成，你可以用Emacs Lisp编写代码并将其作为扩展安装到Emacs上。然而，Emacs Lisp并不仅仅是一个“扩展性语言”，它是一个全功能的计算机编程语言，你可以象你用其他编程语言那样地使用它。
+
+   <p>由于Emacs Lisp被设计成在编辑器内使用，它具有一些如扫描和分析文本以及处理文件、缓冲区、显示和子进程等独有的特性。Emacs Lisp和各种编辑功能紧密的结合在一起，因此，编辑命令可以做为函数在Lisp程序中被调用，而编辑器的定制参数就是普通的Lisp变量。
+
+   <p>本文档将致力于对Emacs Lisp进行全面性的描述，对于初学者而言，如想阅读一些介绍性的文档，请参考由Free Software Foundation出版，Bob Chassell所写的<cite>An Introduction to
+Emacs Lisp Programming</cite> 。本书假定读者对于使用Emacs进行编辑有一定的了解，如需这方面的知识，可参考<cite>The GNU Emacs Manual</cite>文档。
+
+   <p>总体而言，本书前面的章节描述了Emacs Lisp和其他编程语言相对应的一些特性，后面的章节则重点介绍Emacs Lisp独有的特性以及和编辑相关的特性。
+
+   <p>本文档的版本为3.0，对应于Emacs版本23.3。
+
+<ul class="menu">
+<li><a accesskey="1" href="_00e6_00b3_00a8_00e6_0084_008f_00e4_00ba_008b_00e9_00a1_00b9.html#g_t_00e6_00b3_00a8_00e6_0084_008f_00e4_00ba_008b_00e9_00a1_00b9">注意事项</a>:                  注意事项以及缺陷说明。
+<li><a accesskey="2" href="Lisp_00e5_008e_0086_00e5_008f_00b2.html#Lisp_00e5_008e_0086_00e5_008f_00b2">Lisp历史</a>:                 Emacs Lisp派生自MacLisp。
+<li><a accesskey="3" href="_00e6_0083_00af_00e4_00be_008b.html#g_t_00e6_0083_00af_00e4_00be_008b">惯例</a>:                     本参考文档的内容格式说明。
+<li><a accesskey="4" href="_00e7_0089_0088_00e6_009c_00ac_00e4_00bf_00a1_00e6_0081_00af.html#g_t_00e7_0089_0088_00e6_009c_00ac_00e4_00bf_00a1_00e6_0081_00af">版本信息</a>:                  Emacs版本信息。
+<li><a accesskey="5" href="_00e8_0087_00b4_00e8_00b0_00a2.html#g_t_00e8_0087_00b4_00e8_00b0_00a2">致谢</a>:                     作者、编辑者以及赞助者信息。
+</ul>
+
+   </body></html>
+

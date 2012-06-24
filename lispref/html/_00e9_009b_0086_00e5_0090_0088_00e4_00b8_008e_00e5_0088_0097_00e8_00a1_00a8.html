@@ -1,0 +1,249 @@
+<html lang="en">
+<head>
+<title>集合与列表 - GNU Emacs Lisp 参考文档</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Emacs Lisp 参考文档">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="_00e5_0088_0097_00e8_00a1_00a8.html#g_t_00e5_0088_0097_00e8_00a1_00a8" title="列表">
+<link rel="prev" href="_00e4_00bf_00ae_00e6_0094_00b9_00e5_0088_0097_00e8_00a1_00a8.html#g_t_00e4_00bf_00ae_00e6_0094_00b9_00e5_0088_0097_00e8_00a1_00a8" title="修改列表">
+<link rel="next" href="_00e5_0085_00b3_00e8_0081_0094_00e5_0088_0097_00e8_00a1_00a8.html#g_t_00e5_0085_00b3_00e8_0081_0094_00e5_0088_0097_00e8_00a1_00a8" title="关联列表">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+这是GNU Emacs Lisp参考文档的3.0版本，对应于Emacs23.3版本。
+
+由张东亚汉化，汉化版本为0.1。
+
+更新记录：
+
+2011/06/22：启动第二章的翻译，待完成。
+
+2011/07/02：完成第二章的翻译。
+
+2011/08/07：启动第三章的翻译。
+
+2011/09/19：完成第三章的翻译。
+
+2011/11/28：启动第四章的翻译，待完成。
+
+2012/06/23：完成lists.texi的翻译。
+Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998,
+1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software
+Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with the Invariant Sections being ``GNU General Public
+     License,'' with the Front-Cover texts being ``A GNU Manual,'' and
+     with the Back-Cover Texts as in (a) below.  A copy of the license
+     is included in the section entitled ``GNU Free Documentation
+     License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have the freedom to copy
+     and modify this GNU manual.  Buying copies from the FSF supports
+     it in developing GNU and promoting software freedom.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="%e9%9b%86%e5%90%88%e4%b8%8e%e5%88%97%e8%a1%a8"></a>
+<a name="g_t_00e9_009b_0086_00e5_0090_0088_00e4_00b8_008e_00e5_0088_0097_00e8_00a1_00a8"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="_00e5_0085_00b3_00e8_0081_0094_00e5_0088_0097_00e8_00a1_00a8.html#g_t_00e5_0085_00b3_00e8_0081_0094_00e5_0088_0097_00e8_00a1_00a8">关联列表</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="_00e4_00bf_00ae_00e6_0094_00b9_00e5_0088_0097_00e8_00a1_00a8.html#g_t_00e4_00bf_00ae_00e6_0094_00b9_00e5_0088_0097_00e8_00a1_00a8">修改列表</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="_00e5_0088_0097_00e8_00a1_00a8.html#g_t_00e5_0088_0097_00e8_00a1_00a8">列表</a>
+<hr>
+</div>
+
+<h3 class="section">5.7 将列表当作集合使用</h3>
+
+<p><a name="index-g_t_00e5_00b0_0086_00e5_0088_0097_00e8_00a1_00a8_00e5_00bd_0093_00e4_00bd_009c_00e9_009b_0086_00e5_0090_0088-344"></a><a name="index-g_t_00e9_009b_0086_00e5_0090_0088-345"></a>
+  列表可以表达一个无序的数学集合。如果一个值出现在列表中，就简单地将其作为集合的一个元素，并忽略列表的顺序。
+要形成两个集合的联合，可以使用<code>append</code>（只要你不在意产生重复元素）。你可以使用<code>delete-dups</code>
+移除<code>equal</code>（译注：这里指的是用<code>equal</code>函数来确定是否重复，下面的<code>equal</code>版本也是如此
+，可以用describe-function查看具体差异）的重复元素。对于集合而言，其他的有用函数包括<code>memq</code>和
+<code>delq</code>，以及他们的<code>equal</code>版本，即<code>member</code>和<code>delete</code>。
+
+   <p><a name="index-CL_00e6_00b3_00a8_00e9_0087_008a_002d_002d_002d_00e7_00bc_00ba_00e4_00b9_008f_0040code_007bunion_007d_00e3_0080_0081_0040code_007bintersection_007d-346"></a><blockquote>
+<b>Common Lisp注释：</b> Common Lisp有用于集合操作的<code>union</code>（它避免产生重复元素）以及<code>intersection</code>。
+但GNU Emacs Lisp不提供它们。你可以按你希望的方式实现它们。
+</blockquote>
+
+<div class="defun">
+&mdash; Function: <b>memq</b><var> object list<a name="index-memq-347"></a></var><br>
+<blockquote><p><a name="index-g_t_00e5_0088_0097_00e8_00a1_00a8_00e7_009a_0084_00e6_0088_0090_00e5_0091_0098_00e5_0085_00b3_00e7_00b3_00bb-348"></a>此函数测试<var>object</var>是否是<var>list</var>的成员。如果它是，<code>memq</code>返回一个包含<var>object</var>首次出现开始的列表。
+否则，它返回<code>nil</code>。<code>memq</code>中的字母&lsquo;<samp><span class="samp">q</span></samp>&rsquo;说明它使用<code>eq</code>来比较<var>object</var>和列表中的元素。例如：
+
+     <pre class="example">          (memq 'b '(a b c b a))
+               &rArr; (b c b a)
+          (memq '(2) '((1) (2)))    ; <code>(2)</code><span class="roman">和</span><code>(2)</code><span class="roman">用</span><code>eq</code><span class="roman">比较时并不相等。　</span>
+               &rArr; nil
+</pre>
+        </blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>delq</b><var> object list<a name="index-delq-349"></a></var><br>
+<blockquote><p><a name="index-g_t_00e5_0088_00a0_00e9_0099_00a4_00e5_0088_0097_00e8_00a1_00a8_00e5_0085_0083_00e7_00b4_00a0-350"></a>此函数破坏性地删除列表中和<var>object</var>用<code>eq</code>比较相等的所有元素。<code>delq</code>中的&lsquo;<samp><span class="samp">q</span></samp>&rsquo;说明
+它使用<code>eq</code>来比较<var>object</var>和列表中的元素，像<code>memq</code>和<code>remq</code>一样。
+</p></blockquote></div>
+
+   <p>当<code>delq</code>从列表前面删除元素时，它简单地向列表后前进并返回自删除的元素后开始的子列表：
+
+<pre class="example">     (delq 'a '(a b c)) == (cdr '(a b c))
+</pre>
+   <p>当待删除的元素处理于列表中间时，删除它将导致改变<span class="sc">cdr</span>（请参考see <a href="Setcdr.html#Setcdr">Setcdr</a>.）。
+
+<pre class="example">     (setq sample-list '(a b c (4)))
+          &rArr; (a b c (4))
+     (delq 'a sample-list)
+          &rArr; (b c (4))
+     sample-list
+          &rArr; (a b c (4))
+     (delq 'c sample-list)
+          &rArr; (a b (4))
+     sample-list
+          &rArr; (a b (4))
+</pre>
+   <p>注意<code>(delq 'c sample-list)</code>修改<code>sample-list</code>以便将第三个元素分出，但<code>(delq 'a sample-list)</code>
+却未分出任何东西&mdash;它只是返回一个较短的列表。不要假定先前存有参数<var>list</var>的变量将含有较少的元素，或它仍持有原有的
+列表！替代地，将<code>delq</code>的结果存起来再使用它。大多数情况下我们将结果存持有原来列表的变量：
+
+<pre class="example">     (setq flowers (delq 'rose flowers))
+</pre>
+   <p>在下面的例子中，<code>delq</code>尝试删除的<code>(4)</code>和<code>sample-list</code>中的<code>(4)</code>用<code>eq</code>测试并不相等：
+（译注：注意前面提到的读取语法，<code>eq</code>比较的是对象相等性，而调用时每次<code>(4)</code>都会创建一个新的列表对象，故而
+<code>eq</code>测试失败。）
+
+<pre class="example">     (delq '(4) sample-list)
+          &rArr; (a c (4))
+     
+     如果你要删除与给定值<code>equal</code>测试相等的元素，使用<code>delete</code>函数（见下）。
+</pre>
+   <div class="defun">
+&mdash; Function: <b>remq</b><var> object list<a name="index-remq-351"></a></var><br>
+<blockquote><p>此函数返回<var>list</var>的一个拷贝，该拷贝的所有与<var>object</var>用<code>eq</code>测试相等的元素被删除。<code>remq</code>中的&lsquo;<samp><span class="samp">q</span></samp>&rsquo;说明
+它使用<code>eq</code>来比较<var>object</var>和列表中的元素。
+
+     <pre class="example">          (setq sample-list '(a b c a b c))
+               &rArr; (a b c a b c)
+          (remq 'a sample-list)
+               &rArr; (b c b c)
+          sample-list
+               &rArr; (a b c a b c)
+</pre>
+        </blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>memql</b><var> object list<a name="index-memql-352"></a></var><br>
+<blockquote><p>函数<code>memql</code>测试<var>object</var>是否是<var>list</var>的一个成员，它使用<code>eql</code>
+来比较列表成员和<var>object</var>，因此将以数值比较浮点数。如果<var>object</var>是列表的成员，
+<code>memql</code>返回以它第一次在列表中出现开始的子列表。否则，它返回<code>nil</code>。
+
+        <p>将下面这个和<code>memq</code>相比：
+
+     <pre class="example">          (memql 1.2 '(1.1 1.2 1.3))  ; <code>1.2</code><span class="roman">和</span><code>1.2</code><span class="roman">用</span><code>eql</code><span class="roman">比较相等。</span>
+               &rArr; (1.2 1.3)
+          (memq 1.2 '(1.1 1.2 1.3))  ; <code>1.2</code><span class="roman">和</span><code>1.2</code><span class="roman">用</span><code>eq</code><span class="roman">比较不等。</span>
+               &rArr; nil
+</pre>
+        </blockquote></div>
+
+   <p>下面这三个函数和<code>memq</code>、<code>delq</code>以及<code>remq</code>相似，但使用<code>equal</code>而不是
+<code>eq</code>来比较元素。See <a href="_00e7_009b_00b8_00e7_00ad_0089_00e5_0088_00a4_00e5_00ae_009a.html#g_t_00e7_009b_00b8_00e7_00ad_0089_00e5_0088_00a4_00e5_00ae_009a">相等判定</a>.
+
+<div class="defun">
+&mdash; Function: <b>member</b><var> object list<a name="index-member-353"></a></var><br>
+<blockquote><p>函数<code>member</code>用<code>equal</code>比较<var>object</var>和列表元素，来测试<var>list</var>是否
+包含<var>object</var>。如果<var>object</var>是其成员，则返回以它第一次在列表中出现开始的子列表。
+否则返回<code>nil</code>。
+
+        <p>以下面与<code>memq</code>作比较：
+
+     <pre class="example">          (member '(2) '((1) (2)))  ; <code>(2)</code><span class="roman">和</span><code>(2)</code><span class="roman">用</span><code>equal</code><span class="roman">比较相等。</span>
+               &rArr; ((2))
+          (memq '(2) '((1) (2)))    ; <code>(2)</code><span class="roman">和</span><code>(2)</code><span class="roman">用</span><code>eq</code><span class="roman">比较相等。</span>
+               &rArr; nil
+          ;; <span class="roman">两个具有相同内容的字符串用</span><code>equal</code><span class="roman">比较相等。</span>
+          (member "foo" '("foo" "bar"))
+               &rArr; ("foo" "bar")
+</pre>
+        </blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>delete</b><var> object sequence<a name="index-delete-354"></a></var><br>
+<blockquote><p>如果<code>sequence</code>是一个列表，此函数将从中破坏性地删除所有与<var>object</var>用<code>equal</code>比较相等的元素。对于列表而言，
+<code>delete</code>之于<code>delq</code>就像<code>member</code>之于<code>memq</code>一样：它像<code>member</code>
+一样，使用<code>equal</code>来将元素与<var>object</var>作比；当它找到一个匹配的元素，它将像<code>delq</code>
+那样移掉该元素。
+
+        <p>如果<code>sequence</code>是一个容器或元素，<code>delete</code>返回一个<code>sequence</code>移除了那些与<code>object</code>用<code>equal</code>
+比较相等的所有元素的的拷贝。
+
+        <p>例如：
+
+     <pre class="example">          (setq l '((2) (1) (2)))
+          (delete '(2) l)
+               &rArr; ((1))
+          l
+               &rArr; ((2) (1))
+          ;; <span class="roman">如果你要确保</span><code>l</code><span class="roman">被改变，</span>
+          ;; <span class="roman">可以写成</span><code>(setq l (delete elt l))</code><span class="roman">。</span>
+          (setq l '((2) (1) (2)))
+          (delete '(1) l)
+               &rArr; ((2) (2))
+          l
+               &rArr; ((2) (2))
+          ;; <span class="roman">在这个例子中，无论你是否设置</span><code>l</code><span class="roman">，都没有区别，</span>
+          ;; <span class="roman">但你应当这样做，以便考虑其他情况。</span>
+          (delete '(2) [(2) (1) (2)])
+               &rArr; [(1)]
+</pre>
+        </blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>remove</b><var> object sequence<a name="index-remove-355"></a></var><br>
+<blockquote><p>此函数是<code>delete</code>的非破坏性形式。它返回<code>sequence</code>的一个拷贝，一个列表、一个容器或者一个字符串，
+而那些与<code>object</code>用<code>equal</code>比较相等的元素则被移除。例如：
+
+     <pre class="example">          (remove '(2) '((2) (1) (2)))
+               &rArr; ((1))
+          (remove '(2) [(2) (1) (2)])
+               &rArr; [(1)]
+</pre>
+        </blockquote></div>
+
+   <blockquote>
+<b>Common Lisp注释:</b> GNU Emacs Lisp中的函数<code>member</code>、<code>delete</code>以及<code>remove</code>派生自
+MacLisp，而不是Common Lisp。它们的Common Lisp版本并不使用<code>equal</code>来做元素比较。
+</blockquote>
+
+<div class="defun">
+&mdash; Function: <b>member-ignore-case</b><var> object list<a name="index-member_002dignore_002dcase-356"></a></var><br>
+<blockquote><p>此函数与<code>member</code>相似，除了<var>object</var>应当是一个字符串并且它忽略字母大小写和文本表示的差异：大写和
+小写字母将被视作相等，且单字节字符串在比较前将被转成多字节字符串。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>delete-dups</b><var> list<a name="index-delete_002ddups-357"></a></var><br>
+<blockquote><p>此函数破坏性地删除<var>list</var>中所有用<code>equal</code>相等的多余元素，将结果存在<var>list</var>中并返回它。对于<var>list</var>中
+用<code>equal</code>比等的一个元素的多次出现，<code>delete-dups</code>保持其第一次出现。
+</p></blockquote></div>
+
+   <p>要了解如何向存在变量中的列表添加元素以及将其当成集合使用的方法，请参考<a href="_00e5_0088_0097_00e8_00a1_00a8_00e5_008f_0098_00e9_0087_008f.html#g_t_00e5_0088_0097_00e8_00a1_00a8_00e5_008f_0098_00e9_0087_008f">列表变量</a>.一节中的
+函数<code>add-to-list</code>。
+
+   </body></html>
+

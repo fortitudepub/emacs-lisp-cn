@@ -1,0 +1,157 @@
+<html lang="en">
+<head>
+<title>字符串转换 - GNU Emacs Lisp 参考文档</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Emacs Lisp 参考文档">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e4_00b8_008e_00e5_00ad_0097_00e7_00ac_00a6.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e4_00b8_008e_00e5_00ad_0097_00e7_00ac_00a6" title="字符串与字符">
+<link rel="prev" href="_00e6_0096_0087_00e6_009c_00ac_00e6_00af_0094_00e8_00be_0083.html#g_t_00e6_0096_0087_00e6_009c_00ac_00e6_00af_0094_00e8_00be_0083" title="文本比较">
+<link rel="next" href="_00e6_00a0_00bc_00e5_00bc_008f_00e5_008c_0096_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2.html#g_t_00e6_00a0_00bc_00e5_00bc_008f_00e5_008c_0096_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2" title="格式化字符串">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+这是GNU Emacs Lisp参考文档的3.0版本，对应于Emacs23.3版本。
+
+由张东亚汉化，汉化版本为0.1。
+
+更新记录：
+
+2011/06/22：启动第二章的翻译，待完成。
+
+2011/07/02：完成第二章的翻译。
+
+2011/08/07：启动第三章的翻译。
+
+2011/09/19：完成第三章的翻译。
+
+2011/11/28：启动第四章的翻译，待完成。
+
+2012/06/23：完成lists.texi的翻译。
+Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998,
+1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software
+Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with the Invariant Sections being ``GNU General Public
+     License,'' with the Front-Cover texts being ``A GNU Manual,'' and
+     with the Back-Cover Texts as in (a) below.  A copy of the license
+     is included in the section entitled ``GNU Free Documentation
+     License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have the freedom to copy
+     and modify this GNU manual.  Buying copies from the FSF supports
+     it in developing GNU and promoting software freedom.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="%e5%ad%97%e7%ac%a6%e4%b8%b2%e8%bd%ac%e6%8d%a2"></a>
+<a name="g_t_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e8_00bd_00ac_00e6_008d_00a2"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="_00e6_00a0_00bc_00e5_00bc_008f_00e5_008c_0096_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2.html#g_t_00e6_00a0_00bc_00e5_00bc_008f_00e5_008c_0096_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2">格式化字符串</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="_00e6_0096_0087_00e6_009c_00ac_00e6_00af_0094_00e8_00be_0083.html#g_t_00e6_0096_0087_00e6_009c_00ac_00e6_00af_0094_00e8_00be_0083">文本比较</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e4_00b8_008e_00e5_00ad_0097_00e7_00ac_00a6.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e4_00b8_008e_00e5_00ad_0097_00e7_00ac_00a6">字符串与字符</a>
+<hr>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h3 class="section">4.6 字符与字符串转换</h3>
+
+<p><a name="index-g_t_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e8_00bd_00ac_00e6_008d_00a2-244"></a>
+   此节描述用于用于换转字符、字符串以及整数的函数。<code>format</code>（see <a href="_00e6_00a0_00bc_00e5_00bc_008f_00e5_008c_0096_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2.html#g_t_00e6_00a0_00bc_00e5_00bc_008f_00e5_008c_0096_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2">格式化字符串</a>）以及<code>prin1-to-string</code>
+（see <a href="Output-Functions.html#Output-Functions">Output Functions</a>）也可用来将Lisp对象转换为字符串。<code>read-from-string</code>（see <a href="Input-Functions.html#Input-Functions">Input Functions</a>）可以将
+Lisp对象的的字符串表示&ldquo;转换&rdquo;为对象。函数<code>string-make-multibyte</code>以及<code>string-make-unibyte</code>转换字符串的文字表达。
+（see <a href="Converting-Representations.html#Converting-Representations">Converting Representations</a>）。
+
+   <p>关于产生文本字符的文本描述以及常规输入事件(<code>single-key-description</code>)以及<code>text-char-description</code>函数的说明，
+See <a href="Documentation.html#Documentation">Documentation</a>.，这些函数主要用于创建帮助信息。
+
+<div class="defun">
+&mdash; Function: <b>number-to-string</b><var> number<a name="index-number_002dto_002dstring-245"></a></var><br>
+<blockquote><p><a name="index-g_t_00e6_0095_00b4_00e6_0095_00b0_00e8_00bd_00ac_00e4_00b8_00ba_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2-246"></a><a name="index-g_t_00e6_0095_00b4_00e6_0095_00b0_00e8_00bd_00ac_00e4_00b8_00ba_00e5_008d_0081_00e8_00bf_009b_00e5_0088_00b6-247"></a>此函数由<var>number</var>对应的十进制表示构成的字符串，它可以是一个整数或者浮点数。如果参数是负数，则返回值由负号开始。
+
+     <pre class="example">          (number-to-string 256)
+               &rArr; "256"
+          (number-to-string -23)
+               &rArr; "-23"
+          (number-to-string -23.5)
+               &rArr; "-23.5"
+</pre>
+        <p><a name="index-int_002dto_002dstring-248"></a><code>int-to-string</code>是此函数的一个半废弃的别名。
+
+        <p>还可以参考<a href="_00e6_00a0_00bc_00e5_00bc_008f_00e5_008c_0096_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2.html#g_t_00e6_00a0_00bc_00e5_00bc_008f_00e5_008c_0096_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2">格式化字符串</a>中的<code>format</code>函数。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>string-to-number</b><var> string &amp;optional base<a name="index-string_002dto_002dnumber-249"></a></var><br>
+<blockquote><p><a name="index-g_t_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e8_0087_00b3_00e6_0095_00b0_00e5_00ad_0097-250"></a>此函数返回<var>string</var>中的字符对应的数值。如果<var>base</var>非<code>nil</code>，它必须是一个2至16的整数（包含2与16自身），
+整数转换将以该数为基数。如果<var>base</var>是<code>nil</code>，则转换至以十为基数的整数。浮点数转换只能以10为基础；我们还未
+实现以其他数为基数的浮点数转换，它需要更多的工作，并且看起来并没有什么用。如果<var>string</var>看起来像一个整数，但其值
+超出Lisp整数的限制，则<code>string-to-number</code>返回一个浮点数。
+
+        <p>分析过程将跳过<var>string</var>开始处的空格与制表符，然后开始尽可能多地读取数字，只要该数字符合指定基数。（在某些系统上，
+它忽略其他空白字符，不仅仅是空格与制表符。）如果忽略掉空白字符之后的第一个字符即不符合指定基数，又不是一个正号或负号，
+还不是一个浮点数的前置点号，则此函数返回0。
+
+     <pre class="example">          (string-to-number "256")
+               &rArr; 256
+          (string-to-number "25 is a perfect square.")
+               &rArr; 25
+          (string-to-number "X256")
+               &rArr; 0
+          (string-to-number "-4.5")
+               &rArr; -4.5
+          (string-to-number "1e5")
+               &rArr; 100000.0
+</pre>
+        <p><a name="index-string_002dto_002dint-251"></a><code>string-to-int</code>是此函数的一个废弃的别名。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>char-to-string</b><var> character<a name="index-char_002dto_002dstring-252"></a></var><br>
+<blockquote><p><a name="index-g_t_00e5_00ad_0097_00e7_00ac_00a6_00e8_00bd_00ac_00e6_008d_00a2_00e6_0088_0090_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2-253"></a>此函数返回一个包含一个<var>character</var>所示字符的新的字符串。此函数已经半废弃，因为<code>string</code>更为通用。
+See <a href="_00e5_0088_009b_00e5_00bb_00ba_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2.html#g_t_00e5_0088_009b_00e5_00bb_00ba_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2">创建字符串</a>.。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>string-to-char</b><var> string<a name="index-string_002dto_002dchar-254"></a></var><br>
+<blockquote><p>  此函数返回<var>string</var>中的第一个字符。它基本上等同于<code>(aref string 0)</code>，除了它在字符串为空时返回
+0以外。（译注：对于空字符串，如果用aref取第0个元素，将产生一个错误）（当<var>string</var>的第一个字符是null字符，
+即<acronym>ASCII</acronym>编码0时也返回0。）此函数将来有可能被除去，如果它的用处显得不足以被保留。
+</p></blockquote></div>
+
+   <p>以下是一些其他可用于向字符串转换或从字符串转换的函数：
+
+     <dl>
+<dt><code>concat</code><dd>此函数将一个容器或列表转换成一个字符串。
+See <a href="_00e5_0088_009b_00e5_00bb_00ba_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2.html#g_t_00e5_0088_009b_00e5_00bb_00ba_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2">创建字符串</a>.
+
+     <br><dt><code>vconcat</code><dd>此函数将一个字符串转换为一个容器。See <a href="Vector-Functions.html#Vector-Functions">Vector Functions</a>.。
+
+     <br><dt><code>append</code><dd>此函数将一个字符串转换为一个列表。See <a href="_00e6_009e_0084_00e9_0080_00a0_00e5_0088_0097_00e8_00a1_00a8.html#g_t_00e6_009e_0084_00e9_0080_00a0_00e5_0088_0097_00e8_00a1_00a8">构造列表</a>.。
+（译注：当只向append传递一个字符串参数时，你将不会得到一个列表，而仍得到该字符串，关于这个现象，在Emacs IRC上
+得到pjb的指点，原因如下：
+append builds a list, and the tail of that list is its last argument. If the last argument is not a list,
+you get a dotted list.  If there is a single non-list argument, then you get it as-is. 
+This is true in Common Lisp too. 
+）
+
+     <br><dt><code>byte-to-string</code><dd>此函数将一个包含字符数据的字节转换为一个单字节字符串。See <a href="Converting-Representations.html#Converting-Representations">Converting Representations</a>.。
+</dl>
+
+   </body></html>
+

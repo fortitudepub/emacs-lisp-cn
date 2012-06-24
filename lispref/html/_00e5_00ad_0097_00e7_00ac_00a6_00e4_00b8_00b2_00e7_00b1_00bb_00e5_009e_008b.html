@@ -1,0 +1,86 @@
+<html lang="en">
+<head>
+<title>字符串类型 - GNU Emacs Lisp 参考文档</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Emacs Lisp 参考文档">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="_00e7_00bc_0096_00e7_00a8_008b_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e7_00bc_0096_00e7_00a8_008b_00e7_00b1_00bb_00e5_009e_008b" title="编程类型">
+<link rel="prev" href="_00e6_0095_00b0_00e7_00bb_0084_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e6_0095_00b0_00e7_00bb_0084_00e7_00b1_00bb_00e5_009e_008b" title="数组类型">
+<link rel="next" href="_00e5_00ae_00b9_00e5_0099_00a8_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e5_00ae_00b9_00e5_0099_00a8_00e7_00b1_00bb_00e5_009e_008b" title="容器类型">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+这是GNU Emacs Lisp参考文档的3.0版本，对应于Emacs23.3版本。
+
+由张东亚汉化，汉化版本为0.1。
+
+更新记录：
+
+2011/06/22：启动第二章的翻译，待完成。
+
+2011/07/02：完成第二章的翻译。
+
+2011/08/07：启动第三章的翻译。
+
+2011/09/19：完成第三章的翻译。
+
+2011/11/28：启动第四章的翻译，待完成。
+
+2012/06/23：完成lists.texi的翻译。
+Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998,
+1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software
+Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with the Invariant Sections being ``GNU General Public
+     License,'' with the Front-Cover texts being ``A GNU Manual,'' and
+     with the Back-Cover Texts as in (a) below.  A copy of the license
+     is included in the section entitled ``GNU Free Documentation
+     License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have the freedom to copy
+     and modify this GNU manual.  Buying copies from the FSF supports
+     it in developing GNU and promoting software freedom.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="%e5%ad%97%e7%ac%a6%e4%b8%b2%e7%b1%bb%e5%9e%8b"></a>
+<a name="g_t_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e7_00b1_00bb_00e5_009e_008b"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="_00e5_00ae_00b9_00e5_0099_00a8_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e5_00ae_00b9_00e5_0099_00a8_00e7_00b1_00bb_00e5_009e_008b">容器类型</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="_00e6_0095_00b0_00e7_00bb_0084_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e6_0095_00b0_00e7_00bb_0084_00e7_00b1_00bb_00e5_009e_008b">数组类型</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="_00e7_00bc_0096_00e7_00a8_008b_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e7_00bc_0096_00e7_00a8_008b_00e7_00b1_00bb_00e5_009e_008b">编程类型</a>
+<hr>
+</div>
+
+<h4 class="subsection">2.3.8 字符串类型</h4>
+
+<p><dfn>字符串</dfn>是由字符组成的数组。字符串在Emacs中有多种用途，正如在文本编辑器中的作用一样；例如，可以作为Lisp符号的名称，
+作为给用消息，作为从缓冲区中读取的文本。在Lisp中的字符串是常量：对其求值得到相同的字符串。
+
+   <p>关于操作字符串的函数，请参考See <a href="_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e4_00b8_008e_00e5_00ad_0097_00e7_00ac_00a6.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e4_00b8_008e_00e5_00ad_0097_00e7_00ac_00a6">字符串与字符</a>.。
+
+<ul class="menu">
+<li><a accesskey="1" href="_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e8_00af_00ad_00e6_00b3_0095.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e8_00af_00ad_00e6_00b3_0095">字符串语法</a>:                如何指定字符串。
+<li><a accesskey="2" href="_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e4_00b8_00ad_00e7_009a_0084_00e9_009d_009eASCII_00e5_00ad_0097_00e7_00ac_00a6.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e4_00b8_00ad_00e7_009a_0084_00e9_009d_009eASCII_00e5_00ad_0097_00e7_00ac_00a6">字符串中的非ASCII字符</a>:      字符串中的国际化字符。
+<li><a accesskey="3" href="_00e9_009d_009e_00e6_0089_0093_00e5_008d_00b0_00e5_00ad_0097_00e7_00ac_00a6.html#g_t_00e9_009d_009e_00e6_0089_0093_00e5_008d_00b0_00e5_00ad_0097_00e7_00ac_00a6">非打印字符</a>:              字符串中不可打印的字符。
+<li><a accesskey="4" href="_00e6_0096_0087_00e6_009c_00ac_00e5_00b1_009e_00e6_0080_00a7_00e5_0092_008c_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2.html#g_t_00e6_0096_0087_00e6_009c_00ac_00e5_00b1_009e_00e6_0080_00a7_00e5_0092_008c_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2">文本属性和字符串</a>:            具有文本属性的字符。
+</ul>
+
+   </body></html>
+

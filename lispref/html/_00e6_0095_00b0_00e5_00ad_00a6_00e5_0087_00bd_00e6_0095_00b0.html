@@ -1,0 +1,144 @@
+<html lang="en">
+<head>
+<title>数学函数 - GNU Emacs Lisp 参考文档</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Emacs Lisp 参考文档">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="_00e6_0095_00b0_00e5_00ad_0097.html#g_t_00e6_0095_00b0_00e5_00ad_0097" title="数字">
+<link rel="prev" href="_00e4_00bd_008d_00e6_0093_008d_00e4_00bd_009c.html#g_t_00e4_00bd_008d_00e6_0093_008d_00e4_00bd_009c" title="位操作">
+<link rel="next" href="_00e9_009a_008f_00e6_009c_00ba_00e6_0095_00b0.html#g_t_00e9_009a_008f_00e6_009c_00ba_00e6_0095_00b0" title="随机数">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+这是GNU Emacs Lisp参考文档的3.0版本，对应于Emacs23.3版本。
+
+由张东亚汉化，汉化版本为0.1。
+
+更新记录：
+
+2011/06/22：启动第二章的翻译，待完成。
+
+2011/07/02：完成第二章的翻译。
+
+2011/08/07：启动第三章的翻译。
+
+2011/09/19：完成第三章的翻译。
+
+2011/11/28：启动第四章的翻译，待完成。
+
+2012/06/23：完成lists.texi的翻译。
+Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998,
+1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software
+Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with the Invariant Sections being ``GNU General Public
+     License,'' with the Front-Cover texts being ``A GNU Manual,'' and
+     with the Back-Cover Texts as in (a) below.  A copy of the license
+     is included in the section entitled ``GNU Free Documentation
+     License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have the freedom to copy
+     and modify this GNU manual.  Buying copies from the FSF supports
+     it in developing GNU and promoting software freedom.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="%e6%95%b0%e5%ad%a6%e5%87%bd%e6%95%b0"></a>
+<a name="g_t_00e6_0095_00b0_00e5_00ad_00a6_00e5_0087_00bd_00e6_0095_00b0"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="_00e9_009a_008f_00e6_009c_00ba_00e6_0095_00b0.html#g_t_00e9_009a_008f_00e6_009c_00ba_00e6_0095_00b0">随机数</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="_00e4_00bd_008d_00e6_0093_008d_00e4_00bd_009c.html#g_t_00e4_00bd_008d_00e6_0093_008d_00e4_00bd_009c">位操作</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="_00e6_0095_00b0_00e5_00ad_0097.html#g_t_00e6_0095_00b0_00e5_00ad_0097">数字</a>
+<hr>
+</div>
+
+<h3 class="section">3.9 标准数学函数</h3>
+
+<p><a name="index-g_t_00e8_00b6_0085_00e8_00b6_008a_00e5_0087_00bd_00e6_0095_00b0-201"></a><a name="index-g_t_00e6_0095_00b0_00e5_00ad_00a6_00e5_0087_00bd_00e6_0095_00b0-202"></a><a name="index-g_t_00e6_00b5_00ae_00e7_0082_00b9_00e6_0095_00b0_00e5_0087_00bd_00e6_0095_00b0-203"></a>
+    下面的这些函数接受整数或浮点数作为参数。
+
+<div class="defun">
+&mdash; Function: <b>sin</b><var> arg<a name="index-sin-204"></a></var><br>
+&mdash; Function: <b>cos</b><var> arg<a name="index-cos-205"></a></var><br>
+&mdash; Function: <b>tan</b><var> arg<a name="index-tan-206"></a></var><br>
+<blockquote><p>这些函数是普通的三解函数，其参数以弧度计量。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>asin</b><var> arg<a name="index-asin-207"></a></var><br>
+<blockquote><p><code>(asin </code><var>arg</var><code>)</code>的结果是一个介于
+&minus;pi/2
+and
+pi/2
+（包含边界）的值，其正弦是<var>arg</var>；如果<var>arg</var>超出范围（即超出[&minus;1, 1]），它将产生<code>domain-error</code>错误。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>acos</b><var> arg<a name="index-acos-208"></a></var><br>
+<blockquote><p><code>(acos </code><var>arg</var><code>)</code>是值是一个介于0与
+pi
+（包含边界）的值，其余弦是<var>arg</var>；如果<var>arg</var>超出范围（即超出[&minus;1, 1]），它将产生<code>domain-error</code>错误。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>atan</b><var> y &amp;optional x<a name="index-atan-209"></a></var><br>
+<blockquote><p><code>(atan </code><var>y</var><code>)</code>的值是一个介于
+&minus;pi/2
+and
+pi/2
+(不包含边界)的值，其正切是<var>y</var>。如果指定了第二个可选参数<var>x</var>，<code>(atan </code><var>y</var><code>)</code>是一个以弦度表示的角度，它介于
+<code>[</code><var>x</var><code>, </code><var>y</var><code>]</code>与<code>X</code>轴之间。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>exp</b><var> arg<a name="index-exp-210"></a></var><br>
+<blockquote><p>这是指数函数，它返回
+<i>e</i>
+的<var>arg</var>次幂。
+<i>e</i>
+是一个基础数学常量，它也被称为是自然对数的底。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>log</b><var> arg &amp;optional base<a name="index-log-211"></a></var><br>
+<blockquote><p>此函数返回以<var>base</var>为底<var>arg</var>的对数。如果不指定<var>base</var>，则底使用
+<i>e</i>
+。如果<var>arg</var>是负数，它将产生<code>domain-error</code>错误。
+</p></blockquote></div>
+
+<!-- 这里被忽略了，所以也不再翻译了 -->
+<div class="defun">
+&mdash; Function: <b>log10</b><var> arg<a name="index-log10-212"></a></var><br>
+<blockquote><p>此函数返回以10为底<var>arg</var>的对数。如果<var>arg</var>是负数，它将产生<code>domain-error</code>错误。
+近似地说，<code>(log10 </code><var>x</var><code>)</code> == <code>(log </code><var>x</var><code> 10)</code>。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>expt</b><var> x y<a name="index-expt-213"></a></var><br>
+<blockquote><p>此函数返回<var>x</var>的<var>y</var>次幂。如果两个参数都是整数，并且<var>y</var>是整数，结果也是一个整数；
+在这种情况下，溢出将导致截断，因此请注意。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>sqrt</b><var> arg<a name="index-sqrt-214"></a></var><br>
+<blockquote><p>此函数返回<var>arg</var>的平方根。如果<var>arg</var>是负值，它将产生<code>domain-error</code>错误。
+</p></blockquote></div>
+
+   </body></html>
+

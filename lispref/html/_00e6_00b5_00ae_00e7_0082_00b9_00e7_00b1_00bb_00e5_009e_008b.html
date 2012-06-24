@@ -1,0 +1,82 @@
+<html lang="en">
+<head>
+<title>浮点类型 - GNU Emacs Lisp 参考文档</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Emacs Lisp 参考文档">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="_00e7_00bc_0096_00e7_00a8_008b_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e7_00bc_0096_00e7_00a8_008b_00e7_00b1_00bb_00e5_009e_008b" title="编程类型">
+<link rel="prev" href="_00e6_0095_00b4_00e6_0095_00b0_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e6_0095_00b4_00e6_0095_00b0_00e7_00b1_00bb_00e5_009e_008b" title="整数类型">
+<link rel="next" href="_00e5_00ad_0097_00e7_00ac_00a6_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e7_00b1_00bb_00e5_009e_008b" title="字符类型">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+这是GNU Emacs Lisp参考文档的3.0版本，对应于Emacs23.3版本。
+
+由张东亚汉化，汉化版本为0.1。
+
+更新记录：
+
+2011/06/22：启动第二章的翻译，待完成。
+
+2011/07/02：完成第二章的翻译。
+
+2011/08/07：启动第三章的翻译。
+
+2011/09/19：完成第三章的翻译。
+
+2011/11/28：启动第四章的翻译，待完成。
+
+2012/06/23：完成lists.texi的翻译。
+Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998,
+1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software
+Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with the Invariant Sections being ``GNU General Public
+     License,'' with the Front-Cover texts being ``A GNU Manual,'' and
+     with the Back-Cover Texts as in (a) below.  A copy of the license
+     is included in the section entitled ``GNU Free Documentation
+     License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have the freedom to copy
+     and modify this GNU manual.  Buying copies from the FSF supports
+     it in developing GNU and promoting software freedom.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="%e6%b5%ae%e7%82%b9%e7%b1%bb%e5%9e%8b"></a>
+<a name="g_t_00e6_00b5_00ae_00e7_0082_00b9_00e7_00b1_00bb_00e5_009e_008b"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="_00e5_00ad_0097_00e7_00ac_00a6_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e7_00b1_00bb_00e5_009e_008b">字符类型</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="_00e6_0095_00b4_00e6_0095_00b0_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e6_0095_00b4_00e6_0095_00b0_00e7_00b1_00bb_00e5_009e_008b">整数类型</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="_00e7_00bc_0096_00e7_00a8_008b_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e7_00bc_0096_00e7_00a8_008b_00e7_00b1_00bb_00e5_009e_008b">编程类型</a>
+<hr>
+</div>
+
+<h4 class="subsection">2.3.2 浮点类型</h4>
+
+<p>浮点数是科学计数法的计算机记法，你可以将浮点数理解为分数加上10的幂值。有效位精度以及指数范围与机器相关;Emacs使用C语言的<code>double</code>类型来存储浮
+点数值，其内部采用2的幂值而非10的幂值。
+
+   <p>浮点数的打印表示可以是一个数点（至少有一个数字跟在其后）、一个指数、或者两个都包含。如&lsquo;<samp><span class="samp">1500.0</span></samp>&rsquo;、&lsquo;<samp><span class="samp">15e2</span></samp>&rsquo;、&lsquo;<samp><span class="samp">1.5e3</span></samp>&rsquo;以及&lsquo;<samp><span class="samp">.15e4</span></samp>&rsquo;
+是表示具有值1500的浮点数的五种表示方法，它们是相等的。
+
+   <p>更详细的信息，请参考See <a href="_00e6_0095_00b0_00e5_00ad_0097.html#g_t_00e6_0095_00b0_00e5_00ad_0097">数字</a>.一节。
+
+   </body></html>
+

@@ -1,0 +1,98 @@
+<html lang="en">
+<head>
+<title>Cons Cells - GNU Emacs Lisp 参考文档</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Emacs Lisp 参考文档">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="_00e5_0088_0097_00e8_00a1_00a8.html#g_t_00e5_0088_0097_00e8_00a1_00a8" title="列表">
+<link rel="next" href="_00e5_0088_0097_00e8_00a1_00a8_00e7_009b_00b8_00e5_0085_00b3_00e7_009a_0084_00e5_0088_00a4_00e5_00ae_009a.html#g_t_00e5_0088_0097_00e8_00a1_00a8_00e7_009b_00b8_00e5_0085_00b3_00e7_009a_0084_00e5_0088_00a4_00e5_00ae_009a" title="列表相关的判定">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+这是GNU Emacs Lisp参考文档的3.0版本，对应于Emacs23.3版本。
+
+由张东亚汉化，汉化版本为0.1。
+
+更新记录：
+
+2011/06/22：启动第二章的翻译，待完成。
+
+2011/07/02：完成第二章的翻译。
+
+2011/08/07：启动第三章的翻译。
+
+2011/09/19：完成第三章的翻译。
+
+2011/11/28：启动第四章的翻译，待完成。
+
+2012/06/23：完成lists.texi的翻译。
+Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998,
+1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software
+Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with the Invariant Sections being ``GNU General Public
+     License,'' with the Front-Cover texts being ``A GNU Manual,'' and
+     with the Back-Cover Texts as in (a) below.  A copy of the license
+     is included in the section entitled ``GNU Free Documentation
+     License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have the freedom to copy
+     and modify this GNU manual.  Buying copies from the FSF supports
+     it in developing GNU and promoting software freedom.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Cons-Cells"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="_00e5_0088_0097_00e8_00a1_00a8_00e7_009b_00b8_00e5_0085_00b3_00e7_009a_0084_00e5_0088_00a4_00e5_00ae_009a.html#g_t_00e5_0088_0097_00e8_00a1_00a8_00e7_009b_00b8_00e5_0085_00b3_00e7_009a_0084_00e5_0088_00a4_00e5_00ae_009a">列表相关的判定</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="_00e5_0088_0097_00e8_00a1_00a8.html#g_t_00e5_0088_0097_00e8_00a1_00a8">列表</a>
+<hr>
+</div>
+
+<h3 class="section">5.1 列表和Cons Cells</h3>
+
+<p><a name="index-g_t_00e5_0088_0097_00e8_00a1_00a8_00e5_0092_008cCons-Cells-288"></a>
+  Lisp中的列表并不是一个原子类型；它们是从<dfn>cons cells</dfn>中构造的。一个cons cell是表示一个有序对的数据对象。也即，它具有两个槽，每个槽<dfn>持有</dfn>
+或<dfn>引用</dfn>某些Lisp对象。其中一个槽被称为<span class="sc">car</span>，而别一个被称为<span class="sc">cdr</span>。（这些名字是惯例所为，请参考<a href="Cons-Cell_00e7_00b1_00bb_00e5_009e_008b.html#Cons-Cell_00e7_00b1_00bb_00e5_009e_008b">Cons Cell类型</a>.）<span class="sc">cdr</span>读作&ldquo;could-er.&rdquo;
+
+   <p>当我们说&ldquo;这个cons cell的<span class="sc">car</span>是&rdquo;时，我们指的是它的<span class="sc">car</span>槽当前所持有的任意对象，<span class="sc">cdr</span>亦同。
+
+   <p>一个列表是一系列的cons cell&ldquo;链接在一起,&rdquo;因此每个cell指向下一个cons cell。列表中的每个元素都有一个cons cell。根据惯例，cons cell的<span class="sc">car</span>持有列表
+元素，而<span class="sc">cdr</span>则指向下一个cons cell。最后一个cons cell的<span class="sc">cdr</span>是<code>nil</code>。<span class="sc">car</span>与<span class="sc">cdr</span>的这种不对称完全是一种惯例；在cons cell这个层面上，
+<span class="sc">car</span>和<span class="sc">cdr</span>槽具有相同的特性。
+
+   <p><a name="index-g_t_00e7_009c_009f_00e5_0088_0097_00e8_00a1_00a8-289"></a>  由于<code>nil</code>是存放在列表中的最后一个cons cell的<span class="sc">cdr</span>的惯例值，我们称这种列表为<dfn>真列表</dfn>。
+
+   <p>在Lisp中，我们将<code>nil</code>既当作符号，又当作列表；它是一个不具有任何元素的列表。为方便起见，符号<code>nil</code>可以被理解以<code>nil</code>为<span class="sc">cdr</span>（同样<code>nil</code>
+是其<span class="sc">cdr</span>）。因此，真列表的<span class="sc">cdr</span>总是一个真列表。
+
+   <p><a name="index-g_t_00e7_0082_00b9_00e5_0088_0086_00e5_0088_0097_00e8_00a1_00a8-290"></a><a name="index-g_t_00e5_00be_00aa_00e7_008e_00af_00e5_0088_0097_00e8_00a1_00a8-291"></a>  如果列表最后一个cons cell的<span class="sc">cdr</span>是其他値，即不是<code>nil</code>也不是其他的cons cell，由于其打印表示将使用&lsquo;<samp><span class="samp">.</span></samp>&rsquo;，我们称这种结构为<dfn>点分列表</dfn>。这里有另
+外一种可能：某些cons cell的<span class="sc">cdr</span>可以指向列表中前面的cons cell。我们将这种结构成为<dfn>circular list</dfn>。
+
+   <p>在某些情况下，列表是真列表、循环列表或点分列表并不重要，如果程序不深入查看列表的最后一个cons cell，它不用在意。然而，某些操作列表的函数要求真列表，如果是点分列表，
+它将报错。而大多数尝试查找链表结尾的函数在处理循环列表时将产生无穷循环。
+
+   <p><a name="index-g_t_00e5_0088_0097_00e8_00a1_00a8_00e7_00bb_0093_00e6_009e_0084-292"></a>  由于大多数cons cell都作为列表的一部分。<dfn>列表结构</dfn>这个短语用来指任何由cons cell构造出的结构。
+
+   <p>任一非空真列表<var>l</var>的<span class="sc">cdr</span>是一个包含除了第一个元素的所有元素的列表。
+
+   <p>关于cons cell的读取和打印语法以及列表的&ldquo;盒子和箭头&rdquo;图示，请参考See <a href="Cons-Cell_00e7_00b1_00bb_00e5_009e_008b.html#Cons-Cell_00e7_00b1_00bb_00e5_009e_008b">Cons Cell类型</a>.。
+
+   </body></html>
+

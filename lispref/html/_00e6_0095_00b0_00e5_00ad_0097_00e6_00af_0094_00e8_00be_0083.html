@@ -1,0 +1,167 @@
+<html lang="en">
+<head>
+<title>数字比较 - GNU Emacs Lisp 参考文档</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Emacs Lisp 参考文档">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="_00e6_0095_00b0_00e5_00ad_0097.html#g_t_00e6_0095_00b0_00e5_00ad_0097" title="数字">
+<link rel="prev" href="_00e6_0095_00b0_00e5_00ad_0097_00e5_0088_00a4_00e5_00ae_009a.html#g_t_00e6_0095_00b0_00e5_00ad_0097_00e5_0088_00a4_00e5_00ae_009a" title="数字判定">
+<link rel="next" href="_00e6_0095_00b0_00e5_00ad_0097_00e8_00bd_00ac_00e6_008d_00a2.html#g_t_00e6_0095_00b0_00e5_00ad_0097_00e8_00bd_00ac_00e6_008d_00a2" title="数字转换">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+这是GNU Emacs Lisp参考文档的3.0版本，对应于Emacs23.3版本。
+
+由张东亚汉化，汉化版本为0.1。
+
+更新记录：
+
+2011/06/22：启动第二章的翻译，待完成。
+
+2011/07/02：完成第二章的翻译。
+
+2011/08/07：启动第三章的翻译。
+
+2011/09/19：完成第三章的翻译。
+
+2011/11/28：启动第四章的翻译，待完成。
+
+2012/06/23：完成lists.texi的翻译。
+Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998,
+1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software
+Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with the Invariant Sections being ``GNU General Public
+     License,'' with the Front-Cover texts being ``A GNU Manual,'' and
+     with the Back-Cover Texts as in (a) below.  A copy of the license
+     is included in the section entitled ``GNU Free Documentation
+     License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have the freedom to copy
+     and modify this GNU manual.  Buying copies from the FSF supports
+     it in developing GNU and promoting software freedom.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="%e6%95%b0%e5%ad%97%e6%af%94%e8%be%83"></a>
+<a name="g_t_00e6_0095_00b0_00e5_00ad_0097_00e6_00af_0094_00e8_00be_0083"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="_00e6_0095_00b0_00e5_00ad_0097_00e8_00bd_00ac_00e6_008d_00a2.html#g_t_00e6_0095_00b0_00e5_00ad_0097_00e8_00bd_00ac_00e6_008d_00a2">数字转换</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="_00e6_0095_00b0_00e5_00ad_0097_00e5_0088_00a4_00e5_00ae_009a.html#g_t_00e6_0095_00b0_00e5_00ad_0097_00e5_0088_00a4_00e5_00ae_009a">数字判定</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="_00e6_0095_00b0_00e5_00ad_0097.html#g_t_00e6_0095_00b0_00e5_00ad_0097">数字</a>
+<hr>
+</div>
+
+<h3 class="section">3.4 数字比较</h3>
+
+<p><a name="index-g_t_00e6_0095_00b0_00e5_00ad_0097_00e6_00af_0094_00e8_00be_0083-153"></a><a name="index-g_t_00e6_0095_00b0_00e5_00ad_0097_00e6_00af_0094_00e8_00be_0083-154"></a>
+    为测试数字的数值相等性，你通常应当使用<code>=</code>而非<code>eq</code>。有很多具有相同数值但不同的浮点数对象，
+如果你使用<code>eq</code>来比较它们，那么实际上你在比较它们是不是相同的对象。相比之下，<code>=</code>只比较对象的数
+值。
+译注：可以测试一下<code>(eq 10.0e1 100.0)</code>的结果为<code>nil</code>，而<code>(= 10.0e1 100.0)</code>的结果为<code>t</code>。
+
+   <p>当前，每个整数在Emacs Lisp中都有一个唯一的对象。因此在比较整数时<code>eq</code>与<code>=</code>是等价的。有时候使用
+<code>eq</code>来将一个未知值和整数相比显得比较方便，这是因为在这个未知值不是数字时，<code>eq</code>并不报错。相比之下，<code>=</code>
+在参数不是数字或标记时，将产生一个错误。然而，尽可能使用<code>=</code>去比较数字是一个好主意，以防我们在Emacs将来的版本中更
+改数字的表示。
+
+   <p>有时<code>equal</code>在比较数字很有用；它在两个数字的类型以及数值相等时才认为两个数字相等。相比之下，<code>=</code>则可能认为
+整数和浮点数相等。
+    译注：可以测试一下<code>(equal 0.0 0) (= 0.0 0)</code>的区别。请参考See <a href="_00e7_009b_00b8_00e7_00ad_0089_00e5_0088_00a4_00e5_00ae_009a.html#g_t_00e7_009b_00b8_00e7_00ad_0089_00e5_0088_00a4_00e5_00ae_009a">相等判定</a>.
+
+   <p>这里有另外一妙计；由于浮点数的算术运算并不准确，因此有时候检查两个浮点数是否相等是一个坏主意。通常测试它们的约等性
+更好。下面是实现这种方式的一个函数：
+
+<pre class="example">     (defvar fuzz-factor 1.0e-6)
+     (defun approx-equal (x y)
+       (or (and (= x 0) (= y 0))
+           (&lt; (/ (abs (- x y))
+                 (max (abs x) (abs y)))
+              fuzz-factor)))
+</pre>
+   <p><a name="index-Common-Lisp_00e6_00b3_00a8_00e8_00ae_00b0_002d_002d_002d_00e6_0095_00b4_00e6_0095_00b0_00e5_0092_008c_0040code_007beq_007d-155"></a><blockquote>
+<b>Common Lisp 注记:</b> 在Common Lisp中比较数字总是要求使用<code>=</code>，因为Common Lisp实现了多字整数，两个不同的整数对象可以
+具有相同的数字值。Emacs Lisp对于一个指定的值只能一个整数对象，因此具有有限的数字空间。
+</blockquote>
+
+<div class="defun">
+&mdash; Function: <b>=</b><var> number-or-marker1 number-or-marker2<a name="index-g_t_003d-156"></a></var><br>
+<blockquote><p>此函数测试其参数是否在数值上相等，如是则返回<code>t</code>，否则返回<code>nil</code>。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>eql</b><var> value1 value2<a name="index-eql-157"></a></var><br>
+<blockquote><p>除了当两个参数都是数字外，此函数与<code>eq</code>行为相似。当两个参数都是数字时，它比较它们的
+类型和值，因此<code>eql 1.0 1</code>返回<code>nil</code>，而<code>(eql 1.0 1.0)</code>以及<code>(eql 1 1)</code>则返回<code>t</code>。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>/=</b><var> number-or-marker1 number-or-marker2<a name="index-g_t_002f_003d-158"></a></var><br>
+<blockquote><p>此函数测试其参数是否在数值上相等，如是则返回<code>t</code>，否则返回<code>nil</code>。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>&lt;</b><var> number-or-marker1 number-or-marker2<a name="index-g_t_003c-159"></a></var><br>
+<blockquote><p>此函数测试其第一个参数是否严格小于第二个参数，如是则返回<code>t</code>，否则返回<code>ni</code>。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>&lt;=</b><var> number-or-marker1 number-or-marker2<a name="index-g_t_003c_003d-160"></a></var><br>
+<blockquote><p>此函数测试其第一个参数是否小于等于第二个参数，如是则返回<code>t</code>，否则返回<code>ni</code>。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>&gt;</b><var> number-or-marker1 number-or-marker2<a name="index-g_t_003e-161"></a></var><br>
+<blockquote><p>此函数测试其第一个参数是否严格大于第二个参数，如是则返回<code>t</code>，否则返回<code>ni</code>。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>&gt;=</b><var> number-or-marker1 number-or-marker2<a name="index-g_t_003e_003d-162"></a></var><br>
+<blockquote><p>此函数测试其第一个参数是否大于等于第二个参数，如是则返回<code>t</code>，否则返回<code>ni</code>。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>max</b><var> number-or-marker &amp;rest numbers-or-markers<a name="index-max-163"></a></var><br>
+<blockquote><p>此函数返回其参数中的最大参数，如果任一参数是浮点数，则返回值是浮点数，即使传参数时此参数为整数。
+
+     <pre class="example">          (max 20)
+               &rArr; 20
+          (max 1 2.5)
+               &rArr; 2.5
+          (max 1 3 2.5)
+               &rArr; 3.0
+</pre>
+        </blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>min</b><var> number-or-marker &amp;rest numbers-or-markers<a name="index-min-164"></a></var><br>
+<blockquote><p>此函数返回其参数中的最小参数，如果任一参数是浮点数，则返回值是浮点数，即使传参数时此参数为整数。
+
+     <pre class="example">          (min -4 1)
+               &rArr; -4
+</pre>
+        </blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>abs</b><var> number<a name="index-abs-165"></a></var><br>
+<blockquote><p>此函数返回<var>number</var>的绝对值。
+</p></blockquote></div>
+
+   </body></html>
+

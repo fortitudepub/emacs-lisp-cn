@@ -1,0 +1,112 @@
+<html lang="en">
+<head>
+<title>Cons Cell类型 - GNU Emacs Lisp 参考文档</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Emacs Lisp 参考文档">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="_00e7_00bc_0096_00e7_00a8_008b_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e7_00bc_0096_00e7_00a8_008b_00e7_00b1_00bb_00e5_009e_008b" title="编程类型">
+<link rel="prev" href="_00e5_00ba_008f_00e5_0088_0097_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e5_00ba_008f_00e5_0088_0097_00e7_00b1_00bb_00e5_009e_008b" title="序列类型">
+<link rel="next" href="_00e6_0095_00b0_00e7_00bb_0084_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e6_0095_00b0_00e7_00bb_0084_00e7_00b1_00bb_00e5_009e_008b" title="数组类型">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+这是GNU Emacs Lisp参考文档的3.0版本，对应于Emacs23.3版本。
+
+由张东亚汉化，汉化版本为0.1。
+
+更新记录：
+
+2011/06/22：启动第二章的翻译，待完成。
+
+2011/07/02：完成第二章的翻译。
+
+2011/08/07：启动第三章的翻译。
+
+2011/09/19：完成第三章的翻译。
+
+2011/11/28：启动第四章的翻译，待完成。
+
+2012/06/23：完成lists.texi的翻译。
+Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998,
+1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software
+Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with the Invariant Sections being ``GNU General Public
+     License,'' with the Front-Cover texts being ``A GNU Manual,'' and
+     with the Back-Cover Texts as in (a) below.  A copy of the license
+     is included in the section entitled ``GNU Free Documentation
+     License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have the freedom to copy
+     and modify this GNU manual.  Buying copies from the FSF supports
+     it in developing GNU and promoting software freedom.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Cons-Cell%e7%b1%bb%e5%9e%8b"></a>
+<a name="Cons-Cell_00e7_00b1_00bb_00e5_009e_008b"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="_00e6_0095_00b0_00e7_00bb_0084_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e6_0095_00b0_00e7_00bb_0084_00e7_00b1_00bb_00e5_009e_008b">数组类型</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="_00e5_00ba_008f_00e5_0088_0097_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e5_00ba_008f_00e5_0088_0097_00e7_00b1_00bb_00e5_009e_008b">序列类型</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="_00e7_00bc_0096_00e7_00a8_008b_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e7_00bc_0096_00e7_00a8_008b_00e7_00b1_00bb_00e5_009e_008b">编程类型</a>
+<hr>
+</div>
+
+<h4 class="subsection">2.3.6 Cons Cell和表类型</h4>
+
+<p><a name="index-g_t_00e5_00af_0084_00e5_00ad_0098_00e5_0099_00a8_00e5_009c_00b0_00e5_009d_0080_00e5_009f_009f-87"></a><a name="index-g_t_00e5_00af_0084_00e5_00ad_0098_00e5_0099_00a8_00e5_0089_00a9_00e4_00bd_0099_00e5_009f_009f-88"></a><a name="index-g_t_00e6_008c_0087_00e9_0092_0088-89"></a>
+    <dfn>cons cell</dfn>是一个具有两个槽的对象，分别称为<span class="sc">car</span>槽和<span class="sc">cdr</span>槽。每个槽都可以<dfn>持有</dfn>或<dfn>指向</dfn>任意Lisp对象。我们也用
+&ldquo;这个cons cell的<span class="sc">car</span>&rdquo;来指代该对象<span class="sc">car</span>槽持有的任意对象，对于<span class="sc">cdr</span>槽持有的对象相似，可做相似称呼。
+
+   <blockquote>
+    C程序员注意：在Lisp中，我们并不区分&ldquo;持有&rdquo;一个值和&ldquo;引用&rdquo;该值，因为在Lisp中，指针是隐式的。
+</blockquote>
+
+   <p>表是一系列的cons cell，依次通过<span class="sc">cdr</span>链接在一起，每个cons cell的<span class="sc">cdr</span>槽或者引用下一个cons cell，或者
+引用空表。对于那些操作表的函数，空表实际上是符号<code>nil</code>。（请参考See <a href="_00e5_0088_0097_00e8_00a1_00a8.html#g_t_00e5_0088_0097_00e8_00a1_00a8">列表</a>.）因为大部分cons cell都作为表的
+一部分，因此短语<dfn>表结构</dfn>被用来指代任何由cons cell组成的结构（译注：这里隐含着半句话，即&ldquo;以便用来和表做区分&rdquo;）。
+
+   <p><a name="index-g_t_00e5_008e_009f_00e5_00ad_0090-90"></a>    由于cons cell们对于表如此重要，我们也有这样一个说法，即&ldquo;不是cons cell的对象&rdquo;，这些对象被称为<dfn>原子</dfn>。
+
+   <p><a name="index-g_t_00e6_008b_00ac_00e5_008f_00b7-91"></a><a name="index-g_t_00e8_00a1_00a8_00e4_00b8_00ad_00e7_009a_0084_00e6_008b_00ac_00e5_008f_00b7_0040samp_007b_0028_0040dots_007b_007d_0029_007d-92"></a>    表的读取语法和打印表示是相等的，并且包含一个左括号，任意数量的元素以及一个右括号。以下是表的例子：
+
+<pre class="example">     (A 2 "A")            ; <span class="roman">具有三个元素的表。</span>
+     ()                   ; <span class="roman">没有元素的表（空表）。</span>
+     nil                  ; <span class="roman">没有元素的表（空表）。</span>
+     ("A ()")             ; <span class="roman">具有一个元素的表，元素是：</span><code>"A ()"</code><span class="roman">。</span>
+     (A ())               ; <span class="roman">具有两个元系的空表，元素是：</span><code>A</code><span class="roman">和空表。</span>
+     (A nil)              ; <span class="roman">同上。</span>
+     ((A B C))            ; <span class="roman">具有一个元素的表，表的元素是</span>
+                          ;   <span class="roman">一个具有三个元素的表。</span>
+</pre>
+   <p>在读取时，括号内的每个对象都变成表的一个元素。也就是说，cons cell由各个元素组成。<span class="sc">car</span>槽持有一个元素，其<span class="sc">cdr</span>引用
+表中的下一个cons cell，该cons cell持有表的下一个元素。表中最后个cons cell的<span class="sc">cdr</span>被设置为<code>nil</code>。
+
+   <p><span class="sc">car</span>和<span class="sc">cdr</span>从Lisp的历史演变而来。原始的Lisp实现运行在一个IBM&nbsp;704<!-- /@w -->计算机上，该计算机被分为两部分，分别叫作&ldquo;地址&rdquo;部分和
+&ldquo;剩余&rdquo;部分；<span class="sc">car</span>是用于取得寄存器地址部分对应内容的指令，而<span class="sc">cdr</span>则是用于取得寄存器剩余部分对应内容的指令。相比之下，&ldquo;cons cells&rdquo;用于命名
+创建它的函数<code>cons</code>，即如其名所识，construction of cells。（译注：这句不翻译，否则不易理解cons cells的意义）
+
+<ul class="menu">
+<li><a accesskey="1" href="_00e7_009b_0092_00e5_00ad_0090_00e5_009b_00be_00e8_00a7_00a3.html#g_t_00e7_009b_0092_00e5_00ad_0090_00e5_009b_00be_00e8_00a7_00a3">盒子图解</a>:               对表进行图示。
+<li><a accesskey="2" href="_00e7_0082_00b9_00e5_00af_00b9_00e8_00ae_00b0_00e6_00b3_0095.html#g_t_00e7_0082_00b9_00e5_00af_00b9_00e8_00ae_00b0_00e6_00b3_0095">点对记法</a>:               cons cells的常见语法。
+<li><a accesskey="3" href="_00e5_0085_00b3_00e8_0081_0094_00e8_00a1_00a8_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e5_0085_00b3_00e8_0081_0094_00e8_00a1_00a8_00e7_00b1_00bb_00e5_009e_008b">关联表类型</a>:             一种特殊构造的表。
+</ul>
+
+   </body></html>
+

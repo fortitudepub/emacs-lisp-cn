@@ -1,0 +1,101 @@
+<html lang="en">
+<head>
+<title>Lisp数据类型 - GNU Emacs Lisp 参考文档</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Emacs Lisp 参考文档">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="prev" href="_00e4_00bb_008b_00e7_00bb_008d.html#g_t_00e4_00bb_008b_00e7_00bb_008d" title="介绍">
+<link rel="next" href="_00e6_0095_00b0_00e5_00ad_0097.html#g_t_00e6_0095_00b0_00e5_00ad_0097" title="数字">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+这是GNU Emacs Lisp参考文档的3.0版本，对应于Emacs23.3版本。
+
+由张东亚汉化，汉化版本为0.1。
+
+更新记录：
+
+2011/06/22：启动第二章的翻译，待完成。
+
+2011/07/02：完成第二章的翻译。
+
+2011/08/07：启动第三章的翻译。
+
+2011/09/19：完成第三章的翻译。
+
+2011/11/28：启动第四章的翻译，待完成。
+
+2012/06/23：完成lists.texi的翻译。
+Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998,
+1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software
+Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with the Invariant Sections being ``GNU General Public
+     License,'' with the Front-Cover texts being ``A GNU Manual,'' and
+     with the Back-Cover Texts as in (a) below.  A copy of the license
+     is included in the section entitled ``GNU Free Documentation
+     License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have the freedom to copy
+     and modify this GNU manual.  Buying copies from the FSF supports
+     it in developing GNU and promoting software freedom.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Lisp%e6%95%b0%e6%8d%ae%e7%b1%bb%e5%9e%8b"></a>
+<a name="Lisp_00e6_0095_00b0_00e6_008d_00ae_00e7_00b1_00bb_00e5_009e_008b"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="_00e6_0095_00b0_00e5_00ad_0097.html#g_t_00e6_0095_00b0_00e5_00ad_0097">数字</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="_00e4_00bb_008b_00e7_00bb_008d.html#g_t_00e4_00bb_008b_00e7_00bb_008d">介绍</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="index.html#Top">Top</a>
+<hr>
+</div>
+
+<h2 class="chapter">2 Lisp数据类型</h2>
+
+<p><a name="index-g_t_00e5_00af_00b9_00e8_00b1_00a1-37"></a><a name="index-Lisp_00e5_00af_00b9_00e8_00b1_00a1-38"></a><a name="index-g_t_00e7_00b1_00bb_00e5_009e_008b-39"></a><a name="index-g_t_00e6_0095_00b0_00e6_008d_00ae_00e7_00b1_00bb_00e5_009e_008b-40"></a>
+    Lisp<dfn>对象</dfn>是由Lisp程序所使用或操作的一块数据，从Emacs Lisp的角度来讲，一个<dfn>类型</dfn>或<dfn>数据类型</dfn>是一些对象的集合。
+
+   <p>每一个对象至少属于一个类型。具有相同类型的对象具有相似的数据结构，并经常在相同的上下文环境中被使用。类型可以重叠，对象可以属于两到多个类型，
+因此，我们可以问对象是否属于一个特定类型，但不能说对象的类型是什么。
+
+   <p><a name="index-g_t_00e5_009f_00ba_00e7_00a1_0080_00e7_00b1_00bb_00e5_009e_008b-41"></a>    Emacs集成了一些基础的对象类型。这些类型是其他类型构造的基础，它们称为<dfn>基础类型</dfn>。每一个对象只能属于一个基础类型。这些类型包括<dfn>整型</dfn>、<dfn>浮点型</dfn>、
+<dfn>cons</dfn>、<dfn>符号</dfn>、<dfn>字符串</dfn>、<dfn>容器</dfn>、<dfn>哈希表</dfn>、<dfn>子函数</dfn>、<dfn>字节码函数</dfn>以及一些特殊类型，如<dfn>缓冲区</dfn>等与编辑相关的类型。(See <a href="_00e7_00bc_0096_00e8_00be_0091_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e7_00bc_0096_00e8_00be_0091_00e7_00b1_00bb_00e5_009e_008b">编辑类型</a>.)
+
+   <p>每一个基础类型都有一相应的Lisp函数，用来检查对象是否属于该类型。
+
+   <p>Lisp不同于其他语言，它的对象是<dfn>类型自说明</dfn>的，也即每个对象的原子类型隐含在对象自身里。例如，如果一个对象是容器类型，则不能将其做为数字进行处理，Lisp知道它属于容器，而非数字。
+
+   <p>在大多数的语言里，程序员必须声明每个变量的类型，编译器知道其类型，该类型并不由数据表示。这种声明方式在Emacs Lisp中并不存在。一个Lisp变量可以具有任何类型的数据，并且记住你存储在
+它里边的任何值及其类型等所有信息。（实际上，少数Emacs Lisp变量仅能存储特定类型的值，请参考See <a href="Variables-with-Restricted-Values.html#Variables-with-Restricted-Values">Variables with Restricted Values</a>.）。
+
+   <p>本章节将描述GNU Emacs Lisp中每个标准类型的作用、打印表示以及读取语法，如何使用这些类型，将在后面的章节进行详述。
+
+<ul class="menu">
+<li><a accesskey="1" href="_00e6_0089_0093_00e5_008d_00b0_00e8_00a1_00a8_00e7_00a4_00ba.html#g_t_00e6_0089_0093_00e5_008d_00b0_00e8_00a1_00a8_00e7_00a4_00ba">打印表示</a>:          Lisp对象如何以文本形式进行表示。
+<li><a accesskey="2" href="_00e6_00b3_00a8_00e9_0087_008a.html#g_t_00e6_00b3_00a8_00e9_0087_008a">注释</a>:             注释及其格式惯例。
+<li><a accesskey="3" href="_00e7_00bc_0096_00e7_00a8_008b_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e7_00bc_0096_00e7_00a8_008b_00e7_00b1_00bb_00e5_009e_008b">编程类型</a>:          所有Lisp系统中出现的类型。
+<li><a accesskey="4" href="_00e7_00bc_0096_00e8_00be_0091_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e7_00bc_0096_00e8_00be_0091_00e7_00b1_00bb_00e5_009e_008b">编辑类型</a>:          Emacs特定的类型。
+<li><a accesskey="5" href="_00e5_00be_00aa_00e7_008e_00af_00e5_00af_00b9_00e8_00b1_00a1.html#g_t_00e5_00be_00aa_00e7_008e_00af_00e5_00af_00b9_00e8_00b1_00a1">循环对象</a>:          循环结构的读取语法。
+<li><a accesskey="6" href="_00e7_00b1_00bb_00e5_009e_008b_00e5_0088_00a4_00e5_00ae_009a.html#g_t_00e7_00b1_00bb_00e5_009e_008b_00e5_0088_00a4_00e5_00ae_009a">类型判定</a>:          关于类型的验证函数。
+<li><a accesskey="7" href="_00e7_009b_00b8_00e7_00ad_0089_00e5_0088_00a4_00e5_00ae_009a.html#g_t_00e7_009b_00b8_00e7_00ad_0089_00e5_0088_00a4_00e5_00ae_009a">相等判定</a>:          任何两个对象的相等验证函数。
+</ul>
+
+   </body></html>
+

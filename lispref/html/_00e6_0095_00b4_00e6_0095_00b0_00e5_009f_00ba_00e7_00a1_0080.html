@@ -1,0 +1,145 @@
+<html lang="en">
+<head>
+<title>整数基础 - GNU Emacs Lisp 参考文档</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Emacs Lisp 参考文档">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="_00e6_0095_00b0_00e5_00ad_0097.html#g_t_00e6_0095_00b0_00e5_00ad_0097" title="数字">
+<link rel="next" href="_00e6_00b5_00ae_00e7_0082_00b9_00e6_0095_00b0_00e5_009f_00ba_00e7_00a1_0080.html#g_t_00e6_00b5_00ae_00e7_0082_00b9_00e6_0095_00b0_00e5_009f_00ba_00e7_00a1_0080" title="浮点数基础">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+这是GNU Emacs Lisp参考文档的3.0版本，对应于Emacs23.3版本。
+
+由张东亚汉化，汉化版本为0.1。
+
+更新记录：
+
+2011/06/22：启动第二章的翻译，待完成。
+
+2011/07/02：完成第二章的翻译。
+
+2011/08/07：启动第三章的翻译。
+
+2011/09/19：完成第三章的翻译。
+
+2011/11/28：启动第四章的翻译，待完成。
+
+2012/06/23：完成lists.texi的翻译。
+Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998,
+1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software
+Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with the Invariant Sections being ``GNU General Public
+     License,'' with the Front-Cover texts being ``A GNU Manual,'' and
+     with the Back-Cover Texts as in (a) below.  A copy of the license
+     is included in the section entitled ``GNU Free Documentation
+     License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have the freedom to copy
+     and modify this GNU manual.  Buying copies from the FSF supports
+     it in developing GNU and promoting software freedom.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="%e6%95%b4%e6%95%b0%e5%9f%ba%e7%a1%80"></a>
+<a name="g_t_00e6_0095_00b4_00e6_0095_00b0_00e5_009f_00ba_00e7_00a1_0080"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="_00e6_00b5_00ae_00e7_0082_00b9_00e6_0095_00b0_00e5_009f_00ba_00e7_00a1_0080.html#g_t_00e6_00b5_00ae_00e7_0082_00b9_00e6_0095_00b0_00e5_009f_00ba_00e7_00a1_0080">浮点数基础</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="_00e6_0095_00b0_00e5_00ad_0097.html#g_t_00e6_0095_00b0_00e5_00ad_0097">数字</a>
+<hr>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h3 class="section">3.1 整数基础</h3>
+
+<p>整数的范围取决于机器。最小范围是&minus;536870912到536870911（30位；即
+-2**29
+to
+2**29 - 1），
+但是某些机器可以提供更宽的范围。本节的许多例子假定整数具有30位。
+<a name="index-g_t_00e6_00ba_00a2_00e5_0087_00ba-127"></a>
+    Lisp读取器以包含可选的初始符号以及可选的结束句点的数字序列形式来读取整数。
+
+<pre class="example">      1               ; <span class="roman">整数1。</span>
+      1.              ; <span class="roman">整数1.</span>
+     +1               ; <span class="roman">同样是整数1。</span>
+     -1               ; <span class="roman">整数&minus;1。</span>
+      1073741825      ; <span class="roman">因为溢出了，同样是整数1。</span>
+      0               ; <span class="roman">整数0。</span>
+     -0               ; <span class="roman">整数0。</span>
+</pre>
+   <p><a name="index-g_t_00e6_008c_0087_00e5_00ae_009a_00e5_009f_00ba_00e6_0095_00b0_00e7_009a_0084_00e6_0095_00b4_00e6_0095_00b0-128"></a><a name="index-g_t_00e8_00af_00bb_00e5_008f_0096_00e6_0095_00b4_00e6_0095_00b0_00e6_0097_00b6_00e7_009a_0084_00e5_009f_00ba_00e6_0095_00b0-129"></a><a name="index-g_t_00e8_00af_00bb_00e5_008f_0096_00e6_0095_00b4_00e6_0095_00b0_00e6_0097_00b6_00e7_009a_0084_00e5_009f_00ba_00e6_0095_00b0-130"></a><a name="index-g_t_00e5_008d_0081_00e5_0085_00ad_00e8_00bf_009b_00e5_0088_00b6_00e6_0095_00b0-131"></a><a name="index-g_t_00e5_0085_00ab_00e8_00bf_009b_00e5_0088_00b6_00e6_0095_00b0-132"></a><a name="index-g_t_00e4_00bb_00a5_00e5_008d_0081_00e5_0085_00ad_00e8_00bf_009b_00e5_0088_00b6_00e3_0080_0081_00e5_0085_00ab_00e8_00bf_009b_00e5_0088_00b6_00e4_00bb_00a5_00e5_008f_008a_00e4_00ba_008c_00e8_00bf_009b_00e5_0088_00b6_00e7_009a_0084_00e6_0096_00b9_00e5_00bc_008f_00e8_00af_00bb_00e5_008f_0096_00e6_0095_00b0_00e5_00ad_0097-133"></a>    不以10为基数的整数语法使用&lsquo;<samp><span class="samp">#</span></samp>&rsquo;跟上一个表示基数的字母进行表示：&lsquo;<samp><span class="samp">b</span></samp>&rsquo;表示二进制，
+&lsquo;<samp><span class="samp">o</span></samp>&rsquo;表示八进制，&lsquo;<samp><span class="samp">x</span></samp>&rsquo;表示十六进制，或以&lsquo;<samp><var>radix</var><span class="samp">r</span></samp>&rsquo;指定特定的基数<var>radix</var>。
+指定基数的字母不区分大小写。因此&lsquo;<samp><span class="samp">#b</span><var>integer</var></samp>&rsquo;以二进制形式读取<var>integer</var>，而
+&lsquo;<samp><span class="samp">#</span><var>radix</var><span class="samp">r</span><var>integer</var></samp>&rsquo;读取以<var>radix</var>为底读取<var>integer</var>。<var>radix</var>允许的
+值为2到36。例如：
+
+<pre class="example">     #b101100 &rArr; 44
+     #o54 &rArr; 44
+     #x2c &rArr; 44
+     #24r1k &rArr; 44
+</pre>
+   <p>为更好的理解操作整数的函数，特别是位操作（参考本节see <a href="_00e4_00bd_008d_00e6_0093_008d_00e4_00bd_009c.html#g_t_00e4_00bd_008d_00e6_0093_008d_00e4_00bd_009c">位操作</a>一节），通常以二进制形式表达更为方便。
+
+   <p>在30位的整数中，十进制数5看起来是这样：
+
+<pre class="example">     00 0000  0000 0000  0000 0000  0000 0101
+</pre>
+   <p class="noindent">（我们在4位间插入空格，并在8位间插入2个空格，以便二进制数清晰易读。）
+
+   <p>整数&minus;1看起来像是这样：
+
+<pre class="example">     11 1111  1111 1111  1111 1111  1111 1111
+</pre>
+   <p class="noindent"><a name="index-g_t2_00e7_009a_0084_00e5_008f_008d_00e7_00a0_0081-134"></a>&minus;1以30位表示（这称为<dfn>2的反码</dfn>记法。）
+
+   <p>负整数，&minus;5，可以由&minus;1减4得到。在二进制中，十进制整数4是100。因此
+&minus;5看起来像这样：
+
+<pre class="example">     11 1111  1111 1111  1111 1111  1111 1011
+</pre>
+   <p>在这种实现中，最大的30位二进制数用十进制表示是536,870,911。在二进制中，它看起来是这样：
+
+<pre class="example">     01 1111  1111 1111  1111 1111  1111 1111
+</pre>
+   <p>由于算术运算并不检查整数是否越界，因此当你对536,870,911加1时，它的值是负整数&minus;536,870,912：
+
+<pre class="example">     (+ 1 536870911)
+          &rArr; -536870912
+          &rArr; 10 0000  0000 0000  0000 0000  0000 0000
+</pre>
+   <p>本章描述的大部分函数都接受代替数字参数的标记参数。（请参考See <a href="Markers.html#Markers">Markers</a>.）由于这些参数的实际参数既
+可以是数字，也可以是标记，我们将这些参数命名为<var>number-or-marker</var>。当参数的值是标记时，它的位置值将
+被使用，并忽略它所属的缓冲区。
+
+<div class="defun">
+&mdash; Variable: <b>most-positive-fixnum</b><var><a name="index-most_002dpositive_002dfixnum-135"></a></var><br>
+<blockquote><p>此变量的值代表Emacs Lisp可以处理的最大整数。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Variable: <b>most-negative-fixnum</b><var><a name="index-most_002dnegative_002dfixnum-136"></a></var><br>
+<blockquote><p>此变量的值代表Emacs Lisp可以处理的最小整数，它是负数。
+</p></blockquote></div>
+
+   <p>欲了解有效字符码点的最大值，请参考See <a href="Character-Codes.html#Character-Codes">max-char</a>.一节。
+
+   </body></html>
+

@@ -1,0 +1,95 @@
+<html lang="en">
+<head>
+<title>Ctl-字符语法 - GNU Emacs Lisp 参考文档</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Emacs Lisp 参考文档">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="_00e5_00ad_0097_00e7_00ac_00a6_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e7_00b1_00bb_00e5_009e_008b" title="字符类型">
+<link rel="prev" href="_00e4_00b8_0080_00e8_0088_00ac_00e8_00bd_00ac_00e4_00b9_0089_00e8_00af_00ad_00e6_00b3_0095.html#g_t_00e4_00b8_0080_00e8_0088_00ac_00e8_00bd_00ac_00e4_00b9_0089_00e8_00af_00ad_00e6_00b3_0095" title="一般转义语法">
+<link rel="next" href="Meta_002d_00e5_00ad_0097_00e7_00ac_00a6_00e8_00af_00ad_00e6_00b3_0095.html#Meta_002d_00e5_00ad_0097_00e7_00ac_00a6_00e8_00af_00ad_00e6_00b3_0095" title="Meta-字符语法">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+这是GNU Emacs Lisp参考文档的3.0版本，对应于Emacs23.3版本。
+
+由张东亚汉化，汉化版本为0.1。
+
+更新记录：
+
+2011/06/22：启动第二章的翻译，待完成。
+
+2011/07/02：完成第二章的翻译。
+
+2011/08/07：启动第三章的翻译。
+
+2011/09/19：完成第三章的翻译。
+
+2011/11/28：启动第四章的翻译，待完成。
+
+2012/06/23：完成lists.texi的翻译。
+Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998,
+1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software
+Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with the Invariant Sections being ``GNU General Public
+     License,'' with the Front-Cover texts being ``A GNU Manual,'' and
+     with the Back-Cover Texts as in (a) below.  A copy of the license
+     is included in the section entitled ``GNU Free Documentation
+     License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have the freedom to copy
+     and modify this GNU manual.  Buying copies from the FSF supports
+     it in developing GNU and promoting software freedom.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="Ctl-%e5%ad%97%e7%ac%a6%e8%af%ad%e6%b3%95"></a>
+<a name="Ctl_002d_00e5_00ad_0097_00e7_00ac_00a6_00e8_00af_00ad_00e6_00b3_0095"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Meta_002d_00e5_00ad_0097_00e7_00ac_00a6_00e8_00af_00ad_00e6_00b3_0095.html#Meta_002d_00e5_00ad_0097_00e7_00ac_00a6_00e8_00af_00ad_00e6_00b3_0095">Meta-字符语法</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="_00e4_00b8_0080_00e8_0088_00ac_00e8_00bd_00ac_00e4_00b9_0089_00e8_00af_00ad_00e6_00b3_0095.html#g_t_00e4_00b8_0080_00e8_0088_00ac_00e8_00bd_00ac_00e4_00b9_0089_00e8_00af_00ad_00e6_00b3_0095">一般转义语法</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="_00e5_00ad_0097_00e7_00ac_00a6_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e7_00b1_00bb_00e5_009e_008b">字符类型</a>
+<hr>
+</div>
+
+<h5 class="subsubsection">2.3.3.3 Ctl-字符语法</h5>
+
+<p><a name="index-control-characters-78"></a>    控制字符可以采用另外一种读取语法，它由问号跟上一个反斜线加上脱字符再加上相应的非控制字字符（大小写皆可）。例如，&lsquo;<samp><span class="samp">?\^I</span></samp>&rsquo;有&lsquo;<samp><span class="samp">?\^i</span></samp>&rsquo;均是控制字符
+<kbd>C-i</kbd>的有效读取语法，其相应的整数值是9。
+
+   <p>除了&lsquo;<samp><span class="samp">^</span></samp>&rsquo;外，你还可以使用&lsquo;<samp><span class="samp">C-</span></samp>&rsquo;来替代，因此&lsquo;<samp><span class="samp">?\C-i</span></samp>&rsquo;和&lsquo;<samp><span class="samp">?\^I</span></samp>&rsquo;以及&lsquo;<samp><span class="samp">?\^i</span></samp>&rsquo;等效。
+
+<pre class="example">     ?\^I &rArr; 9     ?\C-I &rArr; 9
+</pre>
+   <p>在字符串和缓冲区中，只有在那些<acronym>ASCII</acronym>中存在的控制字符才允许出现。但考虑到键盘输入的需求，你可以用&lsquo;<samp><span class="samp">C-</span></samp>&rsquo;将任意字符转换为控制字符，这些非
+<acronym>ASCII</acronym>控制字符的编码除对应的非控制字符外，还包括被设置上的第
+2**26
+位，普通的终闻风而动无法产生非<acronym>ASCII</acronym>字符，但在X或者其他窗口系统下，你可以很容易的构造它们。
+
+   <p>由于历史原因，Emacs将&lt;DEL&gt;字符与<kbd>?</kbd>控制字符（译注：即&lsquo;<samp><span class="samp">?\C-?</span></samp>&rsquo;）视为等价字符。（译注：感兴趣的朋友不妨试下，在Emacs中,Ctl-?与DEL键的作用是相同的：））
+
+<pre class="example">     ?\^? &rArr; 127     ?\C-? &rArr; 127
+</pre>
+   <p class="noindent">因此，当前不可能表示在X窗口系统下的有效按键<kbd>Control-?</kbd>，由于大量的Lisp文件用这样的方式引用&lt;DEL&gt;，因此很难改变这个问题。
+
+   <p>在表示文件或字符串的控制字符时，我们推荐用&lsquo;<samp><span class="samp">^</span></samp>&rsquo;那样的语法，而在处理键盘输入的控制字符时，我们倾向于使用&lsquo;<samp><span class="samp">C-</span></samp>&rsquo;语法，无论采用哪种语法，都不会对程序的意义产生任
+何影响，但却可以指导用户更好的理解该程序。
+
+   </body></html>
+

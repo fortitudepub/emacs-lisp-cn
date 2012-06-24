@@ -1,0 +1,127 @@
+<html lang="en">
+<head>
+<title>函数描述示例 - GNU Emacs Lisp 参考文档</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Emacs Lisp 参考文档">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="_00e6_008f_008f_00e8_00bf_00b0_00e4_00bf_00a1_00e6_0081_00af_00e6_00a0_00bc_00e5_00bc_008f.html#g_t_00e6_008f_008f_00e8_00bf_00b0_00e4_00bf_00a1_00e6_0081_00af_00e6_00a0_00bc_00e5_00bc_008f" title="描述信息格式">
+<link rel="next" href="_00e5_008f_0098_00e9_0087_008f_00e6_008f_008f_00e8_00bf_00b0_00e7_00a4_00ba_00e4_00be_008b.html#g_t_00e5_008f_0098_00e9_0087_008f_00e6_008f_008f_00e8_00bf_00b0_00e7_00a4_00ba_00e4_00be_008b" title="变量描述示例">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+这是GNU Emacs Lisp参考文档的3.0版本，对应于Emacs23.3版本。
+
+由张东亚汉化，汉化版本为0.1。
+
+更新记录：
+
+2011/06/22：启动第二章的翻译，待完成。
+
+2011/07/02：完成第二章的翻译。
+
+2011/08/07：启动第三章的翻译。
+
+2011/09/19：完成第三章的翻译。
+
+2011/11/28：启动第四章的翻译，待完成。
+
+2012/06/23：完成lists.texi的翻译。
+Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998,
+1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software
+Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with the Invariant Sections being ``GNU General Public
+     License,'' with the Front-Cover texts being ``A GNU Manual,'' and
+     with the Back-Cover Texts as in (a) below.  A copy of the license
+     is included in the section entitled ``GNU Free Documentation
+     License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have the freedom to copy
+     and modify this GNU manual.  Buying copies from the FSF supports
+     it in developing GNU and promoting software freedom.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="%e5%87%bd%e6%95%b0%e6%8f%8f%e8%bf%b0%e7%a4%ba%e4%be%8b"></a>
+<a name="g_t_00e5_0087_00bd_00e6_0095_00b0_00e6_008f_008f_00e8_00bf_00b0_00e7_00a4_00ba_00e4_00be_008b"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="_00e5_008f_0098_00e9_0087_008f_00e6_008f_008f_00e8_00bf_00b0_00e7_00a4_00ba_00e4_00be_008b.html#g_t_00e5_008f_0098_00e9_0087_008f_00e6_008f_008f_00e8_00bf_00b0_00e7_00a4_00ba_00e4_00be_008b">变量描述示例</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="_00e6_008f_008f_00e8_00bf_00b0_00e4_00bf_00a1_00e6_0081_00af_00e6_00a0_00bc_00e5_00bc_008f.html#g_t_00e6_008f_008f_00e8_00bf_00b0_00e4_00bf_00a1_00e6_0081_00af_00e6_00a0_00bc_00e5_00bc_008f">描述信息格式</a>
+<hr>
+</div>
+
+<h5 class="subsubsection">1.3.7.1 函数描述示例</h5>
+
+<p><a name="index-g_t_00e5_0087_00bd_00e6_0095_00b0_00e6_008f_008f_00e8_00bf_00b0-23"></a><a name="index-g_t_00e5_0091_00bd_00e4_00bb_00a4_00e6_008f_008f_00e8_00bf_00b0-24"></a><a name="index-g_t_00e5_00ae_008f_00e6_008f_008f_00e8_00bf_00b0-25"></a><a name="index-g_t_00e7_0089_00b9_00e6_00ae_008a_00e5_009e_008b_00e6_008f_008f_00e8_00bf_00b0-26"></a>
+    在函数描述中，首先是函数的名称，跟着是参数名称列表，这些参数名称也将用在函数体中，代表参数的值。
+    在参数列表中，关键字<code>&amp;optional</code>表示后面的参数（称为可选参数）可以被忽略，被忽略的参数的值默认为<code>nil</code>，注意在调用函数时不要加
+<code>&amp;optional</code>；而关键字<code>&amp;rest</code>（后面必须只跟一个参数，也即说明<code>&amp;rest</code>必须出现在最后一个参数的前面）表示在调用时，从<code>&amp;rest</code>
+所在位置开始，可以传递任意参数，这些任意参数将被合成在一个表中，作为单个参数（称为剩余参数）传递给函数，同样，在调用函数时不要加<code>&amp;rest</code>。
+
+   <p>下面是一个虚构的函数<code>foo</code>的描述：
+
+<div class="defun">
+&mdash; Function: <b>foo</b><var> integer1 &amp;optional integer2 &amp;rest integers<a name="index-foo-27"></a></var><br>
+<blockquote><p>    函数<code>foo</code>从<var>integer2</var>中减去<var>integer1</var>，然而将<var>integers2</var>表中的数值累加到的结果中，如果<var>integer2</var>未提供，将用默认值19替代它。
+     <pre class="example">          (foo 1 5 3 9)
+               &rArr; 16
+          (foo 5)
+               &rArr; 14
+</pre>
+        <p>更直观的描述，
+     <pre class="example">          (foo <var>w</var> <var>x</var> <var>y</var>...)
+          ==
+          (+ (- <var>x</var> <var>w</var>) <var>y</var>...)
+</pre>
+        </blockquote></div>
+
+   <p>任何参数，如果其命名包含类型名（如<var>integer</var>、<var>integer1</var>或<var>buffer</var>），通常表示该参数需要是该类型，而复数的命名（如<var>buffers</var>）
+通常表示一个拥有该类型对象的表。参数指名的<var>object</var>可以是任意类型（详细的类型列表，请查阅See <a href="Lisp_00e6_0095_00b0_00e6_008d_00ae_00e7_00b1_00bb_00e5_009e_008b.html#Lisp_00e6_0095_00b0_00e6_008d_00ae_00e7_00b1_00bb_00e5_009e_008b">Lisp数据类型</a>.)，其他方式命名的参数（如<var>new-file</var>）
+将在函数描述中进行特别讨论。在某些章节中，一些函数参数的共性描述，将在前面首先描述。
+
+   <p>对于可选和剩余参数更为完整的描述，请参考See <a href="Lambda-Expressions.html#Lambda-Expressions">Lambda Expressions</a>.。
+
+   <p>命令、宏和特殊型的描述也采用上述形式，但字`Function'将被替换为对应的`Command'、`Macro'或`Special Form'，命令是可以被交互式调用的
+简单函数，宏处理参数的方式和函数不同（参数不进行求值），但仍用和函数相同的形式进行描述。
+
+   <p>特殊型的描述用一种更为复杂的记法来指定可选和重复参数，这是因为它可以将参数列表用更为复杂的方式进行分解。&lsquo;<samp><span class="samp">[</span><var>optional-arg</var><span class="samp">]</span></samp>&rsquo;
+说明那个<var>optional-arg</var>是可选的，而&lsquo;<samp><var>repeated-args</var><span class="samp">...</span></samp>&rsquo;代表零或多个参数，括号用来将若干个参数组成有层次的表结构。下面是一个
+示例：
+
+<div class="defun">
+&mdash; Special Form: <b>count-loop</b> (<var>var </var>[<var>from to </var>[<var>inc</var>]])<var> body<small class="dots">...</small><a name="index-count_002dloop-28"></a></var><br>
+<blockquote><p>    这个虚构的特殊型实现了一个循环，每次循环将执行<var>body</var>所表示的型，并自增变量<var>var</var>，在第一次循环中，变量的值为<var>from</var>的值，在后续的操作中
+，变量值每次自增（或者按<var>inc</var>的值指定的步长自增），循环将在变量<var>var</var>的值等于<var>to</var>的值时终止，下面是一个示例：
+     <pre class="example">          (count-loop (i 0 10)
+            (prin1 i) (princ " ")
+            (prin1 (aref vector i))
+            (terpri))
+</pre>
+        <p>如果<var>from</var>和<var>to</var>被忽略，在循环执行前，<var>var</var>将被绑定到<var>nil</var>，循环将在<var>var</var>的值非空时终止，下面是一个示例：
+     <pre class="example">          (count-loop (done)
+            (if (pending)
+                (fixit)
+              (setq done t)))
+</pre>
+        <p>在这个特殊型中，变量<var>from</var>和<var>to</var>是可选的，但必须同时存在或同时忽略，在它们同时存在，<var>inc</var>成为可选参数，这些参数和<var>var</var>
+一起，用括号形成一个表，用来和组成此特殊型的<var>body</var>区分开来。
+</p></blockquote></div>
+
+   </body></html>
+

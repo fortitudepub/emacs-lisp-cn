@@ -1,0 +1,97 @@
+<html lang="en">
+<head>
+<title>编程类型 - GNU Emacs Lisp 参考文档</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Emacs Lisp 参考文档">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Lisp_00e6_0095_00b0_00e6_008d_00ae_00e7_00b1_00bb_00e5_009e_008b.html#Lisp_00e6_0095_00b0_00e6_008d_00ae_00e7_00b1_00bb_00e5_009e_008b" title="Lisp数据类型">
+<link rel="prev" href="_00e6_00b3_00a8_00e9_0087_008a.html#g_t_00e6_00b3_00a8_00e9_0087_008a" title="注释">
+<link rel="next" href="_00e7_00bc_0096_00e8_00be_0091_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e7_00bc_0096_00e8_00be_0091_00e7_00b1_00bb_00e5_009e_008b" title="编辑类型">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+这是GNU Emacs Lisp参考文档的3.0版本，对应于Emacs23.3版本。
+
+由张东亚汉化，汉化版本为0.1。
+
+更新记录：
+
+2011/06/22：启动第二章的翻译，待完成。
+
+2011/07/02：完成第二章的翻译。
+
+2011/08/07：启动第三章的翻译。
+
+2011/09/19：完成第三章的翻译。
+
+2011/11/28：启动第四章的翻译，待完成。
+
+2012/06/23：完成lists.texi的翻译。
+Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998,
+1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software
+Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with the Invariant Sections being ``GNU General Public
+     License,'' with the Front-Cover texts being ``A GNU Manual,'' and
+     with the Back-Cover Texts as in (a) below.  A copy of the license
+     is included in the section entitled ``GNU Free Documentation
+     License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have the freedom to copy
+     and modify this GNU manual.  Buying copies from the FSF supports
+     it in developing GNU and promoting software freedom.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="%e7%bc%96%e7%a8%8b%e7%b1%bb%e5%9e%8b"></a>
+<a name="g_t_00e7_00bc_0096_00e7_00a8_008b_00e7_00b1_00bb_00e5_009e_008b"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="_00e7_00bc_0096_00e8_00be_0091_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e7_00bc_0096_00e8_00be_0091_00e7_00b1_00bb_00e5_009e_008b">编辑类型</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="_00e6_00b3_00a8_00e9_0087_008a.html#g_t_00e6_00b3_00a8_00e9_0087_008a">注释</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Lisp_00e6_0095_00b0_00e6_008d_00ae_00e7_00b1_00bb_00e5_009e_008b.html#Lisp_00e6_0095_00b0_00e6_008d_00ae_00e7_00b1_00bb_00e5_009e_008b">Lisp数据类型</a>
+<hr>
+</div>
+
+<h3 class="section">2.3 编程类型</h3>
+
+<p><a name="index-g_t_00e7_00bc_0096_00e7_00a8_008b_00e7_00b1_00bb_00e5_009e_008b-48"></a>
+    在Emacs Lisp中，有两类常见的类型，即用于Lisp编程的类型以及与编辑有关的类型，前者在许多Lisp实现中以各种形式存在，而后者则是Emacs Lisp特有的。
+
+<ul class="menu">
+<li><a accesskey="1" href="_00e6_0095_00b4_00e6_0095_00b0_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e6_0095_00b4_00e6_0095_00b0_00e7_00b1_00bb_00e5_009e_008b">整数类型</a>:               不包含分数部分的数字。
+<li><a accesskey="2" href="_00e6_00b5_00ae_00e7_0082_00b9_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e6_00b5_00ae_00e7_0082_00b9_00e7_00b1_00bb_00e5_009e_008b">浮点类型</a>:               包含分数部分的数字，具有更大的值域。
+<li><a accesskey="3" href="_00e5_00ad_0097_00e7_00ac_00a6_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e7_00b1_00bb_00e5_009e_008b">字符类型</a>:               字母、数字以及控制字符的表示。
+<li><a accesskey="4" href="_00e7_00ac_00a6_00e5_008f_00b7_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e7_00ac_00a6_00e5_008f_00b7_00e7_00b1_00bb_00e5_009e_008b">符号类型</a>:               多用途的对象，用于引用函数、变量或者属性表，具有唯一的标识。
+<li><a accesskey="5" href="_00e5_00ba_008f_00e5_0088_0097_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e5_00ba_008f_00e5_0088_0097_00e7_00b1_00bb_00e5_009e_008b">序列类型</a>:               表和数组都被归为序列。
+<li><a accesskey="6" href="Cons-Cell_00e7_00b1_00bb_00e5_009e_008b.html#Cons-Cell_00e7_00b1_00bb_00e5_009e_008b">Cons Cell类型</a>:         Cons cells,和表(由Cons cell组成)。
+<li><a accesskey="7" href="_00e6_0095_00b0_00e7_00bb_0084_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e6_0095_00b0_00e7_00bb_0084_00e7_00b1_00bb_00e5_009e_008b">数组类型</a>:               数据包括字符串和容器。
+<li><a accesskey="8" href="_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e7_00b1_00bb_00e5_009e_008b">字符串类型</a>:             有效的字符数组。
+<li><a accesskey="9" href="_00e5_00ae_00b9_00e5_0099_00a8_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e5_00ae_00b9_00e5_0099_00a8_00e7_00b1_00bb_00e5_009e_008b">容器类型</a>:               一维数组。
+<li><a href="_00e5_00ad_0097_00e7_00ac_00a6_00e8_00a1_00a8_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e8_00a1_00a8_00e7_00b1_00bb_00e5_009e_008b">字符表类型</a>:             由字符索引的稀松一维数组。
+<li><a href="_00e5_00b8_0083_00e5_00b0_0094_00e5_00ae_00b9_00e5_0099_00a8_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e5_00b8_0083_00e5_00b0_0094_00e5_00ae_00b9_00e5_0099_00a8_00e7_00b1_00bb_00e5_009e_008b">布尔容器类型</a>:           由<code>t</code>或<code>nil</code>组成的一维数组。
+<li><a href="_00e5_0093_0088_00e5_00b8_008c_00e8_00a1_00a8_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e5_0093_0088_00e5_00b8_008c_00e8_00a1_00a8_00e7_00b1_00bb_00e5_009e_008b">哈希表类型</a>:             超快的查找表。
+<li><a href="_00e5_0087_00bd_00e6_0095_00b0_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e5_0087_00bd_00e6_0095_00b0_00e7_00b1_00bb_00e5_009e_008b">函数类型</a>:               一块被调用的可执行代码。
+<li><a href="_00e5_00ae_008f_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e5_00ae_008f_00e7_00b1_00bb_00e5_009e_008b">宏类型</a>:                用于将表达式展开成另外一个更基本但不美观的表达式的方法。
+<li><a href="_00e5_008e_009f_00e5_00a7_008b_00e5_0087_00bd_00e6_0095_00b0_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e5_008e_009f_00e5_00a7_008b_00e5_0087_00bd_00e6_0095_00b0_00e7_00b1_00bb_00e5_009e_008b">原始函数类型</a>:           由C语言写成的函数，在Lisp程序中调用。
+<li><a href="_00e5_00ad_0097_00e8_008a_0082_00e7_00a0_0081_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e5_00ad_0097_00e8_008a_0082_00e7_00a0_0081_00e7_00b1_00bb_00e5_009e_008b">字节码类型</a>:             Lisp写成的函数，编译后的对象。
+<li><a href="_00e8_0087_00aa_00e5_008a_00a8_00e5_008a_00a0_00e8_00bd_00bd_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e8_0087_00aa_00e5_008a_00a8_00e5_008a_00a0_00e8_00bd_00bd_00e7_00b1_00bb_00e5_009e_008b">自动加载类型</a>:           自动加载较少使用的函数。
+</ul>
+
+   </body></html>
+

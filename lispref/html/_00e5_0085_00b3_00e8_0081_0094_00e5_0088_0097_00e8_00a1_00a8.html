@@ -1,0 +1,289 @@
+<html lang="en">
+<head>
+<title>关联列表 - GNU Emacs Lisp 参考文档</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Emacs Lisp 参考文档">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="_00e5_0088_0097_00e8_00a1_00a8.html#g_t_00e5_0088_0097_00e8_00a1_00a8" title="列表">
+<link rel="prev" href="_00e9_009b_0086_00e5_0090_0088_00e4_00b8_008e_00e5_0088_0097_00e8_00a1_00a8.html#g_t_00e9_009b_0086_00e5_0090_0088_00e4_00b8_008e_00e5_0088_0097_00e8_00a1_00a8" title="集合与列表">
+<link rel="next" href="_00e7_008e_00af.html#g_t_00e7_008e_00af" title="环">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+这是GNU Emacs Lisp参考文档的3.0版本，对应于Emacs23.3版本。
+
+由张东亚汉化，汉化版本为0.1。
+
+更新记录：
+
+2011/06/22：启动第二章的翻译，待完成。
+
+2011/07/02：完成第二章的翻译。
+
+2011/08/07：启动第三章的翻译。
+
+2011/09/19：完成第三章的翻译。
+
+2011/11/28：启动第四章的翻译，待完成。
+
+2012/06/23：完成lists.texi的翻译。
+Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998,
+1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software
+Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with the Invariant Sections being ``GNU General Public
+     License,'' with the Front-Cover texts being ``A GNU Manual,'' and
+     with the Back-Cover Texts as in (a) below.  A copy of the license
+     is included in the section entitled ``GNU Free Documentation
+     License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have the freedom to copy
+     and modify this GNU manual.  Buying copies from the FSF supports
+     it in developing GNU and promoting software freedom.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="%e5%85%b3%e8%81%94%e5%88%97%e8%a1%a8"></a>
+<a name="g_t_00e5_0085_00b3_00e8_0081_0094_00e5_0088_0097_00e8_00a1_00a8"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="_00e7_008e_00af.html#g_t_00e7_008e_00af">环</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="_00e9_009b_0086_00e5_0090_0088_00e4_00b8_008e_00e5_0088_0097_00e8_00a1_00a8.html#g_t_00e9_009b_0086_00e5_0090_0088_00e4_00b8_008e_00e5_0088_0097_00e8_00a1_00a8">集合与列表</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="_00e5_0088_0097_00e8_00a1_00a8.html#g_t_00e5_0088_0097_00e8_00a1_00a8">列表</a>
+<hr>
+</div>
+
+<h3 class="section">5.8 关联列表</h3>
+
+<p><a name="index-g_t_00e5_0085_00b3_00e8_0081_0094_00e5_0088_0097_00e8_00a1_00a8-358"></a><a name="index-alist-359"></a>
+  一个<dfn>关联列表｝，或简记为alist，记录了关键字到值的一个映射。它是一个包含称为关联的cons cell的列表：
+每个cons cell的</dfn><span class="sc">car</span><dfn>是关键字，而</dfn><span class="sc">cdr</span><dfn>是关联值。<a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>
+
+   <p>　下面是关联列表的一个例子。关键字</dfn><code>pine</code><dfn>关联值</dfn><code>cones</code><dfn>；关键字</dfn><code>oak</code><dfn>关联</dfn><code>acrons</code><dfn>；而关键字</dfn><code>maple</code><dfn>
+关联</dfn><code>seeds</code><dfn>。
+
+<pre class="example">     ((pine . cones)
+      (oak . acorns)
+      (maple . seeds))
+</pre>
+   <p>关联列中的关键字和值可以是任意Lisp对象。例如，在下面的关联列表中，</dfn><code>a</code><dfn>与数字</dfn><code>1</code><dfn>关联，而字符串</dfn><code>"b"</code><dfn>则与</dfn><em>列表</em>
+<code>(2 3)</code><dfn>关联，该列表是关联列表元素的</dfn><span class="sc">cdr</span><dfn>。
+
+<pre class="example">     ((a . 1) ("b" 2 3))
+</pre>
+   <p>有时最好将关联值存在元素的</dfn><span class="sc">cdr</span><dfn>的</dfn><span class="sc">car</span><dfn>处。下面是这种关联列表的一个例子：
+
+<pre class="example">     ((rose red) (lily white) (buttercup yellow))
+</pre>
+   <p class="noindent">这里我们将</dfn><code>red</code><dfn>当作与</dfn><code>rose</code><dfn>关键的值。这类关联列表的好处之一就是你可以将其他相关信息&mdash;即使是一个包含其他项目的列表&mdash;
+存储在</dfn><span class="sc">cdr</span><dfn>的</dfn><span class="sc">cdr</span><dfn>中。一个坏处则是你不能用</dfn><code>rassq</code><dfn>（见下）来查找包含指定值的元素。当这些考虑都不重要时，则可视口味选择，
+只要你对任意关联列表都考虑完备。
+
+   <p>上面的属性列表可以被认为关联值存储在元素的</dfn><span class="sc">cdr</span><dfn>处；与</dfn><code>rose</code><dfn>关联的值是列表</dfn><code>(red)</code><dfn>。
+
+   <p>关联列表通常用于存储那些你可能存储在栈上的信息，因为新的关联关系可以轻松地添加在列表前面。当在关联列表中以指定关键字查找关联时，
+如果有多个匹配结果，第一次查找到的结果将被返回。
+
+   <p>在Emacs Lisp中，如果关联列表中的元素不是cons cell时它产</dfn><em>不</em><dfn>是一个错误。关联列表搜索函数简单地忽略这些元素。许多Lisp版本
+在这种情况下都触发错误。
+
+   <p>注意在某些方面属性列表与关联列表相似。在每个关键字只能出现一次时，属性列表和关联列表行为相似。关于属性列表和关联列表的比较，请参
+考See <a href="Property-Lists.html#Property-Lists">Property Lists</a>.一节。
+
+<div class="defun">
+&mdash; Function: </dfn><b>assoc</b><var> key alist<a name="index-assoc-360"></a></var><dfn><br>
+<blockquote><p>此函数返回</dfn><var>key</var><dfn>在</dfn><var>alist</var><dfn>中的首次关联，使用{equal</dfn>来比较关联列表中的元素和<var>key</var>（see <a href="_00e7_009b_00b8_00e7_00ad_0089_00e5_0088_00a4_00e5_00ae_009a.html#g_t_00e7_009b_00b8_00e7_00ad_0089_00e5_0088_00a4_00e5_00ae_009a">相等判定</a>.）。
+强果在<var>alist</var>中没有元素的<span class="sc">car</span>和<var>key</var>用<code>equal</code>比较相等，则返回<code>nil</code>。
+
+        <p>例如：
+
+     <pre class="smallexample">          (setq trees '((pine . cones) (oak . acorns) (maple . seeds)))
+               &rArr; ((pine . cones) (oak . acorns) (maple . seeds))
+          (assoc 'oak trees)
+               &rArr; (oak . acorns)
+          (cdr (assoc 'oak trees))
+               &rArr; acorns
+          (assoc 'birch trees)
+               &rArr; nil
+</pre>
+        <p>下面是另外一个例子，该例子中关键了和值都不是符号：
+
+     <pre class="smallexample">          (setq needles-per-cluster
+                '((2 "Austrian Pine" "Red Pine")
+                  (3 "Pitch Pine")
+                  (5 "White Pine")))
+          
+          (cdr (assoc 3 needles-per-cluster))
+               &rArr; ("Pitch Pine")
+          (cdr (assoc 2 needles-per-cluster))
+               &rArr; ("Austrian Pine" "Red Pine")
+</pre>
+        </blockquote></div>
+
+   <p>函数<code>assoc-string</code>和<code>assoc</code>非常相似，除了它忽略字符串的某些差异。
+See <a href="_00e6_0096_0087_00e6_009c_00ac_00e6_00af_0094_00e8_00be_0083.html#g_t_00e6_0096_0087_00e6_009c_00ac_00e6_00af_0094_00e8_00be_0083">文本比较</a>.。
+
+<div class="defun">
+&mdash; Function: <b>rassoc</b><var> value alist<a name="index-rassoc-361"></a></var><br>
+<blockquote><p>此函数返回具有<var>alist</var>中具有值为<var>value</var>的首次关联。如果<var>alist</var>中没有关联的<span class="sc">cdr</span>
+和<var>value</var>用<code>equal</code>比较相等，则返回<code>nil</code>。
+
+        <p><code>rassoc</code>和<code>assoc</code>相似，除了它比较<var>alist</var>中每个关联的<span class="sc">cdr</span>，而不是<span class="sc">car</span>。
+你可以将它当作&ldquo;反向<code>assoc</code>&rdquo;，根据指定值来找key。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>assq</b><var> key alist<a name="index-assq-362"></a></var><br>
+<blockquote><p>此函数与<code>assoc</code>相似，它返回在<var>alist</var>中与<var>key</var>的第一个关联，但它使用<code>eq</code>而不是
+<code>equal</code>来比较。<code>assq</code>在<var>alist</var>中没有关联的<span class="sc">car</span>与<var>key</var>用<code>eq</code>比较相等
+时返回<code>nil</code>。这个函数用的比<code>assoc</code>要频繁，因为<code>eq</code>比<code>equal</code>要快，并且大部分
+关联列表使用符号做关键字。
+See <a href="_00e7_009b_00b8_00e7_00ad_0089_00e5_0088_00a4_00e5_00ae_009a.html#g_t_00e7_009b_00b8_00e7_00ad_0089_00e5_0088_00a4_00e5_00ae_009a">相等判定</a>.
+
+     <pre class="smallexample">          (setq trees '((pine . cones) (oak . acorns) (maple . seeds)))
+               &rArr; ((pine . cones) (oak . acorns) (maple . seeds))
+          (assq 'pine trees)
+               &rArr; (pine . cones)
+</pre>
+        <p>另一方面，<code>assq</code>对于关键字不是符号的关联列表则不那么有用：
+
+     <pre class="smallexample">          (setq leaves
+                '(("simple leaves" . oak)
+                  ("compound leaves" . horsechestnut)))
+          
+          (assq "simple leaves" leaves)
+               &rArr; nil
+          (assoc "simple leaves" leaves)
+               &rArr; ("simple leaves" . oak)
+</pre>
+        </blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>rassq</b><var> value alist<a name="index-rassq-363"></a></var><br>
+<blockquote><p>此函数返回<var>alist</var>中值为<var>value</var>的第一个关联。它在<var>alist</var>中没有<span class="sc">cdr</span>和<var>value</var>
+用<code>eq</code>比较相等的关联时返回<code>nil</code>。
+
+        <p><code>rassq</code>和<code>assq</code>相似，除了它比较<var>alist</var>中每个关联的<span class="sc">cdr</span>，而不是<span class="sc">car</span>。
+你可以将它当作&ldquo;反向<code>assoq</code>&rdquo;，根据指定值来找key。
+
+        <p>例如：
+
+     <pre class="smallexample">          (setq trees '((pine . cones) (oak . acorns) (maple . seeds)))
+          
+          (rassq 'acorns trees)
+               &rArr; (oak . acorns)
+          (rassq 'spores trees)
+               &rArr; nil
+</pre>
+        <p><code>rassq</code>不能用来搜索存在元素的<span class="sc">cdr</span>的<span class="sc">car</span>里的值：
+
+     <pre class="smallexample">          (setq colors '((rose red) (lily white) (buttercup yellow)))
+          
+          (rassq 'white colors)
+               &rArr; nil
+</pre>
+        <p>在此情况下，关联<code>(lily white)</code>的<span class="sc">cdr</span>并不是符号<code>white</code>，而是列表<code>(white)</code>。
+这在关联列表使用点分记法时更加清楚：
+
+     <pre class="smallexample">          (lily white) == (lily . (white))
+</pre>
+        </blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>assoc-default</b><var> key alist &amp;optional test default<a name="index-assoc_002ddefault-364"></a></var><br>
+<blockquote><p>此函数在<var>alist</var>中搜索<var>key</var>的一个匹配。对于<var>alist</var>的每个元素，它用<var>key</var>和元素（如果它是一个原子）或
+其<span class="sc">car</span>（如果它是一个cons）比较，并提供两个参数调用<var>test</var>：元素或其<span class="sc">car</span>，以及<var>key</var>。它以这样的方式进行
+传递参数以便你对于那些包含正则表达式（参考see <a href="Regexp-Search.html#Regexp-Search">Regexp Search</a>.）的关联列表可以使用<code>string-match</code>来获取有用结果。
+如果<var>test</var>被忽略或为<code>nil</code>，它将使用<code>equal</code>进行比较。
+
+        <p>如果关联列表中的一个元素基于这个标准匹配到<var>key</var>，那么<code>assoc-default</code>返回基于这个元素的一个值。如果该元素是一个
+cons，那么值是该元素的<span class="sc">cdr</span>。否则，返回值是<var>default</var>。
+
+        <p>如果没有元素匹配到<var>key</var>，<code>assoc-default</code>返回<code>nil</code>。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>copy-alist</b><var> alist<a name="index-copy_002dalist-365"></a></var><br>
+<blockquote><p><a name="index-g_t_00e6_008b_00b7_00e8_00b4_009d_00e5_0085_00b3_00e8_0081_0094_00e5_0088_0097_00e8_00a1_00a8-366"></a>此函数返回<var>alist</var>的两级深拷贝：它为每个关联创建一个新拷贝，以便你可以新关联列表中的关联而避免改变旧的。
+
+     <pre class="smallexample">          (setq needles-per-cluster
+                '((2 . ("Austrian Pine" "Red Pine"))
+                  (3 . ("Pitch Pine"))
+                  (5 . ("White Pine"))))
+          &rArr;
+          ((2 "Austrian Pine" "Red Pine")
+           (3 "Pitch Pine")
+           (5 "White Pine"))
+          
+          (setq copy (copy-alist needles-per-cluster))
+          &rArr;
+          ((2 "Austrian Pine" "Red Pine")
+           (3 "Pitch Pine")
+           (5 "White Pine"))
+          
+          (eq needles-per-cluster copy)
+               &rArr; nil
+          (equal needles-per-cluster copy)
+               &rArr; t
+          (eq (car needles-per-cluster) (car copy))
+               &rArr; nil
+          (cdr (car (cdr needles-per-cluster)))
+               &rArr; ("Pitch Pine")
+          (eq (cdr (car (cdr needles-per-cluster)))
+              (cdr (car (cdr copy))))
+               &rArr; t
+</pre>
+        <p>此例子演示了<code>copy-alist</code>如何使得在不影响另一个拷贝（译注：可以是原关联列表）的情况下修改拷贝中的关联：
+
+     <pre class="smallexample">          (setcdr (assq 3 copy) '("Martian Vacuum Pine"))
+          (cdr (assq 3 needles-per-cluster))
+               &rArr; ("Pitch Pine")
+</pre>
+        </blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>assq-delete-all</b><var> key alist<a name="index-assq_002ddelete_002dall-367"></a></var><br>
+<blockquote><p>此函数从<var>alist</var>中移除所有那些<span class="sc">car</span>与<var>key</var>用<code>eq</code>比较相等的元素，像你使用<code>delq</code>来逐一删除
+这些元素一样。它返回变短后的关联列表，并且通常修改<var>alist</var>的原有列表结构。为了正确的结果，请使用<code>assq-delete-all</code>
+的返回结果，而不是查看<var>alist</var>保存的值。
+
+     <pre class="example">          (setq alist '((foo 1) (bar 2) (foo 3) (lose 4)))
+               &rArr; ((foo 1) (bar 2) (foo 3) (lose 4))
+          (assq-delete-all 'foo alist)
+               &rArr; ((bar 2) (lose 4))
+          alist
+               &rArr; ((foo 1) (bar 2) (lose 4))
+</pre>
+        </blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>rassq-delete-all</b><var> value alist<a name="index-rassq_002ddelete_002dall-368"></a></var><br>
+<blockquote><p>此函数从<var>alist</var>中移除所有那些<span class="sc">cdr</span>与<var>key</var>用<code>eq</code>比较相等的元素。它返回变短后的关联列表，并且通常修改
+<var>alist</var>的原有列表结构。<code>rassq-delete-all</code>和<code>assq-delete-all</code>相似，除了它比较<var>alist</var>中每个关
+联的<span class="sc">cdr</span>，而不是<span class="sc">car</span>。
+</p></blockquote></div>
+
+   <div class="footnote">
+<hr>
+<h4>脚注</h4><p class="footnote"><small>[<a name="fn-1" href="#fnd-1">1</a>]</small> 这里使用到的&ldquo;关键字&rdquo;和术语&ldquo;按键序列&rdquo;的
+&ldquo;按键&rdquo;（译注，英文中都是key）并无关系；它指一个用来在表中查找项目的值。在这种情况下，表是该关联列表，而关联则是那些项目。</p>
+
+   <hr></div>
+
+   </body></html>
+

@@ -1,0 +1,191 @@
+<html lang="en">
+<head>
+<title>文本比较 - GNU Emacs Lisp 参考文档</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Emacs Lisp 参考文档">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e4_00b8_008e_00e5_00ad_0097_00e7_00ac_00a6.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e4_00b8_008e_00e5_00ad_0097_00e7_00ac_00a6" title="字符串与字符">
+<link rel="prev" href="_00e4_00bf_00ae_00e6_0094_00b9_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2.html#g_t_00e4_00bf_00ae_00e6_0094_00b9_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2" title="修改字符串">
+<link rel="next" href="_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e8_00bd_00ac_00e6_008d_00a2.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e8_00bd_00ac_00e6_008d_00a2" title="字符串转换">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+这是GNU Emacs Lisp参考文档的3.0版本，对应于Emacs23.3版本。
+
+由张东亚汉化，汉化版本为0.1。
+
+更新记录：
+
+2011/06/22：启动第二章的翻译，待完成。
+
+2011/07/02：完成第二章的翻译。
+
+2011/08/07：启动第三章的翻译。
+
+2011/09/19：完成第三章的翻译。
+
+2011/11/28：启动第四章的翻译，待完成。
+
+2012/06/23：完成lists.texi的翻译。
+Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998,
+1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software
+Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with the Invariant Sections being ``GNU General Public
+     License,'' with the Front-Cover texts being ``A GNU Manual,'' and
+     with the Back-Cover Texts as in (a) below.  A copy of the license
+     is included in the section entitled ``GNU Free Documentation
+     License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have the freedom to copy
+     and modify this GNU manual.  Buying copies from the FSF supports
+     it in developing GNU and promoting software freedom.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="%e6%96%87%e6%9c%ac%e6%af%94%e8%be%83"></a>
+<a name="g_t_00e6_0096_0087_00e6_009c_00ac_00e6_00af_0094_00e8_00be_0083"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e8_00bd_00ac_00e6_008d_00a2.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e8_00bd_00ac_00e6_008d_00a2">字符串转换</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="_00e4_00bf_00ae_00e6_0094_00b9_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2.html#g_t_00e4_00bf_00ae_00e6_0094_00b9_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2">修改字符串</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e4_00b8_008e_00e5_00ad_0097_00e7_00ac_00a6.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e4_00b8_008e_00e5_00ad_0097_00e7_00ac_00a6">字符串与字符</a>
+<hr>
+</div>
+
+<h3 class="section">4.5 字符串比较</h3>
+
+<p><a name="index-g_t_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e7_009b_00b8_00e7_00ad_0089_00e6_0080_00a7-235"></a>
+
+<div class="defun">
+&mdash; Function: <b>char-equal</b><var> character1 character2<a name="index-char_002dequal-236"></a></var><br>
+<blockquote><p>此函数在两个参数是相同的字符时返回<code>t</code>，否则返回<code>nil</code>。如果<code>case-fold-search</code>变量是非<code>nil</code>，则
+忽略参数的大小写。
+
+     <pre class="example">          (char-equal ?x ?x)
+               &rArr; t
+          (let ((case-fold-search nil))
+            (char-equal ?x ?X))
+               &rArr; nil
+</pre>
+        </blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>string=</b><var> string1 string2<a name="index-string_003d-237"></a></var><br>
+<blockquote><p>此函数在两个字符串的字符精确匹配时返回<code>t</code>。符号也即可做为参数，在这种情况下，它们的打印命字将被使用。
+不管<code>case-fold-search</code>变量的值，大小写永远都有意义。
+
+     <pre class="example">          (string= "abc" "abc")
+               &rArr; t
+          (string= "abc" "ABC")
+               &rArr; nil
+          (string= "ab" "ABC")
+               &rArr; nil
+          (setq abc 2)
+          (string= 'abc "abc")
+               &rArr; t
+</pre>
+        <p>（译注：上面最后的例子由我添加，用以说明符号在做为参数时的结果）
+<code>string=</code>函数忽略两个字符串的文本属性。当<code>equal</code>（see <a href="_00e7_009b_00b8_00e7_00ad_0089_00e5_0088_00a4_00e5_00ae_009a.html#g_t_00e7_009b_00b8_00e7_00ad_0089_00e5_0088_00a4_00e5_00ae_009a">相等判定</a>）比较两个字符串时，它就
+使用<code>string=</code>。
+
+        <p>基于技术上的原因，一个单字节和多字节字符串在当且仅当它们包含相同序列的字符，并且所有字符码或介于0至127（<acronym>ASCII</acronym>）
+或介于160至255（<code>eight-bit-graphic</code>）时是<code>equal</code>的。然而，当单字节字符串被转换为多字节字符串时，所有在
+160至2555区间的字符码将被转换成更高的编码，而<acronym>ASCII</acronym>字符保持不变。因此，一个单字节字符串与其转换后的多字节字
+符串仅在该字符串的所有字符都是<acronym>ASCII</acronym>字符时是<code>euqal</code>的。介于160至255之间的字符码并不全适合于多字节文
+本，尽管它们可能出现。因此，那些单字节字符串和多字节字符串都包含不全是<acronym>ASCII</acronym>字符但是<code>equal</code>的情况，
+是一个少数Emacs Lisp程序员曾经遇到的技术上的怪异现象。（请参考See <a href="Text-Representations.html#Text-Representations">Text Representations</a>.）
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>string-equal</b><var> string1 string2<a name="index-string_002dequal-238"></a></var><br>
+<blockquote><p><code>string-equal</code>是<code>string=</code>的另一个名字。
+</p></blockquote></div>
+
+   <p><a name="index-g_t_00e5_00ad_0097_00e5_0085_00b8_00e6_00af_0094_00e8_00be_0083-239"></a>
+
+<div class="defun">
+&mdash; Function: <b>string&lt;</b><var> string1 string2<a name="index-string_003c-240"></a></var><br>
+<blockquote><!-- (findex string< causes problems for permuted index!!) -->
+        <p>此函数同时比较两个字符串的同一个字符。它同时扫描两个字符串来找到第一个对应的不匹配字符。如果更小的字符来自<var>string1</var>，
+则<var>string1</var>更小，这时此函数将返回<code>t</code>。如果更小的字符来自于<var>string2</var>，则<var>string1</var>较大，此函数返回
+<code>nil</code>。如果两个字符串完全匹配，结果为<code>nil</code>。
+
+        <p>字符对的比较基于它们的字符码，请记住<acronym>ASCII</acronym>字符集中的小写字符比大写字符具有更高的数值。数字和许多标识符号与大写
+字符相比具有更小的数值。<acronym>ASCII</acronym>字符比任何非<acronym>ASCII</acronym>字符都小；单字节的非<acronym>ASCII</acronym>字符永远比
+多字节的非<acronym>ASCII</acronym>字符小。（请参考see <a href="Text-Representations.html#Text-Representations">Text Representations</a>）
+
+     <pre class="example">          (string&lt; "abc" "abd")
+               &rArr; t
+          (string&lt; "abd" "abc")
+               &rArr; nil
+          (string&lt; "123" "abc")
+               &rArr; t
+</pre>
+        <p>当两个字符串具有不同的长度时，如果匹配到<var>string1</var>的长度，则结果是<code>t</code>。如果匹配到<var>string2</var>的长度，则
+结果是<code>nil</code>。空字符串比任何其他字符串都小。
+
+     <pre class="example">          (string&lt; "" "abc")
+               &rArr; t
+          (string&lt; "ab" "abc")
+               &rArr; t
+          (string&lt; "abc" "")
+               &rArr; nil
+          (string&lt; "abc" "ab")
+               &rArr; nil
+          (string&lt; "" "")
+               &rArr; nil
+</pre>
+        <p>符号也可以作为参数，此时它们的打印名被使用。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>string-lessp</b><var> string1 string2<a name="index-string_002dlessp-241"></a></var><br>
+<blockquote><p><code>string-lessp</code>是<code>string&lt;</code>的另一个名字。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>compare-strings</b><var> string1 start1 end1 string2 start2 end2 &amp;optional ignore-case<a name="index-compare_002dstrings-242"></a></var><br>
+<blockquote><p>此函数比较<var>string1</var>指定部分与<var>string2</var>指定部分。<var>sting1</var>的指定部分自<var>start1</var>开始，
+至<var>end1</var>结束（<code>nil</code>表示字符串末尾）。对于<var>string2</var>相似。
+
+        <p>两个字符串将都被转换为多字节字符串（请参考see <a href="Text-Representations.html#Text-Representations">Text Representations</a>），以便单字节字符串以及其转换成的
+多字节字符串总被认为是相等的（译注：原文为：The strings are both converted to multibyte for the comparison
+(see <a href="Text-Representations.html#Text-Representations">Text Representations</a>) so that a unibyte string and its
+conversion to multibyte are always regarded as equal.  有些不太理解，感觉应该是保证如单字节时相等，则转换为
+多字节也相等，故暂翻译字面意思，待后续修改）。如果<var>ignore-case</var>是非<code>nil</code>，则大小写被忽略，因此大写字母
+可以与小写字符相等。
+
+        <p>如果两个字符串的指定部分相等，返回值是<code>t</code>。否则，返回值是一个标识多少前置字符相等，以及哪个字符串更小。它的
+绝对值等待于两个字符串相等的开始位置加1。如果<var>string1</var>（或其指定部分）更小，则符号为负值。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>assoc-string</b><var> key alist &amp;optional case-fold<a name="index-assoc_002dstring-243"></a></var><br>
+<blockquote><p>除了<var>key</var>必须是一个字符串或符号，并且使用<code>compare-strings</code>完成比较之外，此函数与<code>assoc</code>类似。
+符号在测试前被转换为字符串。如果<var>case-fold</var>是非<code>nil</code>，它将忽略大小写差异。不像<code>assoc</code>，此函数
+还比较属性列表中那些是字符串或符号的元素，而非cons。特别地，<var>alist</var>可以是一个由字符串和符号构成的列表，而非
+一个真正的属性列表。
+See <a href="_00e5_0085_00b3_00e8_0081_0094_00e5_0088_0097_00e8_00a1_00a8.html#g_t_00e5_0085_00b3_00e8_0081_0094_00e5_0088_0097_00e8_00a1_00a8">关联列表</a>. 
+</p></blockquote></div>
+
+   <p>请一并参考<a href="Comparing-Text.html#Comparing-Text">Comparing Text</a>中的<code>compare-buffer-substrings</code>函数，该函数用于比较缓冲区中的文本。
+用于针对字符串匹配一个正则表达式的函数<code>string-match</code>，可以用于某一种字符串比较，请参考<a href="Regexp-Search.html#Regexp-Search">Regexp Search</a>。
+
+   </body></html>
+

@@ -14,7 +14,7 @@
 
 @menu
 * Cons Cells::          如何由cons cell构造列表。
-* 列表相关的断定::        这个对象是列表吗？比如两个列表。
+* 列表相关的判定::        这个对象是列表吗？比如两个列表。
 * 列表元素::             从列表中提取元素。
 * 构造列表::             创建列表结构。
 * 列表变量::             修改存储在变量里的列表。
@@ -105,7 +105,7 @@ that is both.
 @defun null object
 此函数在@var{object}是@code{nil}时返回@code{t}，否则返回@code{nil}。此函数等同于@code{not}，但为
 了更加清晰，我们在@var{object}被当作列表时使用它，而在@var{object}被当作真值时使用@code{not}。（请参考
-@ref{Combining Conditons}.中的@code{not}）
+@ref{Combining Conditions}.中的@code{not}）
 
 @example
 @group
@@ -295,7 +295,7 @@ x
 
 @defun nbutlast x &optional n
 此函数是@code{butlast}的另一个版本，此版本破坏性地修改元素的@code{cdr}，而不是拷贝该列表。
-（译注：请注意如下代码：
+译注：请注意如下代码：
 @example
 (setq a '(1 2 3))
 (equal (nbutlast a) a)
@@ -305,11 +305,11 @@ x
 @end example
 @end defun
 
-@node 创建列表
+@node 构造列表
 @comment  node-name,  next,  previous,  up
-@section 创建Cons cell和列表
+@section 构造Cons cell和列表
 @cindex cons cells
-@cindex 创建列表
+@cindex 构造列表
 
   列表在Lisp中居核心地位，许多函数可以用来创建列表。@code{cons}是创建列表的基础函数；然而有趣的是，在Emacs的源码中，@code{list}
 要比@code{cons}用得多。
@@ -317,6 +317,7 @@ x
 @defun cons object1 object2
 此函数用来创建新列表结构的最基本函数。它创建一个新的cons cell，用@var{object1}作@sc{car}，而@code{object2}作@sc{cdr}，之后返回
 新创建的cons cell。参数@var{object1}和@var{object2}可以是任意的cons cell，但通常@var{object2}是一个列表。
+
 
 @example
 @group
@@ -335,9 +336,7 @@ x
 
 @cindex consing
 @code{cons}通常用于向列表头插入一个单个元素。这称为@dfn{向列表中consing}。
-@footnote{没有严格相等地向列表尾插入元素的方法。你可以使用@code{(append @var{listname} (list @var{newelt}))}，
-它通过拷贝@var{listname}创建一个新的列表，并将@var{newelt}插入其尾部。或者你可以使用@code{(nconc @var{listname} (list @var{newelt}))}，
-它通过跟踪@var{listname}的所有@sc{cdr}，并替换终结的@code{nil}。请比较使用@code{cons}向列表头插入元素，它即不拷贝，也不修改列表。
+@footnote{没有严格相等地向列表尾插入元素的方法。你可以使用@code{(append @var{listname} (list @var{newelt}))}，它通过拷贝@var{listname}创建一个新的列表，并将@var{newelt}插入其尾部。或者你可以使用@code{(nconc @var{listname} (list @var{newelt}))}，它通过跟踪@var{listname}的所有@sc{cdr}，并替换终结的@code{nil}。请比较使用@code{cons}向列表头插入元素，它即不拷贝，也不修改列表。}
 例如：
 
 @example
@@ -345,6 +344,7 @@ x
 @end example
 
 注意在此例中使用到的名为@code{list}的变量与下面描述的函数@code{list}之间并没有冲突；任何符号都可以即做为变量名又作为函数。
+
 @end defun
 
 @defun list &rest objects
@@ -390,7 +390,7 @@ x
 @defun append &rest sequences
 @cindex 拷贝列表
 此函数返回一个包含@var{sequences}中所有元素的列表。@var{sequences}可以是列表、容器、布尔容器或字符串，但最后一个通常是一个列表。
-所有参数除了最后一个外都将被拷贝，所以任一参数都不会被替换。（关于非拷贝方式合并两表的方式，请参考@ref{Rearrangement}.一节中的@code{nconc}。）
+所有参数除了最后一个外都将被拷贝，所以任一参数都不会被替换。（关于非拷贝方式合并两表的方式，请参考@ref{重组}.一节中的@code{nconc}。）
 
 更通俗的来说，@code{append}的最后一个元素可以是任意Lisp对象。最后一个元素不被拷贝或转换；它变成新列表中的最后一个cons cell。如果最后一个参数
 本身是一个列表，那么它的元素实际上变成了结果列表中的有效元素。如果最后一个元素不是列表，则结果列表是一个点分式的列表，因为真列表表要求最终的@sc{cdr}是@code{nil}，
@@ -468,7 +468,7 @@ wood
 @end group
 @end example
 
-  借助于@code{apply}（@pxref{Calling Functions}}.），我们可以补加在一个列表的列表的所有列表：
+  借助于@code{apply}（@pxref{Calling Functions}.），我们可以补加在一个列表的列表的所有列表：
 
 @example
 @group
@@ -525,7 +525,7 @@ x
 @end defun
 
 @defun number-sequence from &optional to separation
-此函数返回以@var{from}起始并以@var{separation}步长增加的一个列表，并在@var{to}或恰好在@var{to}之前终结。@var{separation}}
+此函数返回以@var{from}起始并以@var{separation}步长增加的一个列表，并在@var{to}或恰好在@var{to}之前终结。@var{separation}
 可以是正数或负数，默认是1。如果@var{to}是@code{nil}或在数值上与@var{from}相等，结果列表是单元素的列表@code{(@var{from})}。
 如果@var{to}小于@var{from}并且@var{separation}是正数，或大于@var{from}并且@var{separation}是负数，则结果是@code{nil}，
 这是因为这些参数指明了一个空序列。
@@ -684,7 +684,7 @@ foo                       ;; @r{@code{foo} was changed.}
 * Setcar::          替换列表中的一个元素。
 * Setcdr::          替换列表骨干中的一部分。
   　　　　　　　　　　　　它可以用来移除和添加元素。
-* Rearrangement::   重新排序列表中的元素；合并列表。
+* 重组::   重新排序列表中的元素；合并列表。
 @end menu
 
 @node Setcar
@@ -887,7 +887,7 @@ x1
 后的列表。
 
 @ifnottex
-  关于另外一个修改cons cell的函数，请参考@ref{Sets And Lists}.一节中的@code{delq}。
+  关于另外一个修改cons cell的函数，请参考@ref{集合与列表}.一节中的@code{delq}。
 @end ifnottex
 @iftex
    在后续章节中的@coe{delq}是另外一个破坏性列表操作的示例。   
@@ -896,7 +896,7 @@ x1
 @defun nconc &rest lists
 @cindex 联结列表
 @cindex 合并列表
-此函数返回包含@var{lists}中所有元素的列表。不像@code{append}（参考@pxref{Building Lists}.），@var{lists}
+此函数返回包含@var{lists}中所有元素的列表。不像@code{append}（参考@pxref{构造列表}.），@var{lists}
 并@emph{不}被拷贝，而是将@var{lists}中的每个列表最后的@sc{cdr}修改为指向下一个列表。@var{lists}中最后一个列
 表不被替换。例如：
 
@@ -940,8 +940,8 @@ x
 
 @smallexample
 @group
-(defun add-foo (x)            ; @r{我们使用这个函数
-  (nconc '(foo) x))           ;   @r{将@code{foo}插入至其参数头部。}
+(defun add-foo (x)            ; @r{我们使用这个函数}
+  (nconc '(foo) x))           ; @r{将@code{foo}插入至其参数头部。}
 @end group
 
 @group
@@ -1068,7 +1068,7 @@ nums
 对于@code{sort}的一个有用的例子，请参考@ref{Accessing Documentation}一节中的@code{documentation}.。
 @end defun
 
-@node 集合和列表
+@node 集合与列表
 @section 将列表当作集合使用
 @cindex 将列表当作集合
 @cindex 集合
@@ -1297,7 +1297,7 @@ MacLisp，而不是Common Lisp。它们的Common Lisp版本并不使用@code{equ
 用@code{equal}比等的一个元素的多次出现，@code{delete-dups}保持其第一次出现。
 @end defun
 
-  要了解如何向存在变量中的列表添加元素以及将其当成集合使用的方法，请参考@ref{List Variables}.一节中的
+  要了解如何向存在变量中的列表添加元素以及将其当成集合使用的方法，请参考@ref{列表变量}.一节中的
 函数@code{add-to-list}。
 
 @node 关联列表
@@ -1320,7 +1320,7 @@ MacLisp，而不是Common Lisp。它们的Common Lisp版本并不使用@code{equ
 @end group
 @end example
 
-  关联列中的关键字和值可以是任意Lisp对象。例如，在下面的关联列表中，@code{a}与数字@code{1}关联，而字符串@code{"b"}则与@epmh{列表}
+  关联列中的关键字和值可以是任意Lisp对象。例如，在下面的关联列表中，@code{a}与数字@code{1}关联，而字符串@code{"b"}则与@emph{列表}
 @code{(2 3)}关联，该列表是关联列表元素的@sc{cdr}。
 
 @example
@@ -1351,7 +1351,7 @@ MacLisp，而不是Common Lisp。它们的Common Lisp版本并不使用@code{equ
 考@xref{Property Lists}.一节。
 
 @defun assoc key alist
-此函数返回@var{key}在@var{alist}中的首次关联，使用@equal}来比较关联列表中的元素和@var{key}（@pxref{相等判定}.）。
+此函数返回@var{key}在@var{alist}中的首次关联，使用@{equal}来比较关联列表中的元素和@var{key}（@pxref{相等判定}.）。
 强果在@var{alist}中没有元素的@sc{car}和@var{key}用@code{equal}比较相等，则返回@code{nil}。
 
 例如：
@@ -1565,7 +1565,7 @@ alist
 @end defun
 
 @defun ring-copy ring
-此函数返回一个是@var{ring}拷贝的新环。它含有与var{ring}相同（@code{eq}）的对象。
+此函数返回一个是@var{ring}拷贝的新环。它含有与@var{ring}相同（@code{eq}）的对象。
 @end defun
 
 @defun ring-empty-p ring

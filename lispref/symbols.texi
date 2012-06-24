@@ -442,7 +442,7 @@ names, and the other two elements are the corresponding values.
 @cindex alist vs. plist
 
 @cindex property lists vs association lists
-  Association lists (@pxref{Association Lists}) are very similar to
+  Association lists (@pxref{关联列表}) are very similar to
 property lists.  In contrast to association lists, the order of the
 pairs in the property list is not significant since the property names
 must be distinct.

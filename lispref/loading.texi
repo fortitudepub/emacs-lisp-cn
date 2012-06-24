@@ -656,7 +656,7 @@ initialized.  (@xref{Defining Variables}.)
 
 @noindent
 But this would add multiple elements if the library is reloaded.  To
-avoid the problem, use @code{add-to-list} (@pxref{List Variables}):
+avoid the problem, use @code{add-to-list} (@pxref{列表变量}):
 
 @example
 (add-to-list 'minor-mode-alist '(leif-mode " Leif"))

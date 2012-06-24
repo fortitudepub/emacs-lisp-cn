@@ -1826,7 +1826,7 @@ have an entry @code{t} in the table.
 
   The sorting functions described in this section all rearrange text in
 a buffer.  This is in contrast to the function @code{sort}, which
-rearranges the order of the elements of a list (@pxref{Rearrangement}).
+rearranges the order of the elements of a list (@pxref{重组}).
 The values returned by these functions are not meaningful.
 
 @defun sort-subr reverse nextrecfun endrecfun &optional startkeyfun endkeyfun predicate

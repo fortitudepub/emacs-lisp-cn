@@ -1,0 +1,111 @@
+<html lang="en">
+<head>
+<title>基本字符语法 - GNU Emacs Lisp 参考文档</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Emacs Lisp 参考文档">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="_00e5_00ad_0097_00e7_00ac_00a6_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e7_00b1_00bb_00e5_009e_008b" title="字符类型">
+<link rel="next" href="_00e4_00b8_0080_00e8_0088_00ac_00e8_00bd_00ac_00e4_00b9_0089_00e8_00af_00ad_00e6_00b3_0095.html#g_t_00e4_00b8_0080_00e8_0088_00ac_00e8_00bd_00ac_00e4_00b9_0089_00e8_00af_00ad_00e6_00b3_0095" title="一般转义语法">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+这是GNU Emacs Lisp参考文档的3.0版本，对应于Emacs23.3版本。
+
+由张东亚汉化，汉化版本为0.1。
+
+更新记录：
+
+2011/06/22：启动第二章的翻译，待完成。
+
+2011/07/02：完成第二章的翻译。
+
+2011/08/07：启动第三章的翻译。
+
+2011/09/19：完成第三章的翻译。
+
+2011/11/28：启动第四章的翻译，待完成。
+
+2012/06/23：完成lists.texi的翻译。
+Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998,
+1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software
+Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with the Invariant Sections being ``GNU General Public
+     License,'' with the Front-Cover texts being ``A GNU Manual,'' and
+     with the Back-Cover Texts as in (a) below.  A copy of the license
+     is included in the section entitled ``GNU Free Documentation
+     License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have the freedom to copy
+     and modify this GNU manual.  Buying copies from the FSF supports
+     it in developing GNU and promoting software freedom.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="%e5%9f%ba%e6%9c%ac%e5%ad%97%e7%ac%a6%e8%af%ad%e6%b3%95"></a>
+<a name="g_t_00e5_009f_00ba_00e6_009c_00ac_00e5_00ad_0097_00e7_00ac_00a6_00e8_00af_00ad_00e6_00b3_0095"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="_00e4_00b8_0080_00e8_0088_00ac_00e8_00bd_00ac_00e4_00b9_0089_00e8_00af_00ad_00e6_00b3_0095.html#g_t_00e4_00b8_0080_00e8_0088_00ac_00e8_00bd_00ac_00e4_00b9_0089_00e8_00af_00ad_00e6_00b3_0095">一般转义语法</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="_00e5_00ad_0097_00e7_00ac_00a6_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e7_00b1_00bb_00e5_009e_008b">字符类型</a>
+<hr>
+</div>
+
+<h5 class="subsubsection">2.3.3.1 基本字符语法</h5>
+
+<p><a name="index-g_t_00e5_00ad_0097_00e7_00ac_00a6_00e7_009a_0084_00e8_00af_00bb_00e5_008f_0096_00e8_00af_00ad_00e6_00b3_0095-50"></a><a name="index-g_t_00e5_00ad_0097_00e7_00ac_00a6_00e7_009a_0084_00e8_00be_0093_00e5_0087_00ba_00e8_00a1_00a8_00e7_00a4_00ba-51"></a><a name="index-g_t_00e5_00ad_0097_00e7_00ac_00a6_00e8_00af_00ad_00e6_00b3_0095-52"></a><a name="index-g_t_00e5_00ad_0097_00e7_00ac_00a6_00e5_00b8_00b8_00e9_0087_008f_00e4_00b8_00ad_00e7_009a_0084_0040samp_007b_003f_007d-53"></a>
+    由于字符实际上就是整数值，字符的打印语法就是一个十进制数值。这也是字符的读取语法之一，但在Lisp程序中用这种方式并不是清晰的编程方式。你应当<em>总是</em>
+使用Emacs Lisp提供的字符的特殊读取语法，这些语法用以问号开头。
+
+   <p>字母型字符的通常读取语法是在字母前边前上问号，因此，&lsquo;<samp><span class="samp">?A</span></samp>&rsquo;表示字符<kbd>A</kbd>，&lsquo;<samp><span class="samp">?B</span></samp>&rsquo;表示字符<kbd>B</kbd>，&lsquo;<samp><span class="samp">?a</span></samp>&rsquo;则表示字符<kbd>a</kbd>。
+
+   <p>示例：
+
+<pre class="example">     ?Q &rArr; 81     ?q &rArr; 113
+</pre>
+   <p>你可以使用相同的语法来表示标点字符，但通常在该字符前再加上一个&lsquo;<samp><span class="samp">\</span></samp>&rsquo;更好一些，以便使Emacs编辑Lisp代码的命令不致于迷惑。例如&lsquo;<samp><span class="samp">?\(</span></samp>&rsquo;用于表示
+左括号。如果字符是&lsquo;<samp><span class="samp">\</span></samp>&rsquo;，你则<em>必须</em>再在前面添加一个&lsquo;<samp><span class="samp">\</span></samp>&rsquo;来表示它：&lsquo;<samp><span class="samp">?\\</span></samp>&rsquo;。
+
+   <p><a name="index-g_t_00e7_00a9_00ba_00e7_0099_00bd_00e5_00ad_0097_00e7_00ac_00a6-54"></a><a name="index-g_t_00e5_0093_008d_00e9_0093_0083-55"></a><a name="index-g_t_0040samp_007b_005ca_007d-56"></a><a name="index-g_t_00e9_0080_0080_00e6_00a0_00bc-57"></a><a name="index-g_t_0040samp_007b_005cb_007d-58"></a><a name="index-g_t_00ef_00bc_0088ASCII_00e5_00ad_0097_00e7_00ac_00a6_00ef_00bc_0089_00e8_00a1_00a8-59"></a><a name="index-g_t_0040samp_007b_005ct_007d-60"></a><a name="index-g_t_00e5_009e_0082_00e7_009b_00b4_00e5_0088_00b6_00e8_00a1_00a8_00e7_00ac_00a6-61"></a><a name="index-g_t_0040samp_007b_005cv_007d-62"></a><a name="index-g_t_00e6_008d_00a2_00e9_00a1_00b5-63"></a><a name="index-g_t_0040samp_007b_005cf_007d-64"></a><a name="index-g_t_00e6_008d_00a2_00e8_00a1_008c-65"></a><a name="index-g_t_0040samp_007b_005cn_007d-66"></a><a name="index-g_t_00e5_009b_009e_00e8_00bd_00a6_00ef_00bc_0088ASCII_00e5_00ad_0097_00e7_00ac_00a6_00ef_00bc_0089-67"></a><a name="index-g_t_0040samp_007b_005cr_007d-68"></a><a name="index-g_t_00e9_0080_0080_00e5_0087_00ba_00ef_00bc_0088ASCII_00e5_00ad_0097_00e7_00ac_00a6_00ef_00bc_0089-69"></a><a name="index-g_t_0040samp_007b_005ce_007d-70"></a><a name="index-g_t_00e7_00a9_00ba_00e6_00a0_00bc-_0028ASCII_00e5_00ad_0097_00e7_00ac_00a6_0029-71"></a><a name="index-g_t_0040samp_007b_005cs_007d-72"></a>
+    你可以用&lsquo;<samp><span class="samp">?\a</span></samp>&rsquo;、&lsquo;<samp><span class="samp">?\b</span></samp>&rsquo;、&lsquo;<samp><span class="samp">?\t</span></samp>&rsquo;、&lsquo;<samp><span class="samp">?\n</span></samp>&rsquo;、&lsquo;<samp><span class="samp">?\v</span></samp>&rsquo;、&lsquo;<samp><span class="samp">?\f</span></samp>&rsquo;、&lsquo;<samp><span class="samp">?\s</span></samp>&rsquo;、&lsquo;<samp><span class="samp">?\r</span></samp>&rsquo;、&lsquo;<samp><span class="samp">?\d</span></samp>&rsquo;以及&lsquo;<samp><span class="samp">?\e</span></samp>&rsquo;分别表示
+Control-g、退格、制表、换行、垂直制表、换页、空格、回车、删除以及退出字符。（折线以及跟在其后的&lsquo;<samp><span class="samp">?\s</span></samp>&rsquo;则具有不同的含义，它表示对此组合后面的字符进行&ldquo;super&rdquo;
+修饰。）因此：
+
+<pre class="example">     ?\a &rArr; 7                 ; <span class="roman">control-g, </span><kbd>C-g</kbd>
+     ?\b &rArr; 8                 ; <span class="roman">退格, &lt;BS&gt;, </span><kbd>C-h</kbd>
+     ?\t &rArr; 9                 ; <span class="roman">制表, &lt;TAB&gt;, </span><kbd>C-i</kbd>
+     ?\n &rArr; 10                ; <span class="roman">换行, </span><kbd>C-j</kbd>
+     ?\v &rArr; 11                ; <span class="roman">垂直制表, </span><kbd>C-k</kbd>
+     ?\f &rArr; 12                ; <span class="roman">换页, </span><kbd>C-l</kbd>
+     ?\r &rArr; 13                ; <span class="roman">回车, &lt;RET&gt;, </span><kbd>C-m</kbd>
+     ?\e &rArr; 27                ; <span class="roman">退出, &lt;ESC&gt;, </span><kbd>C-[</kbd>
+     ?\s &rArr; 32                ; <span class="roman">空格, &lt;SPC&gt;</span>
+     ?\\ &rArr; 92                ; <span class="roman">反斜钱, </span><kbd>\</kbd>
+     ?\d &rArr; 127               ; <span class="roman">删除, &lt;DEL&gt;</span>
+</pre>
+   <p><a name="index-g_t_00e8_00bd_00ac_00e4_00b9_0089_00e5_00ba_008f_00e5_0088_0097-73"></a>
+    由反斜线开始的序列也被称为<dfn>转义序列</dfn>，由于反斜线扮演了&ldquo;转义字符&rdquo;的角色；此术语与&lt;ESC&gt;无关。&lsquo;<samp><span class="samp">\s</span></samp>&rsquo;则用在字符常量，
+在字符串常量中，则用来表示空格。
+
+   <p>在不具有特殊转义的字符前插入反斜线是允许的，并且是无害的，因此，&lsquo;<samp><span class="samp">?\+</span></samp>&rsquo;与&lsquo;<samp><span class="samp">?+</span></samp>&rsquo;等价。通常对于大多数字符而言，没有必要增加反斜线，但是，
+你需要在&lsquo;<samp><span class="samp">()\|;'`"#.,</span></samp>&rsquo;前增加反斜线，以避免迷惑编辑Lisp代码的Emacs命令。你也可以在空白字符如空格、制表、换行以及换页符前插入反斜线，但是，最
+好使用易读的转义序列，如&lsquo;<samp><span class="samp">\t</span></samp>&rsquo;或&lsquo;<samp><span class="samp">\s</span></samp>&rsquo;来替代实际的如制表、空格等空白字符。（如果你在空格前输入了反斜线，你应当在其后再增加一个空格，以使其
+与后面的文本区分开。译注：这句话较为疑惑，实际上在字符串中插入反斜线+空格会当被忽略，如"\ bbb"与"bbb"的值相等）。
+
+   </body></html>
+

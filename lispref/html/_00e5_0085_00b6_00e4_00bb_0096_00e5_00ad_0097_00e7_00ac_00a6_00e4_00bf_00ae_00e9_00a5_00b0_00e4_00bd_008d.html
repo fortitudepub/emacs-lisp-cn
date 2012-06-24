@@ -1,0 +1,83 @@
+<html lang="en">
+<head>
+<title>其他字符修饰位 - GNU Emacs Lisp 参考文档</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Emacs Lisp 参考文档">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="_00e5_00ad_0097_00e7_00ac_00a6_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e7_00b1_00bb_00e5_009e_008b" title="字符类型">
+<link rel="prev" href="Meta_002d_00e5_00ad_0097_00e7_00ac_00a6_00e8_00af_00ad_00e6_00b3_0095.html#Meta_002d_00e5_00ad_0097_00e7_00ac_00a6_00e8_00af_00ad_00e6_00b3_0095" title="Meta-字符语法">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+这是GNU Emacs Lisp参考文档的3.0版本，对应于Emacs23.3版本。
+
+由张东亚汉化，汉化版本为0.1。
+
+更新记录：
+
+2011/06/22：启动第二章的翻译，待完成。
+
+2011/07/02：完成第二章的翻译。
+
+2011/08/07：启动第三章的翻译。
+
+2011/09/19：完成第三章的翻译。
+
+2011/11/28：启动第四章的翻译，待完成。
+
+2012/06/23：完成lists.texi的翻译。
+Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998,
+1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software
+Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with the Invariant Sections being ``GNU General Public
+     License,'' with the Front-Cover texts being ``A GNU Manual,'' and
+     with the Back-Cover Texts as in (a) below.  A copy of the license
+     is included in the section entitled ``GNU Free Documentation
+     License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have the freedom to copy
+     and modify this GNU manual.  Buying copies from the FSF supports
+     it in developing GNU and promoting software freedom.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="%e5%85%b6%e4%bb%96%e5%ad%97%e7%ac%a6%e4%bf%ae%e9%a5%b0%e4%bd%8d"></a>
+<a name="g_t_00e5_0085_00b6_00e4_00bb_0096_00e5_00ad_0097_00e7_00ac_00a6_00e4_00bf_00ae_00e9_00a5_00b0_00e4_00bd_008d"></a>
+<p>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Meta_002d_00e5_00ad_0097_00e7_00ac_00a6_00e8_00af_00ad_00e6_00b3_0095.html#Meta_002d_00e5_00ad_0097_00e7_00ac_00a6_00e8_00af_00ad_00e6_00b3_0095">Meta-字符语法</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="_00e5_00ad_0097_00e7_00ac_00a6_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e7_00b1_00bb_00e5_009e_008b">字符类型</a>
+<hr>
+</div>
+
+<h5 class="subsubsection">2.3.3.5 其他字符修饰位</h5>
+
+<p>图形化字符的大小写由其字符码表示，如<acronym>ASCII</acronym>通过&lsquo;<samp><span class="samp">a</span></samp>&rsquo;和&lsquo;<samp><span class="samp">A</span></samp>&rsquo;区分大小写，但<acronym>ASCII</acronym>却没有办法区分控制字符
+的大小写。Emacs使用第
+2**25
+位来表示在键入控制字符时是否使用了shift键。仅在你使用X终端或者其他特殊终端时才可能做此区分，普通终端并不会上报这种区分。shift位的语法
+为&lsquo;<samp><span class="samp">\S-</span></samp>&rsquo;，因此&lsquo;<samp><span class="samp">?\C-\S-o</span></samp>&rsquo;或&lsquo;<samp><span class="samp">?\C-\S-O</span></samp>&rsquo;代表shifted-control-o字符。
+
+   <p><a name="index-hyper_00e5_00ad_0097_00e7_00ac_00a6-80"></a><a name="index-super_00e5_00ad_0097_00e7_00ac_00a6-81"></a><a name="index-alt_00e5_00ad_0097_00e7_00ac_00a6-82"></a>    X窗口系统定义了字符中可以出现的其他三个<a name="modifier-bits"></a>修饰位：<dfn>hyper</dfn>、<dfn>super</dfn>以及<dfn>alt</dfn>，对应的语法为
+&lsquo;<samp><span class="samp">\H-</span></samp>&rsquo;、&lsquo;<samp><span class="samp">\s-</span></samp>&rsquo;以及&lsquo;<samp><span class="samp">\A-</span></samp>&rsquo;。（这些前缀需要区分大小写。）因此，&lsquo;<samp><span class="samp">?\H-\M-\A-x</span></samp>&rsquo;表示<kbd>Alt-Hyper-Meta-x</kbd>。（注意
+不跟&lsquo;<samp><span class="samp">-</span></samp>&rsquo;的&lsquo;<samp><span class="samp">\s</span></samp>&rsquo;代表空格字符。）
+从数值上来说，alt相应的位为2**22，super相应的位为2**23，而hyper相应的位为2**24。
+
+   </body></html>
+

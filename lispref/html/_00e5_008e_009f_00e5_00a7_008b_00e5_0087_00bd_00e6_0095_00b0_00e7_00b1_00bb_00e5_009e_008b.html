@@ -1,0 +1,89 @@
+<html lang="en">
+<head>
+<title>原始函数类型 - GNU Emacs Lisp 参考文档</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Emacs Lisp 参考文档">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="_00e7_00bc_0096_00e7_00a8_008b_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e7_00bc_0096_00e7_00a8_008b_00e7_00b1_00bb_00e5_009e_008b" title="编程类型">
+<link rel="prev" href="_00e5_00ae_008f_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e5_00ae_008f_00e7_00b1_00bb_00e5_009e_008b" title="宏类型">
+<link rel="next" href="_00e5_00ad_0097_00e8_008a_0082_00e7_00a0_0081_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e5_00ad_0097_00e8_008a_0082_00e7_00a0_0081_00e7_00b1_00bb_00e5_009e_008b" title="字节码类型">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+这是GNU Emacs Lisp参考文档的3.0版本，对应于Emacs23.3版本。
+
+由张东亚汉化，汉化版本为0.1。
+
+更新记录：
+
+2011/06/22：启动第二章的翻译，待完成。
+
+2011/07/02：完成第二章的翻译。
+
+2011/08/07：启动第三章的翻译。
+
+2011/09/19：完成第三章的翻译。
+
+2011/11/28：启动第四章的翻译，待完成。
+
+2012/06/23：完成lists.texi的翻译。
+Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998,
+1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software
+Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with the Invariant Sections being ``GNU General Public
+     License,'' with the Front-Cover texts being ``A GNU Manual,'' and
+     with the Back-Cover Texts as in (a) below.  A copy of the license
+     is included in the section entitled ``GNU Free Documentation
+     License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have the freedom to copy
+     and modify this GNU manual.  Buying copies from the FSF supports
+     it in developing GNU and promoting software freedom.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="%e5%8e%9f%e5%a7%8b%e5%87%bd%e6%95%b0%e7%b1%bb%e5%9e%8b"></a>
+<a name="g_t_00e5_008e_009f_00e5_00a7_008b_00e5_0087_00bd_00e6_0095_00b0_00e7_00b1_00bb_00e5_009e_008b"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="_00e5_00ad_0097_00e8_008a_0082_00e7_00a0_0081_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e5_00ad_0097_00e8_008a_0082_00e7_00a0_0081_00e7_00b1_00bb_00e5_009e_008b">字节码类型</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="_00e5_00ae_008f_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e5_00ae_008f_00e7_00b1_00bb_00e5_009e_008b">宏类型</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="_00e7_00bc_0096_00e7_00a8_008b_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e7_00bc_0096_00e7_00a8_008b_00e7_00b1_00bb_00e5_009e_008b">编程类型</a>
+<hr>
+</div>
+
+<h4 class="subsection">2.3.15 原始函数类型</h4>
+
+<p><a name="index-g_t_00e5_008e_009f_00e5_00a7_008b_00e5_0087_00bd_00e6_0095_00b0-106"></a>    <dfn>原始函数</dfn>是一个可被Lisp调用但用C写成的函数。原始函数也被称做<dfn>子程序</dfn>（译注：英文subr）或<dfn>内置函数</dfn>。（词&ldquo;subr&rdquo;派生自
+&ldquo;subroutine&rdquo;）大多数原始函数在被执行时，将对所有参数进行求值。不对所有参数求值的原始函数称作<dfn>特殊型</dfn>（请参考see <a href="Special-Forms.html#Special-Forms">Special Forms</a>）。
+
+   <p>对于调用者而言，函数是否是是原始的并不重要。然而，如果你要尝试用Lisp编写的函数重定义一个原始函数时，你就需要注意了。原因在于原始函数也许
+会从C代码中直接调用，对于从Lisp中发起的对于重定义的函数的调用将使用新定义，而从C代码中的调用仍使用原来的函数。
+
+   <p>术语<dfn>function</dfn>指所有Emacs的函数，无论是用Lisp还是C写成。关于Lisp写成函数的信息，请参考See <a href="_00e5_0087_00bd_00e6_0095_00b0_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e5_0087_00bd_00e6_0095_00b0_00e7_00b1_00bb_00e5_009e_008b">函数类型</a>.一节。
+
+   <p>原子函数没有读取语法，用哈希记法加上子程序的名字打印。
+
+<pre class="example">     (symbol-function 'car)          ; <span class="roman">访问符号的函数单元</span>
+          &rArr; #&lt;subr car&gt;
+     (subrp (symbol-function 'car))  ; <span class="roman">是原始函数吗？</span>
+          &rArr; t                       ; <span class="roman">是。</span>
+</pre>
+   </body></html>
+

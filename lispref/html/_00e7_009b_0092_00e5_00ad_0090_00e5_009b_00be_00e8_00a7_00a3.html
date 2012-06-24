@@ -1,0 +1,139 @@
+<html lang="en">
+<head>
+<title>盒子图解 - GNU Emacs Lisp 参考文档</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Emacs Lisp 参考文档">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Cons-Cell_00e7_00b1_00bb_00e5_009e_008b.html#Cons-Cell_00e7_00b1_00bb_00e5_009e_008b" title="Cons Cell类型">
+<link rel="next" href="_00e7_0082_00b9_00e5_00af_00b9_00e8_00ae_00b0_00e6_00b3_0095.html#g_t_00e7_0082_00b9_00e5_00af_00b9_00e8_00ae_00b0_00e6_00b3_0095" title="点对记法">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+这是GNU Emacs Lisp参考文档的3.0版本，对应于Emacs23.3版本。
+
+由张东亚汉化，汉化版本为0.1。
+
+更新记录：
+
+2011/06/22：启动第二章的翻译，待完成。
+
+2011/07/02：完成第二章的翻译。
+
+2011/08/07：启动第三章的翻译。
+
+2011/09/19：完成第三章的翻译。
+
+2011/11/28：启动第四章的翻译，待完成。
+
+2012/06/23：完成lists.texi的翻译。
+Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998,
+1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software
+Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with the Invariant Sections being ``GNU General Public
+     License,'' with the Front-Cover texts being ``A GNU Manual,'' and
+     with the Back-Cover Texts as in (a) below.  A copy of the license
+     is included in the section entitled ``GNU Free Documentation
+     License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have the freedom to copy
+     and modify this GNU manual.  Buying copies from the FSF supports
+     it in developing GNU and promoting software freedom.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="%e7%9b%92%e5%ad%90%e5%9b%be%e8%a7%a3"></a>
+<a name="g_t_00e7_009b_0092_00e5_00ad_0090_00e5_009b_00be_00e8_00a7_00a3"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="_00e7_0082_00b9_00e5_00af_00b9_00e8_00ae_00b0_00e6_00b3_0095.html#g_t_00e7_0082_00b9_00e5_00af_00b9_00e8_00ae_00b0_00e6_00b3_0095">点对记法</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Cons-Cell_00e7_00b1_00bb_00e5_009e_008b.html#Cons-Cell_00e7_00b1_00bb_00e5_009e_008b">Cons Cell类型</a>
+<hr>
+</div>
+
+<h5 class="subsubsection">2.3.6.1 将表画成盒子图表</h5>
+
+<p><a name="index-g_t_00e9_0092_0088_00e5_00af_00b9_00e8_00a1_00a8_00e7_009a_0084_00e7_009b_0092_00e5_00ad_0090_00e5_009b_00be_00e8_00a7_00a3-93"></a><a name="index-g_t_00e5_009b_00be_00e8_00a7_00a3_00ef_00bc_008c_00e7_009b_0092_00e5_00ad_0090_00e5_008c_0096_00ef_00bc_008c_00e9_0092_0088_00e5_00af_00b9_00e8_00a1_00a8-94"></a>
+    可以将cons cells画成盒子对，象多米诺一样的形式对表进行图解。(Lisp读取器不能读取这种描绘方式，不象文本记法，可以被人和计算机读取，盒式描绘方式不能被
+计算机读取：）)此图表示了一个具有三元素的表<code>(rose violet buttercup)</code>（）：
+
+<pre class="example">         --- ---      --- ---      --- ---
+        |   |   |--&gt; |   |   |--&gt; |   |   |--&gt; nil
+         --- ---      --- ---      --- ---
+          |            |            |
+          |            |            |
+           --&gt; rose     --&gt; violet   --&gt; buttercup
+</pre>
+   <p>在此图解中，每个盒子代表一个可以持有或者引用任意Lisp对象的槽。每对盒子对代表一个cons cell，每个箭头代表对一个Lisp对象的引用，该对象可以是一个原子，
+也可以是另一个cons cell。
+
+   <p>在这个例子中，第一个盒子，持有着第一个cons cell的<span class="sc">car</span>部分，引用<code>rose</code>（一个符号）。第二个盒子,持有第一个cons cell的<span class="sc">cdr</span>，引用下
+一个cons cell。第二个cons cell的<span class="sc">car</span>是<code>violet</code>，它的<span class="sc">cdr</span>是第三个cons cell。第三个即最后一个cons cell的<span class="sc">cdr</span>是<code>nil</code>。
+
+   <p>下面是该表的另一个图解，<code>(rose violet buttercup)</code>，用另外一个方式进行描绘。
+
+<pre class="smallexample">      ---------------       ----------------       -------------------
+     | car   | cdr   |     | car    | cdr   |     | car       | cdr   |
+     | rose  |   o--------&gt;| violet |   o--------&gt;| buttercup |  nil  |
+     |       |       |     |        |       |     |           |       |
+      ---------------       ----------------       -------------------
+</pre>
+   <p><a name="index-g_t_00e4_00bd_009c_00e4_00b8_00ba_00e8_00a1_00a8_00e7_009a_0084_0040code_007bnil_007d-95"></a><a name="index-g_t_00e7_00a9_00ba_00e8_00a1_00a8-96"></a>    没有元素的表称为<dfn>空表</dfn>；它等同于符号<code>nil</code>。换句话说，<code>nil</code>既是一个符号，又是一个表。
+
+   <p>下面是表<code>(A ())</code>，或者等价的<code>(A nil)</code>，由盒子和箭头描绘：
+
+<pre class="example">         --- ---      --- ---
+        |   |   |--&gt; |   |   |--&gt; nil
+         --- ---      --- ---
+          |            |
+          |            |
+           --&gt; A        --&gt; nil
+</pre>
+   <p>下面是一个更为复杂的刻画，显示了一个三元素表<code>((pine needles) oak maple)</code>，第一个元素是一个具有两个元素的表：
+
+<pre class="example">         --- ---      --- ---      --- ---
+        |   |   |--&gt; |   |   |--&gt; |   |   |--&gt; nil
+         --- ---      --- ---      --- ---
+          |            |            |
+          |            |            |
+          |             --&gt; oak      --&gt; maple
+          |
+          |     --- ---      --- ---
+           --&gt; |   |   |--&gt; |   |   |--&gt; nil
+                --- ---      --- ---
+                 |            |
+                 |            |
+                  --&gt; pine     --&gt; needles
+</pre>
+   <p>上述表用第二种盒子记法如下：
+
+<pre class="example">      --------------       --------------       --------------
+     | car   | cdr  |     | car   | cdr  |     | car   | cdr  |
+     |   o   |   o-------&gt;| oak   |   o-------&gt;| maple |  nil |
+     |   |   |      |     |       |      |     |       |      |
+      -- | ---------       --------------       --------------
+         |
+         |
+         |        --------------       ----------------
+         |       | car   | cdr  |     | car     | cdr  |
+          ------&gt;| pine  |   o-------&gt;| needles |  nil |
+                 |       |      |     |         |      |
+                  --------------       ----------------
+</pre>
+   </body></html>
+

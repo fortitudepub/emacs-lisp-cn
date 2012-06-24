@@ -1,0 +1,95 @@
+<html lang="en">
+<head>
+<title>一般转义语法 - GNU Emacs Lisp 参考文档</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Emacs Lisp 参考文档">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="_00e5_00ad_0097_00e7_00ac_00a6_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e7_00b1_00bb_00e5_009e_008b" title="字符类型">
+<link rel="prev" href="_00e5_009f_00ba_00e6_009c_00ac_00e5_00ad_0097_00e7_00ac_00a6_00e8_00af_00ad_00e6_00b3_0095.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e5_00ad_0097_00e7_00ac_00a6_00e8_00af_00ad_00e6_00b3_0095" title="基本字符语法">
+<link rel="next" href="Ctl_002d_00e5_00ad_0097_00e7_00ac_00a6_00e8_00af_00ad_00e6_00b3_0095.html#Ctl_002d_00e5_00ad_0097_00e7_00ac_00a6_00e8_00af_00ad_00e6_00b3_0095" title="Ctl-字符语法">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+这是GNU Emacs Lisp参考文档的3.0版本，对应于Emacs23.3版本。
+
+由张东亚汉化，汉化版本为0.1。
+
+更新记录：
+
+2011/06/22：启动第二章的翻译，待完成。
+
+2011/07/02：完成第二章的翻译。
+
+2011/08/07：启动第三章的翻译。
+
+2011/09/19：完成第三章的翻译。
+
+2011/11/28：启动第四章的翻译，待完成。
+
+2012/06/23：完成lists.texi的翻译。
+Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998,
+1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software
+Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with the Invariant Sections being ``GNU General Public
+     License,'' with the Front-Cover texts being ``A GNU Manual,'' and
+     with the Back-Cover Texts as in (a) below.  A copy of the license
+     is included in the section entitled ``GNU Free Documentation
+     License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have the freedom to copy
+     and modify this GNU manual.  Buying copies from the FSF supports
+     it in developing GNU and promoting software freedom.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="%e4%b8%80%e8%88%ac%e8%bd%ac%e4%b9%89%e8%af%ad%e6%b3%95"></a>
+<a name="g_t_00e4_00b8_0080_00e8_0088_00ac_00e8_00bd_00ac_00e4_00b9_0089_00e8_00af_00ad_00e6_00b3_0095"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Ctl_002d_00e5_00ad_0097_00e7_00ac_00a6_00e8_00af_00ad_00e6_00b3_0095.html#Ctl_002d_00e5_00ad_0097_00e7_00ac_00a6_00e8_00af_00ad_00e6_00b3_0095">Ctl-字符语法</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="_00e5_009f_00ba_00e6_009c_00ac_00e5_00ad_0097_00e7_00ac_00a6_00e8_00af_00ad_00e6_00b3_0095.html#g_t_00e5_009f_00ba_00e6_009c_00ac_00e5_00ad_0097_00e7_00ac_00a6_00e8_00af_00ad_00e6_00b3_0095">基本字符语法</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="_00e5_00ad_0097_00e7_00ac_00a6_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e7_00b1_00bb_00e5_009e_008b">字符类型</a>
+<hr>
+</div>
+
+<h5 class="subsubsection">2.3.3.2 一般转义语法</h5>
+
+<p>除针对特殊控制字符的特殊转义序列外，Emacs提供了针对于非ASCII文本字符的几类转义语法。
+
+   <p><a name="index-unicode_00e5_00ad_0097_00e7_00ac_00a6_00e8_00bd_00ac_00e4_00b9_0089-74"></a>
+    你可以通过字符的Unicode编码来指定它。<code>?\u</code><var>nnnn</var>代表映射到Unicode码点&lsquo;<samp><span class="samp">U+</span><var>nnnn</var></samp>&rsquo;的字符（按照惯例，Unicode码点以十六
+进制数给出）。对于码点高于<code>U+</code><var>nnnn</var>的字行，需要用稍微不同的语法，即<code>\U00</code><var>nnnnnn</var>，它代表码点为&lsquo;<samp><span class="samp">U+</span><var>nnnnnn</var></samp>&rsquo;的
+字符。Unicode标准只定义了最高为&lsquo;<samp><span class="samp">U+</span><var>10ffff</var></samp>&rsquo;的码点，所以如果你定义大于该码点的字符，Emacs将产生一个错误。
+
+   <p>之所以采用这种奇怪和不便的语法，主要是是为了和其他语言兼容。与其他语言不同，Emacs只在字符串常量和字符串中支持此语法。
+
+   <p><a name="index-g_t_00e5_00ad_0097_00e7_00ac_00a6_00e5_00b8_00b8_00e9_0087_008f_00e4_00b8_00ad_00e7_009a_0084_0040samp_007b_005c_007d-75"></a><a name="index-g_t_00e5_00ad_0097_00e7_00ac_00a6_00e5_00b8_00b8_00e9_0087_008f_00e4_00b8_00ad_00e7_009a_0084_00e5_008f_008d_00e6_0096_009c_00e7_00ba_00bf-76"></a><a name="index-g_t_00e5_008d_0081_00e8_00bf_009b_00e5_0088_00b6_00e5_00ad_0097_00e7_00ac_00a6_00e7_00a0_0081-77"></a>
+    字符最常见的读取语法用10进制或16进制字符码表示。采用10进制时，采用问号跟上一个反斜线加上10进制字符码（用3位10进制数字）的形式，因此&lsquo;<samp><span class="samp">?\101</span></samp>&rsquo;表示字符
+<kbd>A</kbd>，&lsquo;<samp><span class="samp">?\001</span></samp>&rsquo;表示字符<kbd>C-a</kbd>，而<code>?\002</code>表示<kbd>C-b</kbd>。尽管这种语法可表示任意<acronym>ASCII</acronym>字符，但除非用精确的10进制数值表示
+比<acronym>ASCII</acronym>表示重要时才用这种语法。
+
+<pre class="example">     ?\012 &rArr; 10         ?\n &rArr; 10         ?\C-j &rArr; 10
+     ?\101 &rArr; 65         ?A &rArr; 65
+</pre>
+   <p>采用16进制时，采用问号跟上一个反斜线加上&lsquo;<samp><span class="samp">x</span></samp>&rsquo;再加上对应的16进制字符码的形式。你可以使用任意数量的16进制数，所以在这种方式下你可以表示任意字符。因此
+&lsquo;<samp><span class="samp">?\x41</span></samp>&rsquo;表示<kbd>A</kbd>，&lsquo;<samp><span class="samp">?\x1</span></samp>&rsquo;表示<kbd>C-a</kbd>，而<code>?\x8e0</code>表示Latin-1字符
+&lsquo;<samp><span class="samp">a</span></samp>&rsquo;加上重音符。
+
+   </body></html>
+

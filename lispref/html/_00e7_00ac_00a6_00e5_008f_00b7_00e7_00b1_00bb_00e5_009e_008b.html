@@ -1,0 +1,110 @@
+<html lang="en">
+<head>
+<title>符号类型 - GNU Emacs Lisp 参考文档</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Emacs Lisp 参考文档">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="_00e7_00bc_0096_00e7_00a8_008b_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e7_00bc_0096_00e7_00a8_008b_00e7_00b1_00bb_00e5_009e_008b" title="编程类型">
+<link rel="prev" href="_00e5_00ad_0097_00e7_00ac_00a6_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e7_00b1_00bb_00e5_009e_008b" title="字符类型">
+<link rel="next" href="_00e5_00ba_008f_00e5_0088_0097_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e5_00ba_008f_00e5_0088_0097_00e7_00b1_00bb_00e5_009e_008b" title="序列类型">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+这是GNU Emacs Lisp参考文档的3.0版本，对应于Emacs23.3版本。
+
+由张东亚汉化，汉化版本为0.1。
+
+更新记录：
+
+2011/06/22：启动第二章的翻译，待完成。
+
+2011/07/02：完成第二章的翻译。
+
+2011/08/07：启动第三章的翻译。
+
+2011/09/19：完成第三章的翻译。
+
+2011/11/28：启动第四章的翻译，待完成。
+
+2012/06/23：完成lists.texi的翻译。
+Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998,
+1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software
+Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with the Invariant Sections being ``GNU General Public
+     License,'' with the Front-Cover texts being ``A GNU Manual,'' and
+     with the Back-Cover Texts as in (a) below.  A copy of the license
+     is included in the section entitled ``GNU Free Documentation
+     License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have the freedom to copy
+     and modify this GNU manual.  Buying copies from the FSF supports
+     it in developing GNU and promoting software freedom.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="%e7%ac%a6%e5%8f%b7%e7%b1%bb%e5%9e%8b"></a>
+<a name="g_t_00e7_00ac_00a6_00e5_008f_00b7_00e7_00b1_00bb_00e5_009e_008b"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="_00e5_00ba_008f_00e5_0088_0097_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e5_00ba_008f_00e5_0088_0097_00e7_00b1_00bb_00e5_009e_008b">序列类型</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="_00e5_00ad_0097_00e7_00ac_00a6_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e7_00b1_00bb_00e5_009e_008b">字符类型</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="_00e7_00bc_0096_00e7_00a8_008b_00e7_00b1_00bb_00e5_009e_008b.html#g_t_00e7_00bc_0096_00e7_00a8_008b_00e7_00b1_00bb_00e5_009e_008b">编程类型</a>
+<hr>
+</div>
+
+<h4 class="subsection">2.3.4 符号类型</h4>
+
+<p>GNU Emacs Lisp中的<dfn>符号</dfn>是指具有名字的一个对象，符号名做为符号的打印表示。在常规Lisp应用中，借助于一个obarray（请参考see <a href="Creating-Symbols.html#Creating-Symbols">Creating Symbols</a>）
+，符号的名称是唯一的，也即没有两个同名的符号。
+
+   <p>符号可以做为变量、函数名或者维护一个属性表，或者仅仅是为了和所有其他Lisp对象进行区分，以便可以可靠地识别出其在数据结构中的存在。在一个指定的上下文环境中，
+通常符号只具有以上的一种用途， 但你可以独立地以任意以上方式使用该符号。
+
+   <p>名字以冒号（&lsquo;<samp><span class="samp">:</span></samp>&rsquo;）开始的符号称为<dfn>关键字符号</dfn>。这些符号将自动扮演常量的角色，并且通常只用于将未知符号与有限的替代符号进行比较。
+
+   <p><a name="index-g_t_00e7_00ac_00a6_00e5_008f_00b7_00e4_00b8_00ad_00e7_009a_0084_0040samp_007b_005c_007d-83"></a><a name="index-g_t_00e7_00ac_00a6_00e5_008f_00b7_00e4_00b8_00ad_00e7_009a_0084_00e5_008f_008d_00e6_0096_009c_00e7_00ba_00bf-84"></a>    符号名可以包含任意字符。大多数符号名由字母、数字以及标点符号&lsquo;<samp><span class="samp">-+=*/</span></samp>&rsquo;组成。这些名字不需要特殊标记（译注：这里应当指用反斜线括起来），只要符号名看起来
+不像数字，那么就足够使用了。（如果符号名看起来是数字，那就在它前面添加一个&lsquo;<samp><span class="samp">\</span></samp>&rsquo;，强制使它被解释成符号）。字符&lsquo;<samp><span class="samp">_~!@$%^&amp;:&lt;&gt;{}?</span></samp>&rsquo;很少在符号名中被使用，
+它们也不需要被特殊标记。所有此外其他可能在符号名中出现的字符，都需要用反斜线进行转义。与字符串中的反斜线应用相比，符号名中的反斜线只是简单的将反斜线后的单个字符括起
+来，例如，在字符串中，&lsquo;<samp><span class="samp">\t</span></samp>&rsquo;代表一个制表符，而符号名中的&lsquo;<samp><span class="samp">\t</span></samp>&rsquo;，则仅仅是将字母&lsquo;<samp><span class="samp">t</span></samp>&rsquo;括起来（译注：根据本段前面的描述，字母t是不需要转义的，因此符号名
+中的\t与t实际上是相同的，可以通过<code>symbol-name '\tb</code>以及<code>symbol-name 'tb</code>对比看看。）。为了在符号名中引入制表符，你需要用反斜线加上一个真实的
+制表符来表示，但却很少需要这样做。
+
+   <p><a name="index-CL_00e6_00b3_00a8_00e8_00ae_00b0_002d_002d_002d_00e5_00ad_0097_00e6_00af_008d_00e5_00a4_00a7_00e5_00b0_008f_00e5_0086_0099-85"></a><blockquote>
+<b>Common Lisp注记:</b> 在Common Lisp中，小写字符总是被转成大写，除非它们被精确的转义。在Emacs Lisp中，大小写字母是不同的。
+</blockquote>
+
+   <p>以下是符号名的几个例子。注意第五个例子中的&lsquo;<samp><span class="samp">+</span></samp>&rsquo;被转义，以避免该符号被解释成数字，这种方式在第四个例子中并不需要，这里因为该符号名并不能被当做数字解释。
+
+<pre class="example">     foo                 ; <span class="roman">名为&lsquo;</span><samp><span class="samp">foo</span></samp><span class="roman">&rsquo;的符号。</span>
+     FOO                 ; <span class="roman">名为&lsquo;</span><samp><span class="samp">FOO</span></samp><span class="roman">&rsquo;的符号, 与&lsquo;</span><samp><span class="samp">foo</span></samp><span class="roman">&rsquo;不同。</span>
+     1+                  ; <span class="roman">名为&lsquo;</span><samp><span class="samp">1+</span></samp><span class="roman">&rsquo;的符号。</span>
+                         ;   <span class="roman">(不是&lsquo;</span><samp><span class="samp">+1</span></samp><span class="roman">&rsquo;, 它是一个数字)。</span>
+     \+1                 ; <span class="roman">名为&lsquo;</span><samp><span class="samp">+1</span></samp><span class="roman">&rsquo;的符号。</span>
+                         ;   <span class="roman">(并不是一个非常可读的名字)。</span>
+     \(*\ 1\ 2\)         ; <span class="roman">名为&lsquo;</span><samp><span class="samp">(* 1 2)的符号</span></samp><span class="roman">&rsquo; (糟糕的名字)。</span>
+     <!-- the @'s in this next line use up three characters, hence the -->
+     <!-- apparent misalignment of the comment. -->
+     +-*/_~!@$%^&amp;=:&lt;&gt;{}  ; <span class="roman">名为&lsquo;</span><samp><span class="samp">+-*/_~!@$%^&amp;=:&lt;&gt;{}的符号</span></samp><span class="roman">&rsquo;。</span>
+                         ;   <span class="roman">这些符号不需要转义。</span>
+</pre>
+   <p><a name="index-g_t_0040samp_007b_0023_003a_007d-_00e8_00af_00bb_00e5_008f_0096_00e8_00af_00ad_00e6_00b3_0095-86"></a>    通常Lisp读取器扣留所有符号（译注：英文名为intern，目前暂找不出更好的名字，在Emacs中，intern就是将符号插入obarray中，而避免intern
+就是相当于让符号游离在obarray之外。）。你可以在符号名前添加&lsquo;<samp><span class="samp">#:</span></samp>&rsquo;来避免扣留发生。
+
+   </body></html>
+

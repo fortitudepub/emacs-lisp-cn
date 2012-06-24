@@ -1322,7 +1322,7 @@ check for an existing element, to avoid duplication.  For example:
 @end smallexample
 
 @noindent
-or like this, using @code{add-to-list} (@pxref{List Variables}):
+or like this, using @code{add-to-list} (@pxref{列表变量}):
 
 @smallexample
 @group

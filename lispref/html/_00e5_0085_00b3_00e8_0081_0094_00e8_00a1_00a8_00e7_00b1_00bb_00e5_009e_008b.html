@@ -1,0 +1,86 @@
+<html lang="en">
+<head>
+<title>关联表类型 - GNU Emacs Lisp 参考文档</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Emacs Lisp 参考文档">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Cons-Cell_00e7_00b1_00bb_00e5_009e_008b.html#Cons-Cell_00e7_00b1_00bb_00e5_009e_008b" title="Cons Cell类型">
+<link rel="prev" href="_00e7_0082_00b9_00e5_00af_00b9_00e8_00ae_00b0_00e6_00b3_0095.html#g_t_00e7_0082_00b9_00e5_00af_00b9_00e8_00ae_00b0_00e6_00b3_0095" title="点对记法">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+这是GNU Emacs Lisp参考文档的3.0版本，对应于Emacs23.3版本。
+
+由张东亚汉化，汉化版本为0.1。
+
+更新记录：
+
+2011/06/22：启动第二章的翻译，待完成。
+
+2011/07/02：完成第二章的翻译。
+
+2011/08/07：启动第三章的翻译。
+
+2011/09/19：完成第三章的翻译。
+
+2011/11/28：启动第四章的翻译，待完成。
+
+2012/06/23：完成lists.texi的翻译。
+Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998,
+1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software
+Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with the Invariant Sections being ``GNU General Public
+     License,'' with the Front-Cover texts being ``A GNU Manual,'' and
+     with the Back-Cover Texts as in (a) below.  A copy of the license
+     is included in the section entitled ``GNU Free Documentation
+     License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have the freedom to copy
+     and modify this GNU manual.  Buying copies from the FSF supports
+     it in developing GNU and promoting software freedom.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="%e5%85%b3%e8%81%94%e8%a1%a8%e7%b1%bb%e5%9e%8b"></a>
+<a name="g_t_00e5_0085_00b3_00e8_0081_0094_00e8_00a1_00a8_00e7_00b1_00bb_00e5_009e_008b"></a>
+<p>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="_00e7_0082_00b9_00e5_00af_00b9_00e8_00ae_00b0_00e6_00b3_0095.html#g_t_00e7_0082_00b9_00e5_00af_00b9_00e8_00ae_00b0_00e6_00b3_0095">点对记法</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Cons-Cell_00e7_00b1_00bb_00e5_009e_008b.html#Cons-Cell_00e7_00b1_00bb_00e5_009e_008b">Cons Cell类型</a>
+<hr>
+</div>
+
+<!-- node-name,  next,  previous,  up -->
+<h5 class="subsubsection">2.3.6.3 关联表类型</h5>
+
+<p><dfn>关联表</dfn>或<dfn>alist</dfn>是一种特殊构造的表，其元素是cons cells。在每个元素里，<span class="sc">car</span>被当作一个<dfn>关键字</dfn>，而<span class="sc">cdr</span>则被
+当作<dfn>关联值</dfn>。（在某些情况下，关联值存储在<span class="sc">cdr</span>的<span class="sc">car</span>中。）关联表通常用作栈，因为在关联表的前面添加或删除关联很简单。
+
+   <p>例如：
+
+<pre class="example">     (setq alist-of-colors
+           '((rose . red) (lily . white) (buttercup . yellow)))
+</pre>
+   <p class="noindent">设置变量<code>alist-of-colors</code>为一个具有三元素的关联表。在第一个元素中，<code>rose</code>是关键字，而<code>red</code>是关联值。
+
+   <p>要进步请了解关联表以及操作它的函数，请参考See <a href="_00e5_0085_00b3_00e8_0081_0094_00e5_0088_0097_00e8_00a1_00a8.html#g_t_00e5_0085_00b3_00e8_0081_0094_00e5_0088_0097_00e8_00a1_00a8">关联列表</a>.一节。要了解另外一类用于处理大量具有关键字的的查找
+表，请参考See <a href="Hash-Tables.html#Hash-Tables">Hash Tables</a>.一节。
+
+   </body></html>
+

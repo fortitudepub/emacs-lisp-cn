@@ -1,0 +1,113 @@
+<html lang="en">
+<head>
+<title>数字判定 - GNU Emacs Lisp 参考文档</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Emacs Lisp 参考文档">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="_00e6_0095_00b0_00e5_00ad_0097.html#g_t_00e6_0095_00b0_00e5_00ad_0097" title="数字">
+<link rel="prev" href="_00e6_00b5_00ae_00e7_0082_00b9_00e6_0095_00b0_00e5_009f_00ba_00e7_00a1_0080.html#g_t_00e6_00b5_00ae_00e7_0082_00b9_00e6_0095_00b0_00e5_009f_00ba_00e7_00a1_0080" title="浮点数基础">
+<link rel="next" href="_00e6_0095_00b0_00e5_00ad_0097_00e6_00af_0094_00e8_00be_0083.html#g_t_00e6_0095_00b0_00e5_00ad_0097_00e6_00af_0094_00e8_00be_0083" title="数字比较">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+这是GNU Emacs Lisp参考文档的3.0版本，对应于Emacs23.3版本。
+
+由张东亚汉化，汉化版本为0.1。
+
+更新记录：
+
+2011/06/22：启动第二章的翻译，待完成。
+
+2011/07/02：完成第二章的翻译。
+
+2011/08/07：启动第三章的翻译。
+
+2011/09/19：完成第三章的翻译。
+
+2011/11/28：启动第四章的翻译，待完成。
+
+2012/06/23：完成lists.texi的翻译。
+Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998,
+1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software
+Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with the Invariant Sections being ``GNU General Public
+     License,'' with the Front-Cover texts being ``A GNU Manual,'' and
+     with the Back-Cover Texts as in (a) below.  A copy of the license
+     is included in the section entitled ``GNU Free Documentation
+     License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have the freedom to copy
+     and modify this GNU manual.  Buying copies from the FSF supports
+     it in developing GNU and promoting software freedom.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="%e6%95%b0%e5%ad%97%e5%88%a4%e5%ae%9a"></a>
+<a name="g_t_00e6_0095_00b0_00e5_00ad_0097_00e5_0088_00a4_00e5_00ae_009a"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="_00e6_0095_00b0_00e5_00ad_0097_00e6_00af_0094_00e8_00be_0083.html#g_t_00e6_0095_00b0_00e5_00ad_0097_00e6_00af_0094_00e8_00be_0083">数字比较</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="_00e6_00b5_00ae_00e7_0082_00b9_00e6_0095_00b0_00e5_009f_00ba_00e7_00a1_0080.html#g_t_00e6_00b5_00ae_00e7_0082_00b9_00e6_0095_00b0_00e5_009f_00ba_00e7_00a1_0080">浮点数基础</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="_00e6_0095_00b0_00e5_00ad_0097.html#g_t_00e6_0095_00b0_00e5_00ad_0097">数字</a>
+<hr>
+</div>
+
+<h3 class="section">3.3 数字判定</h3>
+
+<p><a name="index-g_t_00e6_0095_00b0_00e5_00ad_0097_00e5_0088_00a4_00e5_00ae_009a-145"></a>
+    本节的函数用来测试数字，或测试某一类的数字。函数<code>integerp</code>以及<code>floatp</code>可以接受
+任意Lisp对象作为参数（否则它们不会这么常用），但<code>zerop</code>判定则要求以数字做为它的参数。也可以
+参考<a href="Predicates-on-Markers.html#Predicates-on-Markers">Predicates on Markers</a>.一节的<code>integer-or-marker-p</code>以及<code>number-or-marker-p</code>。
+
+<div class="defun">
+&mdash; Function: <b>floatp</b><var> object<a name="index-floatp-146"></a></var><br>
+<blockquote><p>此判定测试它的参数是否是一个浮点数，如是则返回<code>t</code>，否则返回<code>nil</code>。
+
+        <p><code>floatp</code>在Emacs版本18以及之前的版本中并不存在。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>integerp</b><var> object<a name="index-integerp-147"></a></var><br>
+<blockquote><p>此判定测试其参数是否是一个整数，如是则返回<code>t</code>，否则返回<code>nil</code>。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>numberp</b><var> object<a name="index-numberp-148"></a></var><br>
+<blockquote><p>此判定测试其参数是否是一个数字（或是整数，或是浮点数），如是则返回<code>t</code>，否则返回<code>nil</code>。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>wholenump</b><var> object<a name="index-wholenump-149"></a></var><br>
+<blockquote><p><a name="index-g_t_00e8_0087_00aa_00e7_0084_00b6_00e6_0095_00b0-150"></a><code>wholenump</code>判定（其名字来源于&ldquo;whole-number-p&rdquo;）测试其参数是否是一个非负整数，如是则返回
+<code>t</code>，否则返回<code>nil</code>。0被认为是非负数。
+
+        <p><a name="index-natnump-151"></a><code>natump</code>是<code>wholenump</code>的一个旧的同义判定。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>zerop</b><var> number<a name="index-zerop-152"></a></var><br>
+<blockquote><p>此判定测试其参数是否是0，如是则返回<code>t</code>，否则返回<code>nil</code>。它的参数必须是数字。
+译注：如果注意上面对于浮点数的描述，我们可知<code>(zerop 0.0)</code>返回<code>t</code>，这是因为Emacs Lisp
+认为浮点数0.0与整数0相等。
+
+        <p><code>(zerop x)</code>等价于<code>(= x 0)</code>. 
+</p></blockquote></div>
+
+   </body></html>
+

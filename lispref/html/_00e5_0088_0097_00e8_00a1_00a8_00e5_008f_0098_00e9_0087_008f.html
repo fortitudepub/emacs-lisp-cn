@@ -1,0 +1,173 @@
+<html lang="en">
+<head>
+<title>列表变量 - GNU Emacs Lisp 参考文档</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Emacs Lisp 参考文档">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="_00e5_0088_0097_00e8_00a1_00a8.html#g_t_00e5_0088_0097_00e8_00a1_00a8" title="列表">
+<link rel="prev" href="_00e6_009e_0084_00e9_0080_00a0_00e5_0088_0097_00e8_00a1_00a8.html#g_t_00e6_009e_0084_00e9_0080_00a0_00e5_0088_0097_00e8_00a1_00a8" title="构造列表">
+<link rel="next" href="_00e4_00bf_00ae_00e6_0094_00b9_00e5_0088_0097_00e8_00a1_00a8.html#g_t_00e4_00bf_00ae_00e6_0094_00b9_00e5_0088_0097_00e8_00a1_00a8" title="修改列表">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+这是GNU Emacs Lisp参考文档的3.0版本，对应于Emacs23.3版本。
+
+由张东亚汉化，汉化版本为0.1。
+
+更新记录：
+
+2011/06/22：启动第二章的翻译，待完成。
+
+2011/07/02：完成第二章的翻译。
+
+2011/08/07：启动第三章的翻译。
+
+2011/09/19：完成第三章的翻译。
+
+2011/11/28：启动第四章的翻译，待完成。
+
+2012/06/23：完成lists.texi的翻译。
+Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998,
+1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software
+Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with the Invariant Sections being ``GNU General Public
+     License,'' with the Front-Cover texts being ``A GNU Manual,'' and
+     with the Back-Cover Texts as in (a) below.  A copy of the license
+     is included in the section entitled ``GNU Free Documentation
+     License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have the freedom to copy
+     and modify this GNU manual.  Buying copies from the FSF supports
+     it in developing GNU and promoting software freedom.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="%e5%88%97%e8%a1%a8%e5%8f%98%e9%87%8f"></a>
+<a name="g_t_00e5_0088_0097_00e8_00a1_00a8_00e5_008f_0098_00e9_0087_008f"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="_00e4_00bf_00ae_00e6_0094_00b9_00e5_0088_0097_00e8_00a1_00a8.html#g_t_00e4_00bf_00ae_00e6_0094_00b9_00e5_0088_0097_00e8_00a1_00a8">修改列表</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="_00e6_009e_0084_00e9_0080_00a0_00e5_0088_0097_00e8_00a1_00a8.html#g_t_00e6_009e_0084_00e9_0080_00a0_00e5_0088_0097_00e8_00a1_00a8">构造列表</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="_00e5_0088_0097_00e8_00a1_00a8.html#g_t_00e5_0088_0097_00e8_00a1_00a8">列表</a>
+<hr>
+</div>
+
+<h3 class="section">5.5 修改列表变量</h3>
+
+<p>下面的这些函数以及一个宏，提供用来修改存储在变量中的列表的便捷手段。
+
+<div class="defun">
+&mdash; Macro: <b>push</b><var> newelt listname<a name="index-push-325"></a></var><br>
+<blockquote><p>这个宏提供了如下代码的另一种写法：
+<code>(setq </code><var>listname</var><code> (cons </code><var>newelt</var> <var>listname</var><code>))</code>.
+
+     <pre class="example">          (setq l '(a b))
+               &rArr; (a b)
+          (push 'c l)
+               &rArr; (c a b)
+          l
+               &rArr; (c a b)
+</pre>
+        </blockquote></div>
+
+   <p>如下是两个修改作为变量值的列表的函数。
+
+<div class="defun">
+&mdash; Function: <b>add-to-list</b><var> symbol element &amp;optional append compare-fn<a name="index-add_002dto_002dlist-326"></a></var><br>
+<blockquote><p>此函数在<var>element</var>不是变量<var>symbol</var>值（译注：指一个列表）的成员时，将通过对<var>elment</var>和旧值进行
+cons设置<var>symbol</var>。不论值是否被更新，它都返回结果列表。在调用前，<var>symbol</var>的值最好是一个列表。
+<code>add-to-list</code>使用<var>compare-fn</var>来将<var>element</var>与表的既有元素作比；如果<var>compare-fn</var>是
+<code>nil</code>，它使用<code>equal</code>。
+
+        <p>一般地，如果<var>element</var>被添加，它将被添加在<var>symbol</var>值对应的列表头部，但如果可选参数<var>append</var>是
+非<code>nil</code>，它将被添加在尾部。
+
+        <p>参数<var>symbol</var>不被隐式引用；<code>add-to-list</code>是一个普通函数，像<code>set</code>但不像<code>setq</code>。如果这
+是你期望的，你需要自行引用该参数。
+</p></blockquote></div>
+
+   <p>下面展示如何使用<code>add-to-list</code>的几个场景：
+
+<pre class="example">     (setq foo '(a b))
+          &rArr; (a b)
+     
+     (add-to-list 'foo 'c)     ;; <span class="roman">Add </span><code>c</code><span class="roman">.</span>
+          &rArr; (c a b)
+     
+     (add-to-list 'foo 'b)     ;; <span class="roman">No effect.</span>
+          &rArr; (c a b)
+     
+     foo                       ;; <code>foo</code><span class="roman"> was changed.</span>
+          &rArr; (c a b)
+</pre>
+   <p>和<code>(add-to-list '</code><var>var</var> <var>value</var><code>)</code>等价的一个表达式如下：
+
+<pre class="example">     (or (member <var>value</var> <var>var</var>)
+         (setq <var>var</var> (cons <var>value</var> <var>var</var>)))
+</pre>
+   <div class="defun">
+&mdash; Function: <b>add-to-ordered-list</b><var> symbol element &amp;optional order<a name="index-add_002dto_002dordered_002dlist-327"></a></var><br>
+<blockquote><p>此函数通过将<var>elemtn</var>插入在<var>symbol</var>的旧值（译注：一个列表）中由<var>order</var>所指定的位置上，
+从而设置<var>symbol</var>变量，该旧值必须是一个列表。如果<var>element</var>已经是该列表的一个成员，它在列表
+中的位置将根据<var>order</var>进行调整。成员关系通过<code>eq</code>来进行测试。不论更新与否，都返回结果列表。
+
+        <p><var>order</var>通常是一个数值（整数或浮点数），此时列表的元素将以非递减数值方式排序。
+
+        <p><var>order</var>也可以被忽略或是<code>nil</code>。那么，如果<var>element</var>已经在列表中（译注：未避免疑惑，这里
+我补充上了已经在列表中这个条件）且具有数值顺序，它将保持位置不变；否则<var>element</var>将不具有数值顺序。
+没有数值顺序的元素将无序地被放在列表尾部。
+
+        <p>所有<var>order</var>的其他值将使得<var>element</var>在具有数值顺序时，将移除其数值顺序；否则，它等同于<code>nil</code>
+时的行为。
+
+        <p>参数<var>symbol</var>不被隐式引用；<code>add-to-ordered-list</code>是一个普通函数，像<code>set</code>但不像<code>setq</code>。如果这
+是你期望的，你需要自行引用该参数。
+
+        <p>顺序信息将被存储在<var>symbol</var>的名为<code>list-order</code>属性对应的哈希表中。
+</p></blockquote></div>
+
+   <p>下面展示如何使用<code>add-to-orderedlist</code>的几个场景：
+
+<pre class="example">     (setq foo '())
+          &rArr; nil
+     
+     (add-to-ordered-list 'foo 'a 1)     ;; <span class="roman">Add </span><code>a</code><span class="roman">.</span>
+          &rArr; (a)
+     
+     (add-to-ordered-list 'foo 'c 3)     ;; <span class="roman">Add </span><code>c</code><span class="roman">.</span>
+          &rArr; (a c)
+     
+     (add-to-ordered-list 'foo 'b 2)     ;; <span class="roman">Add </span><code>b</code><span class="roman">.</span>
+          &rArr; (a b c)
+     
+     (add-to-ordered-list 'foo 'b 4)     ;; <span class="roman">Move </span><code>b</code><span class="roman">.</span>
+          &rArr; (a c b)
+     
+     (add-to-ordered-list 'foo 'd)       ;; <span class="roman">Append </span><code>d</code><span class="roman">.</span>
+          &rArr; (a c b d)
+     
+     (add-to-ordered-list 'foo 'e)       ;; <span class="roman">Add </span><code>e</code>.
+          &rArr; (a c b e d)          ;; 译注：未指定<var>order</var>，并且'e不具有数值顺序，
+                                         ;; 而d也没有数值顺序，故d和e无序的放在一起。
+     
+     foo                       ;; <code>foo</code><span class="roman"> was changed.</span>
+          &rArr; (a c b e d)
+</pre>
+   </body></html>
+

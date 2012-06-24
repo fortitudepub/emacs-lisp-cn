@@ -1318,7 +1318,7 @@ value (@pxref{Default Value}) of @var{variable} instead.
 @defun buffer-local-variables &optional buffer
 This function returns a list describing the buffer-local variables in
 buffer @var{buffer}.  (If @var{buffer} is omitted, the current buffer is
-used.)  It returns an association list (@pxref{Association Lists}) in
+used.)  It returns an association list (@pxref{关联列表}) in
 which each element contains one buffer-local variable and its value.
 However, when a variable's buffer-local binding in @var{buffer} is void,
 then the variable appears directly in the resulting list.

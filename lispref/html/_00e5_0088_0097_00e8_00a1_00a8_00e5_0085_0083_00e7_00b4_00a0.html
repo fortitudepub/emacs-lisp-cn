@@ -1,0 +1,237 @@
+<html lang="en">
+<head>
+<title>列表元素 - GNU Emacs Lisp 参考文档</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Emacs Lisp 参考文档">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="_00e5_0088_0097_00e8_00a1_00a8.html#g_t_00e5_0088_0097_00e8_00a1_00a8" title="列表">
+<link rel="prev" href="_00e5_0088_0097_00e8_00a1_00a8_00e7_009b_00b8_00e5_0085_00b3_00e7_009a_0084_00e5_0088_00a4_00e5_00ae_009a.html#g_t_00e5_0088_0097_00e8_00a1_00a8_00e7_009b_00b8_00e5_0085_00b3_00e7_009a_0084_00e5_0088_00a4_00e5_00ae_009a" title="列表相关的判定">
+<link rel="next" href="_00e6_009e_0084_00e9_0080_00a0_00e5_0088_0097_00e8_00a1_00a8.html#g_t_00e6_009e_0084_00e9_0080_00a0_00e5_0088_0097_00e8_00a1_00a8" title="构造列表">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+这是GNU Emacs Lisp参考文档的3.0版本，对应于Emacs23.3版本。
+
+由张东亚汉化，汉化版本为0.1。
+
+更新记录：
+
+2011/06/22：启动第二章的翻译，待完成。
+
+2011/07/02：完成第二章的翻译。
+
+2011/08/07：启动第三章的翻译。
+
+2011/09/19：完成第三章的翻译。
+
+2011/11/28：启动第四章的翻译，待完成。
+
+2012/06/23：完成lists.texi的翻译。
+Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998,
+1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software
+Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with the Invariant Sections being ``GNU General Public
+     License,'' with the Front-Cover texts being ``A GNU Manual,'' and
+     with the Back-Cover Texts as in (a) below.  A copy of the license
+     is included in the section entitled ``GNU Free Documentation
+     License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have the freedom to copy
+     and modify this GNU manual.  Buying copies from the FSF supports
+     it in developing GNU and promoting software freedom.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="%e5%88%97%e8%a1%a8%e5%85%83%e7%b4%a0"></a>
+<a name="g_t_00e5_0088_0097_00e8_00a1_00a8_00e5_0085_0083_00e7_00b4_00a0"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="_00e6_009e_0084_00e9_0080_00a0_00e5_0088_0097_00e8_00a1_00a8.html#g_t_00e6_009e_0084_00e9_0080_00a0_00e5_0088_0097_00e8_00a1_00a8">构造列表</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="_00e5_0088_0097_00e8_00a1_00a8_00e7_009b_00b8_00e5_0085_00b3_00e7_009a_0084_00e5_0088_00a4_00e5_00ae_009a.html#g_t_00e5_0088_0097_00e8_00a1_00a8_00e7_009b_00b8_00e5_0085_00b3_00e7_009a_0084_00e5_0088_00a4_00e5_00ae_009a">列表相关的判定</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="_00e5_0088_0097_00e8_00a1_00a8.html#g_t_00e5_0088_0097_00e8_00a1_00a8">列表</a>
+<hr>
+</div>
+
+<h3 class="section">5.3 访问列表元素</h3>
+
+<p><a name="index-g_t_00e5_0088_0097_00e8_00a1_00a8_00e5_0085_0083_00e7_00b4_00a0-298"></a>
+
+<div class="defun">
+&mdash; Function: <b>car</b><var> cons-cell<a name="index-car-299"></a></var><br>
+<blockquote><p>此函数返回<var>cons cell</var>第一个槽引用的值。换句话说，它返回<var>cons cell</var>的<span class="sc">car</span>。
+
+        <p>作为特例，如果<var>cons cell</var>是<code>nil</code>，这个函数返回<code>nil</code>。因此，任何列表都是有效的参数。
+如果参数不是cons cell或<code>nil</code>时将报错。
+
+     <pre class="example">          (car '(a b c))
+               &rArr; a
+          (car '())
+               &rArr; nil
+</pre>
+        </blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>cdr</b><var> cons-cell<a name="index-cdr-300"></a></var><br>
+<blockquote><p>此函数返回<var>cons cell</var>第二个槽引用的值。换句话说，它返回<var>cons cell</var>的<span class="sc">cdr</span>。
+
+        <p>作为特例，如果<var>cons cell</var>是<code>nil</code>，这个函数返回<code>nil</code>。因此，任何列表都是有效的参数。
+如果参数不是cons cell或<code>nil</code>时将报错。
+
+     <pre class="example">          (cdr '(a b c))
+               &rArr; (b c)
+          (cdr '())
+               &rArr; nil
+</pre>
+        </blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>car-safe</b><var> object<a name="index-car_002dsafe-301"></a></var><br>
+<blockquote><p>此函数允许你取得cons cell的<span class="sc">car</span>但避免其他类型时的报错。在<var>object</var>是cons cell时，它返回<var>object</var>的
+<span class="sc">car</span>，另外的情况下返回<code>nil</code>。相比之下，<code>car</code>将在 <var>object</var>不是列表时返回错误。
+
+     <pre class="example">          (car-safe <var>object</var>)
+          ==
+          (let ((x <var>object</var>))
+            (if (consp x)
+                (car x)
+              nil))
+</pre>
+        </blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>cdr-safe</b><var> object<a name="index-cdr_002dsafe-302"></a></var><br>
+<blockquote><p>此函数允许你取得cons cell的<span class="sc">cdr</span>但避免其他类型时的报错。在<var>object</var>是cons cell时，它返回<var>object</var>的
+<span class="sc">cdr</span>，另外的情况下返回<code>nil</code>。相比之下，<code>cdr</code>将在 <var>object</var>不是列表时返回错误。
+
+     <pre class="example">          (cdr-safe <var>object</var>)
+          ==
+          (let ((x <var>object</var>))
+            (if (consp x)
+                (cdr x)
+              nil))
+</pre>
+        </blockquote></div>
+
+<div class="defun">
+&mdash; Macro: <b>pop</b><var> listname<a name="index-pop-303"></a></var><br>
+<blockquote><p>此宏提供一种检查列表的<span class="sc">car</span>的方式，并将<span class="sc">car</span>从列表中一次摘除。
+
+        <p>它操作存在符号<var>listname</var>中的列表。它通过设置旧值的<span class="sc">cdr</span>至符号<var>listname</var>来移除元素，但它同时返回
+该列表的<span class="sc">var</span>，即被移除的元素。
+
+     <pre class="example">          x
+               &rArr; (a b c)
+          (pop x)
+               &rArr; a
+          x
+               &rArr; (b c)
+</pre>
+        </blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>nth</b><var> n list<a name="index-nth-304"></a></var><br>
+<blockquote><p><a name="Definition-of-nth"></a>此函数返回<var>list</var>中的第<var>n</var>个元素。元素以0开始计数，所以<var>list</var>的<span class="sc">car</span>是第0号元素。如果<var>list</var>
+的长度是<var>n</var>或更小，返回<code>nil</code>。
+
+        <p>如果<var>n</var>是负值，<code>nth</code>返回列表的第一个元素。
+
+     <pre class="example">          (nth 2 '(1 2 3 4))
+               &rArr; 3
+          (nth 10 '(1 2 3 4))
+               &rArr; nil
+          (nth -3 '(1 2 3 4))
+               &rArr; 1
+          
+          (nth n x) == (car (nthcdr n x))
+</pre>
+        <p>函数<code>elt</code>相似，但它可应用于任何序列。由于历史原因，它以相反的顺序传参。请参考See <a href="Sequence-Functions.html#Sequence-Functions">Sequence Functions</a>.。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>nthcdr</b><var> n list<a name="index-nthcdr-305"></a></var><br>
+<blockquote><p>此函数返回<var>list</var>的第<var>n</var>个<span class="sc">cdr</span>。换句话说，它跳过<var>list</var>的前<var>n</var>个链并返回后继内容。
+
+        <p>如果<var>n</var>是0或者负值，<code>nthcdr</code>返回<var>list</var>的所有元素。如果<var>list</var>的长度是<var>n</var>或者更小，<code>nthcdr</code>
+返回<code>nil</code>。
+     <pre class="example">          (nthcdr 1 '(1 2 3 4))
+               &rArr; (2 3 4)
+          (nthcdr 10 '(1 2 3 4))
+               &rArr; nil
+          (nthcdr -3 '(1 2 3 4))
+               &rArr; (1 2 3 4)
+</pre>
+        </blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>last</b><var> list &amp;optional n<a name="index-last-306"></a></var><br>
+<blockquote><p>此函数返回<var>list</var>的最后一个链接。此链接的<code>car</code>是该列表的最后一个元素。如果<var>list</var>是空，<code>nil</code>将被返回。
+如果<var>n</var>不是<code>nil</code>，倒数第<var>n</var>个链接将被返回，而如果<var>n</var>大于<var>list</var>的长度度，则整<var>list</var>将被返回。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>safe-length</b><var> list<a name="index-safe_002dlength-307"></a></var><br>
+<blockquote><p><a name="safe_002dlength_00e7_009a_0084_00e5_00ae_009a_00e4_00b9_0089"></a>此函数返回<var>list</var>的长度，但避免错误或者无限循环。它通常返回list中不同的cons cell的个数。然而，对于循环列表，该值就是
+一个上限；它通常很大。
+
+        <p>如果<var>list</var>不是<code>nil</code>或者cons cell，它返回0。
+</p></blockquote></div>
+
+   <p>当你不担心列表是循环列表时，计算其长度的通常办法就是使用<code>length</code>。请参考See <a href="Sequence-Functions.html#Sequence-Functions">Sequence Functions</a>.。
+
+<div class="defun">
+&mdash; Function: <b>caar</b><var> cons-cell<a name="index-caar-308"></a></var><br>
+<blockquote><p>等同于<code>(car (car </code><var>cons-cell</var><code>))</code>。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>cadr</b><var> cons-cell<a name="index-cadr-309"></a></var><br>
+<blockquote><p>等同于<code>(car (cdr </code><var>cons-cell</var><code>))</code>或<code>(nth 1 </code><var>cons-cell</var><code>)</code>。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>cdar</b><var> cons-cell<a name="index-cdar-310"></a></var><br>
+<blockquote><p>等同于<code>(cdr (car </code><var>cons-cell</var><code>))</code>。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>cddr</b><var> cons-cell<a name="index-cddr-311"></a></var><br>
+<blockquote><p>等同于<code>(cdr (cdr </code><var>cons-cell</var><code>))</code>或<code>(nthcdr 2 </code><var>cons-cell</var><code>)</code>。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>butlast</b><var> x &amp;optional n<a name="index-butlast-312"></a></var><br>
+<blockquote><p>此函数返回最后一个或最后<var>n</var>个元素被移除的列表。如果<var>n</var>比0大，它将拷贝一份列表以便不破坏原列表。
+通常，<code>(append (butlast </code><var>x</var> <var>n</var><code>) (last </code><var>x</var> <var>n</var><code>))</code>将返回与<var>x</var>相等的
+一个列表。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>nbutlast</b><var> x &amp;optional n<a name="index-nbutlast-313"></a></var><br>
+<blockquote><p>此函数是<code>butlast</code>的另一个版本，此版本破坏性地修改元素的<code>cdr</code>，而不是拷贝该列表。
+译注：请注意如下代码：
+     <pre class="example">          (setq a '(1 2 3))
+          (equal (nbutlast a) a)
+               &rArr; t
+          (equal (nbutlast a) a)
+               &rArr; nil
+</pre>
+        </blockquote></div>
+
+   </body></html>
+

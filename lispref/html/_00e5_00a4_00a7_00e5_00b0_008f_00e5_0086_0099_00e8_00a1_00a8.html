@@ -1,0 +1,172 @@
+<html lang="en">
+<head>
+<title>大小写表 - GNU Emacs Lisp 参考文档</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Emacs Lisp 参考文档">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e4_00b8_008e_00e5_00ad_0097_00e7_00ac_00a6.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e4_00b8_008e_00e5_00ad_0097_00e7_00ac_00a6" title="字符串与字符">
+<link rel="prev" href="_00e5_00a4_00a7_00e5_00b0_008f_00e5_0086_0099_00e8_00bd_00ac_00e6_008d_00a2.html#g_t_00e5_00a4_00a7_00e5_00b0_008f_00e5_0086_0099_00e8_00bd_00ac_00e6_008d_00a2" title="大小写转换">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+这是GNU Emacs Lisp参考文档的3.0版本，对应于Emacs23.3版本。
+
+由张东亚汉化，汉化版本为0.1。
+
+更新记录：
+
+2011/06/22：启动第二章的翻译，待完成。
+
+2011/07/02：完成第二章的翻译。
+
+2011/08/07：启动第三章的翻译。
+
+2011/09/19：完成第三章的翻译。
+
+2011/11/28：启动第四章的翻译，待完成。
+
+2012/06/23：完成lists.texi的翻译。
+Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998,
+1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software
+Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with the Invariant Sections being ``GNU General Public
+     License,'' with the Front-Cover texts being ``A GNU Manual,'' and
+     with the Back-Cover Texts as in (a) below.  A copy of the license
+     is included in the section entitled ``GNU Free Documentation
+     License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have the freedom to copy
+     and modify this GNU manual.  Buying copies from the FSF supports
+     it in developing GNU and promoting software freedom.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="%e5%a4%a7%e5%b0%8f%e5%86%99%e8%a1%a8"></a>
+<a name="g_t_00e5_00a4_00a7_00e5_00b0_008f_00e5_0086_0099_00e8_00a1_00a8"></a>
+<p>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="_00e5_00a4_00a7_00e5_00b0_008f_00e5_0086_0099_00e8_00bd_00ac_00e6_008d_00a2.html#g_t_00e5_00a4_00a7_00e5_00b0_008f_00e5_0086_0099_00e8_00bd_00ac_00e6_008d_00a2">大小写转换</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e4_00b8_008e_00e5_00ad_0097_00e7_00ac_00a6.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e4_00b8_008e_00e5_00ad_0097_00e7_00ac_00a6">字符串与字符</a>
+<hr>
+</div>
+
+<h3 class="section">4.9 大小写表</h3>
+
+<p>你可以通过安装一个特殊的<dfn>大小写表</dfn>来定制大小写转换。一个大小写表指定了大写字母与小写字母的映射关系。
+它即影响面向Lisp对象的大小写转换函数，也影响那些面向缓冲区内文本的转换函数（see <a href="Case-Changes.html#Case-Changes">Case Changes</a>）。每一个缓冲
+都有一个大小写表；同样还有一个标准的转换表，用于初始化新缓冲区的转换表。
+
+   <p>一个大小写表是一个char-table类型（see <a href="Char_002dTables.html#Char_002dTables">Char-Tables</a>），它的子类型是<code>case-table</code>。这个char-table映射每一个
+字符至其小写字符。它具有三个额外的槽，它们持有相关的表：
+
+     <dl>
+<dt><var>upcase</var><dd>大写表将每个字符映射至对应的大写字符。
+<br><dt><var>canonicalize</var><dd>规范化表将一个大小写相关的字符集合映射成该集合中的一个成员。
+<br><dt><var>equivalences</var><dd>等价表将一个大小写相关的字符集合中的每一个元素映射至该集合中的下一个元素。
+</dl>
+
+   <p>在简单情况下，你通常只需要指定至小写的映射，其他三个相关的表将会自动计算生成。
+
+   <p>对于某些语言，大小写并非一对一的关系。对于同一个大写等价字母，可能有两个不同的小写字母。
+在这种情部钙，你即需要指定小写映射表，也需要指定大写映射表。
+
+   <p>另外一个<var>canonicalize</var>表将每个字符映射成其规范等价字符；任何两个由大小写转换相关的字符具有相同的规范等价字符。
+例如，由于&lsquo;<samp><span class="samp">a</span></samp>&rsquo;和&lsquo;<samp><span class="samp">A</span></samp>&rsquo;大写小转换相关，它们应当具有相同的规范等价字符（该字符可以是&lsquo;<samp><span class="samp">a</span></samp>&rsquo;，也可以是&lsquo;<samp><span class="samp">A</span></samp>&rsquo;）。
+
+   <p>另外一个<var>equivalences</var>表将在每一个等价类（具有相同规范等价字符的字符）中的字符间循环交替映射。（对于通常的<acronym>ASCII</acronym>，
+它将&lsquo;<samp><span class="samp">a</span></samp>&rsquo;映射成&lsquo;<samp><span class="samp">A</span></samp>&rsquo;，而将&lsquo;<samp><span class="samp">A</span></samp>&rsquo;映射成&lsquo;<samp><span class="samp">a</span></samp>&rsquo;，其他等价字符集合也类似。）
+
+   <p>当构造一个大小写表时，你可以指定<var>canonicalize</var>为<code>nil</code>；那么Emacs借助于小写和大写转换表填充此表。你也可以指定
+<var>equivalences</var>为<code>nil</code>；那么Emacs将此<var>canonicalize</var>中构造此表。在实际用到的大小写表中，这些组件非<code>nil</code>。
+不要尝试在不指定<var>canonicalize</var>时指定<var>equivalences</var>。
+
+   <p>以下是操作大小写表的函数：
+
+<div class="defun">
+&mdash; Function: <b>case-table-p</b><var> object<a name="index-case_002dtable_002dp-275"></a></var><br>
+<blockquote><p>此判断在<var>objects</var>是一个有效的转换表时返回非<code>nil</code>。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>set-standard-case-table</b><var> table<a name="index-set_002dstandard_002dcase_002dtable-276"></a></var><br>
+<blockquote><p>此函数设置<var>table</var>为标准大小写表，因此它将用于后续新创建的缓冲区。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>standard-case-table</b><var><a name="index-standard_002dcase_002dtable-277"></a></var><br>
+<blockquote><p>此函数返回标准大小写表。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>current-case-table</b><var><a name="index-current_002dcase_002dtable-278"></a></var><br>
+<blockquote><p>此函数返回当前缓冲区的大小写表。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>set-case-table</b><var> table<a name="index-set_002dcase_002dtable-279"></a></var><br>
+<blockquote><p>此函数设置当前缓冲区的大小写表为<var>table</var>。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Macro: <b>with-case-table</b><var> table body<small class="dots">...</small><a name="index-with_002dcase_002dtable-280"></a></var><br>
+<blockquote><p><code>with-case-table</code>宏保存当前大小写表，并且使<var>table</var>成为当前的大小写表，
+执行<var>body</var>型，并将终还原大小写表。返回值是<var>body</var>中最后一个型的值。在通过<code>throw</code>
+异常通出或错误（see <a href="Nonlocal-Exits.html#Nonlocal-Exits">Nonlocal Exits</a>）时，也将还原大小写表。
+</p></blockquote></div>
+
+   <p>某些语言环境修改<acronym>ASCII</acronym>字符的大小写转换；例如，在土耳其语言环境中，&lsquo;<samp><span class="samp">I</span></samp>&rsquo;被小写为土耳其
+语的&ldquo;dotless i&rdquo;。这将干扰那些需要常规ASCII大小写转换的代码，例如某些基于<acronym>ASCII</acronym>的网络协议
+实现。在那些情况下，请使用<code>with-case-table</code>宏，并结合存储未修改的<acronym>ASCII</acronym>字符集的大小写
+转换表的变量<var>ascii-case-table</var>。
+
+<div class="defun">
+&mdash; Variable: <b>ascii-case-table</b><var><a name="index-ascii_002dcase_002dtable-281"></a></var><br>
+<blockquote><p><acronym>ASCII</acronym>字符集的大小写表。它不应当被任何其他语言环境设置所修改。
+</p></blockquote></div>
+
+   <p>对于那些定义了非<acronym>ASCII</acronym>字符集的包，以下三个其他函数是方便的例程。它们修改指定的<var>case-table</var>
+所代表的大小写表；它们还修改标准语法表。See <a href="Syntax-Tables.html#Syntax-Tables">Syntax Tables</a>.。通常你可以用这些函数改变标准大小写表。
+
+<div class="defun">
+&mdash; Function: <b>set-case-syntax-pair</b><var> uc lc case-table<a name="index-set_002dcase_002dsyntax_002dpair-282"></a></var><br>
+<blockquote><p>e此函数指定一对对应字母的大小写。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>set-case-syntax-delims</b><var> l r case-table<a name="index-set_002dcase_002dsyntax_002ddelims-283"></a></var><br>
+<blockquote><p>此函数设置<var>l</var>和<var>r</var>为一对大小写不变的分割符。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>set-case-syntax</b><var> char syntax case-table<a name="index-set_002dcase_002dsyntax-284"></a></var><br>
+<blockquote><p>此函数设置 <var>char</var>大小写不变，其语法为<var>syntax</var>。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Command: <b>describe-buffer-case-table</b><var><a name="index-describe_002dbuffer_002dcase_002dtable-285"></a></var><br>
+<blockquote><p>此命令显示一个当前缓冲区内容的大小写表的描述。
+</p></blockquote></div>
+
+<!-- *-texinfo-*- -->
+<!-- This is part of the GNU Emacs Lisp Reference Manual. -->
+<!-- Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1998, 1999, 2001, -->
+<!-- 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software Foundation, Inc. -->
+<!-- See the file elisp.texi for copying conditions. -->
+   </body></html>
+

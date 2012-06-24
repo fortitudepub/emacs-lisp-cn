@@ -1,0 +1,155 @@
+<html lang="en">
+<head>
+<title>环 - GNU Emacs Lisp 参考文档</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Emacs Lisp 参考文档">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="_00e5_0088_0097_00e8_00a1_00a8.html#g_t_00e5_0088_0097_00e8_00a1_00a8" title="列表">
+<link rel="prev" href="_00e5_0085_00b3_00e8_0081_0094_00e5_0088_0097_00e8_00a1_00a8.html#g_t_00e5_0085_00b3_00e8_0081_0094_00e5_0088_0097_00e8_00a1_00a8" title="关联列表">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+这是GNU Emacs Lisp参考文档的3.0版本，对应于Emacs23.3版本。
+
+由张东亚汉化，汉化版本为0.1。
+
+更新记录：
+
+2011/06/22：启动第二章的翻译，待完成。
+
+2011/07/02：完成第二章的翻译。
+
+2011/08/07：启动第三章的翻译。
+
+2011/09/19：完成第三章的翻译。
+
+2011/11/28：启动第四章的翻译，待完成。
+
+2012/06/23：完成lists.texi的翻译。
+Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998,
+1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software
+Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with the Invariant Sections being ``GNU General Public
+     License,'' with the Front-Cover texts being ``A GNU Manual,'' and
+     with the Back-Cover Texts as in (a) below.  A copy of the license
+     is included in the section entitled ``GNU Free Documentation
+     License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have the freedom to copy
+     and modify this GNU manual.  Buying copies from the FSF supports
+     it in developing GNU and promoting software freedom.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="%e7%8e%af"></a>
+<a name="g_t_00e7_008e_00af"></a>
+<p>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="_00e5_0085_00b3_00e8_0081_0094_00e5_0088_0097_00e8_00a1_00a8.html#g_t_00e5_0085_00b3_00e8_0081_0094_00e5_0088_0097_00e8_00a1_00a8">关联列表</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="_00e5_0088_0097_00e8_00a1_00a8.html#g_t_00e5_0088_0097_00e8_00a1_00a8">列表</a>
+<hr>
+</div>
+
+<h3 class="section">5.9 管理固定大小的对象环</h3>
+
+<p><a name="index-g_t_00e7_008e_00af_00e6_0095_00b0_00e6_008d_00ae_00e7_00bb_0093_00e6_009e_0084-369"></a>  这节描述操作环的函数。一个<dfn>环</dfn>指的是固定长度的数据结构，它支持插入、删除、旋转、基于模的索引以及遍历。
+
+<div class="defun">
+&mdash; Function: <b>make-ring</b><var> size<a name="index-make_002dring-370"></a></var><br>
+<blockquote><p>此函数创建一个能持有<var>size</var>个对象的新环。
+<var>size</var>应当是一个整数。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>ring-p</b><var> object<a name="index-ring_002dp-371"></a></var><br>
+<blockquote><p>如果<var>object</var>是一个环，此函数返回<code>t</code>，否则返回<code>nil</code>。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>ring-size</b><var> ring<a name="index-ring_002dsize-372"></a></var><br>
+<blockquote><p>此函数返回<var>ring</var>的最大容量。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>ring-length</b><var> ring<a name="index-ring_002dlength-373"></a></var><br>
+<blockquote><p>此函数返回<var>ring</var>当前包含的对象个数。它永远不会超出<code>ring-size</code>的返回值。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>ring-elements</b><var> ring<a name="index-ring_002delements-374"></a></var><br>
+<blockquote><p>此函数返回<var>ring</var>中对象的一个列表，按照最新优先的顺序。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>ring-copy</b><var> ring<a name="index-ring_002dcopy-375"></a></var><br>
+<blockquote><p>此函数返回一个是<var>ring</var>拷贝的新环。它含有与<var>ring</var>相同（<code>eq</code>）的对象。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>ring-empty-p</b><var> ring<a name="index-ring_002dempty_002dp-376"></a></var><br>
+<blockquote><p>如果<var>ring</var>为空，则返回<code>t</code>，否则返回<code>nil</code>。
+</p></blockquote></div>
+
+   <p>环中最新的元素总是具有索引0。较高索引对应较旧元素。索引对环大小求模。索引&minus;1对应于
+最旧的元素，索引&minus;2对应于次旧的，依次类推。
+
+<div class="defun">
+&mdash; Function: <b>ring-ref</b><var> ring index<a name="index-ring_002dref-377"></a></var><br>
+<blockquote><p>此函数返回<var>ring</var>中索引<var>index</var>处的对象。<var>index</var>可以是否值或大于环长度的值。如果
+<var>ring</var>是空的，<code>ring-ref</code>产生一个错误。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>ring-insert</b><var> ring object<a name="index-ring_002dinsert-378"></a></var><br>
+<blockquote><p>此函数将<var>object</var>插入至<var>ring</var>，使它成为最新的元素，并返回<var>object</var>。
+
+        <p>如果环已满，插入将移除最旧的元素给新元素腾空间。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>ring-remove</b><var> ring &amp;optional index<a name="index-ring_002dremove-379"></a></var><br>
+<blockquote><p>此函数从<var>ring</var>中移除对象，并返回该对象。参数<var>index</var>指明要被移除的元素；如果它是<code>nil</code>，
+这意味着移除旧最的元素。如果<var>ring</var>是空的，<code>ring-remove</code>产生一个错误。
+</p></blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>ring-insert-at-beginning</b><var> ring object<a name="index-ring_002dinsert_002dat_002dbeginning-380"></a></var><br>
+<blockquote><p>此函数将<var>object</var>插入至<var>ring</var>中，将其做为最旧的元素。返回值并不重要。
+
+        <p>如果环是空的，此函数移除最新的元素以及给待插入的元素腾空间。
+</p></blockquote></div>
+
+   <p><a name="index-fifo_00e6_0095_00b0_00e6_008d_00ae_00e7_00bb_0093_00e6_009e_0084-381"></a>  如果你小心的不要越过环的大小，你可以将环当做先进先出队列。例如：
+
+<pre class="lisp">     (let ((fifo (make-ring 5)))
+       (mapc (lambda (obj) (ring-insert fifo obj))
+             '(0 one "two"))
+       (list (ring-remove fifo) t
+             (ring-remove fifo) t
+             (ring-remove fifo)))
+          &rArr; (0 t one t "two")
+</pre>
+   <!-- *-texinfo-*- -->
+<!-- This is part of the GNU Emacs Lisp Reference Manual. -->
+<!-- Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1998, 1999, 2001, -->
+<!-- 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011 -->
+<!-- Free Software Foundation, Inc. -->
+<!-- See the file elisp.texi for copying conditions. -->
+   </body></html>
+

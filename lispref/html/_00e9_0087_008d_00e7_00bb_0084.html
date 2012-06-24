@@ -1,0 +1,197 @@
+<html lang="en">
+<head>
+<title>重组 - GNU Emacs Lisp 参考文档</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Emacs Lisp 参考文档">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="_00e4_00bf_00ae_00e6_0094_00b9_00e5_0088_0097_00e8_00a1_00a8.html#g_t_00e4_00bf_00ae_00e6_0094_00b9_00e5_0088_0097_00e8_00a1_00a8" title="修改列表">
+<link rel="prev" href="Setcdr.html#Setcdr" title="Setcdr">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+这是GNU Emacs Lisp参考文档的3.0版本，对应于Emacs23.3版本。
+
+由张东亚汉化，汉化版本为0.1。
+
+更新记录：
+
+2011/06/22：启动第二章的翻译，待完成。
+
+2011/07/02：完成第二章的翻译。
+
+2011/08/07：启动第三章的翻译。
+
+2011/09/19：完成第三章的翻译。
+
+2011/11/28：启动第四章的翻译，待完成。
+
+2012/06/23：完成lists.texi的翻译。
+Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998,
+1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software
+Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with the Invariant Sections being ``GNU General Public
+     License,'' with the Front-Cover texts being ``A GNU Manual,'' and
+     with the Back-Cover Texts as in (a) below.  A copy of the license
+     is included in the section entitled ``GNU Free Documentation
+     License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have the freedom to copy
+     and modify this GNU manual.  Buying copies from the FSF supports
+     it in developing GNU and promoting software freedom.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="%e9%87%8d%e7%bb%84"></a>
+<a name="g_t_00e9_0087_008d_00e7_00bb_0084"></a>
+<p>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Setcdr.html#Setcdr">Setcdr</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="_00e4_00bf_00ae_00e6_0094_00b9_00e5_0088_0097_00e8_00a1_00a8.html#g_t_00e4_00bf_00ae_00e6_0094_00b9_00e5_0088_0097_00e8_00a1_00a8">修改列表</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.6.3 重组列表函数</h4>
+
+<p><a name="index-g_t_00e5_0088_0097_00e8_00a1_00a8_00e9_0087_008d_00e7_00bb_0084-334"></a><a name="index-g_t_00e5_0088_0097_00e8_00a1_00a8_00e4_00bf_00ae_00e6_0094_00b9-335"></a>
+  下面是一些通过修改列表中cons cell的<span class="sc">cdr</span>从而&ldquo;破坏性&rdquo;地重组列表的函数。我们之所以称这些
+函数为&ldquo;破坏性&rdquo;地，是因为它们对作为参数传递给它们的列表，重新连接列表中的cons cell，并返回修改
+后的列表。
+
+   <p>关于另外一个修改cons cell的函数，请参考<a href="_00e9_009b_0086_00e5_0090_0088_00e4_00b8_008e_00e5_0088_0097_00e8_00a1_00a8.html#g_t_00e9_009b_0086_00e5_0090_0088_00e4_00b8_008e_00e5_0088_0097_00e8_00a1_00a8">集合与列表</a>.一节中的<code>delq</code>。
+
+<div class="defun">
+&mdash; Function: <b>nconc</b><var> &amp;rest lists<a name="index-nconc-336"></a></var><br>
+<blockquote><p><a name="index-g_t_00e8_0081_0094_00e7_00bb_0093_00e5_0088_0097_00e8_00a1_00a8-337"></a><a name="index-g_t_00e5_0090_0088_00e5_00b9_00b6_00e5_0088_0097_00e8_00a1_00a8-338"></a>此函数返回包含<var>lists</var>中所有元素的列表。不像<code>append</code>（参考see <a href="_00e6_009e_0084_00e9_0080_00a0_00e5_0088_0097_00e8_00a1_00a8.html#g_t_00e6_009e_0084_00e9_0080_00a0_00e5_0088_0097_00e8_00a1_00a8">构造列表</a>.），<var>lists</var>
+并<em>不</em>被拷贝，而是将<var>lists</var>中的每个列表最后的<span class="sc">cdr</span>修改为指向下一个列表。<var>lists</var>中最后一个列
+表不被替换。例如：
+
+     <pre class="example">          (setq x '(1 2 3))
+               &rArr; (1 2 3)
+          (nconc x '(4 5))
+               &rArr; (1 2 3 4 5)
+          x
+               &rArr; (1 2 3 4 5)
+</pre>
+        <p>因为<code>nconc</code>最后一个参数并不被修改，因此使用一个常量列表是合理的，例如<code>'(4 5)</code>，就像上面的例子一样。
+基于同样的原因，最后一个参数可以不是列表：
+
+     <pre class="example">          (setq x '(1 2 3))
+               &rArr; (1 2 3)
+          (nconc x 'z)
+               &rArr; (1 2 3 . z)
+          x
+               &rArr; (1 2 3 . z)
+</pre>
+        <p>然后，其他参数（除了最后一个参数的所有参数）必须是列表。
+
+        <p>一个通常的陷阱是用一个被引用的常量列表做为非最后一个参数传递给<code>nconc</code>。如果你这样做，你的程序每次执行时都将变化！
+下面演示了将发生什么：
+
+     <pre class="smallexample">          (defun add-foo (x)            ; <span class="roman">我们使用这个函数</span>
+            (nconc '(foo) x))           ; <span class="roman">将</span><code>foo</code><span class="roman">插入至其参数头部。</span>
+          
+          (symbol-function 'add-foo)
+               &rArr; (lambda (x) (nconc (quote (foo)) x))
+          
+          (setq xx (add-foo '(1 2)))    ; <span class="roman">看起来工作正常。</span>
+               &rArr; (foo 1 2)
+          (setq xy (add-foo '(3 4)))    ; <span class="roman">发生了什么？</span>
+               &rArr; (foo 1 2 3 4)
+          (eq xx xy)
+               &rArr; t
+          
+          (symbol-function 'add-foo)
+               &rArr; (lambda (x) (nconc (quote (foo 1 2 3 4) x)))
+</pre>
+        </blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>nreverse</b><var> list<a name="index-nreverse-339"></a></var><br>
+<blockquote><p><a name="index-reversing-a-list-340"></a>  此函数将反转<var>list</var>中元素的顺序。不像<code>revert</code>，<code>nreverse</code>通过反转构造列表的cons cell的<span class="sc">cdr</span>来
+修改其参数。作为<var>list</var>的最后一个cons cell将变成新列表的第一个元素。
+
+        <p>例如：
+
+     <pre class="example">          (setq x '(a b c))
+               &rArr; (a b c)
+          x
+               &rArr; (a b c)
+          (nreverse x)
+               &rArr; (c b a)
+          ;; <span class="roman">第一个cons cell变成了最后一个。</span>
+          x
+               &rArr; (a)
+</pre>
+        <p>为避免混淆，我们通常将<code>nreverse</code>的结构存回保存原列表的变量里。
+
+     <pre class="example">          (setq x (nreverse x))
+</pre>
+        <p>下面是对我们最喜欢的例子<code>(a b c)</code>执行<code>nreverse</code>的图示：
+
+     <pre class="smallexample">          <span class="roman">原始列表头：</span>                       <span class="roman">反转列表：</span>
+           -------------        -------------        ------------
+          | car  | cdr  |      | car  | cdr  |      | car | cdr  |
+          |   a  |  nil |&lt;--   |   b  |   o  |&lt;--   |   c |   o  |
+          |      |      |   |  |      |   |  |   |  |     |   |  |
+           -------------    |   --------- | -    |   -------- | -
+                            |             |      |            |
+                             -------------        ------------
+</pre>
+        </blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>sort</b><var> list predicate<a name="index-sort-341"></a></var><br>
+<blockquote><p><a name="index-g_t_00e7_00a8_00b3_00e5_00ae_009a_00e6_008e_0092_00e5_00ba_008f-342"></a><a name="index-g_t_00e6_008e_0092_00e5_00ba_008f_00e5_0088_0097_00e8_00a1_00a8-343"></a>此函数稳定地对<var>list</var>进行排序，尽管是破坏性地，它返回排序后列表。它使用<var>predicate</var>进行排序。
+稳定的列排序指的那些具有相同的比较键值的元素将在排序前后维持他们的相对顺序。当根据不同的标准对元素进行
+连续的排序时，稳定性很重要。
+
+        <p>参数<var>predicate</var>必须是一个接受两个参数的函数。以两个来自<var>list</var>中的元素做为参数被调用。
+要进行升序排序，<var>predicate</var>必须在第一个参数&ldquo;小于&rdquo;第二个参数时返回非<code>nil</code>，否则返回
+<code>nil</code>。
+
+        <p>函数<var>predicate</var>必须对任意的参数对都给出可靠的结果，至少在一次<code>sort</code>调用期间。它必须是<dfn>反对称的</dfn>，
+也即如果<var>a</var>小于<var>b</var>，则<var>b</var>不能小于<var>a</var>。它必须是<dfn>传递的</dfn>，也即如果<var>a</var>小于<var>b</var>，并
+且<var>b</var>小于<var>c</var>，那么<var>a</var>必须小于<var>c</var>。如果使用一个不满足这些要求的函数，那么排序结果将是不可预知的。
+
+        <p><code>sort</code>的破坏性特质是指它以修改cons cell的<span class="sc">cdr</span>来重排构成列表的cons cell。非破坏性的排序将按其顺序创建
+新的cons cell来存储元素。如果你期望避免破坏原始列表而是创建一个排序后的拷贝的话，先用<code>copy-sequence</code>来拷贝
+然后再进行排序。
+
+        <p>排序并不改变<var>list</var>中的cons cell的<span class="sc">car</span>；在<var>list</var>中原来在<span class="sc">car</span>中持有<code>a</code>的cons cell将在
+排序后仍在<span class="sc">car</span>中持有<code>a</code>，但因<span class="sc">cdr</span>的修改它将出现在列表的另外位置上。例如：
+
+     <pre class="example">          (setq nums '(1 3 2 6 5 4 0))
+               &rArr; (1 3 2 6 5 4 0)
+          (sort nums '&lt;)
+               &rArr; (0 1 2 3 4 5 6)
+          nums
+               &rArr; (1 2 3 4 5 6)
+</pre>
+        <p class="noindent"><strong>警告</strong>: 注意在列表中将不在包含０;它仍在原来的cons cell中，但它不在是列表中的第一个了。不要假定原来持有参数
+的变量将持有排序后的整个列表！你可以将<code>sort</code>的结构保存起来并使用它。大多数情况下我们将结果存回持有原来列表的
+变量中。
+
+     <pre class="example">          (setq nums (sort nums '&lt;))
+</pre>
+        <p>关于进行排序的更多函数，请参考See <a href="Sorting.html#Sorting">Sorting</a>.一节。
+对于<code>sort</code>的一个有用的例子，请参考<a href="Accessing-Documentation.html#Accessing-Documentation">Accessing Documentation</a>一节中的<code>documentation</code>.。
+</p></blockquote></div>
+
+   </body></html>
+

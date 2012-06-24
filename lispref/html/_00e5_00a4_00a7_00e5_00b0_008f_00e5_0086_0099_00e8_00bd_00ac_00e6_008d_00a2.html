@@ -1,0 +1,153 @@
+<html lang="en">
+<head>
+<title>大小写转换 - GNU Emacs Lisp 参考文档</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="GNU Emacs Lisp 参考文档">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e4_00b8_008e_00e5_00ad_0097_00e7_00ac_00a6.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e4_00b8_008e_00e5_00ad_0097_00e7_00ac_00a6" title="字符串与字符">
+<link rel="prev" href="_00e6_00a0_00bc_00e5_00bc_008f_00e5_008c_0096_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2.html#g_t_00e6_00a0_00bc_00e5_00bc_008f_00e5_008c_0096_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2" title="格式化字符串">
+<link rel="next" href="_00e5_00a4_00a7_00e5_00b0_008f_00e5_0086_0099_00e8_00a1_00a8.html#g_t_00e5_00a4_00a7_00e5_00b0_008f_00e5_0086_0099_00e8_00a1_00a8" title="大小写表">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+这是GNU Emacs Lisp参考文档的3.0版本，对应于Emacs23.3版本。
+
+由张东亚汉化，汉化版本为0.1。
+
+更新记录：
+
+2011/06/22：启动第二章的翻译，待完成。
+
+2011/07/02：完成第二章的翻译。
+
+2011/08/07：启动第三章的翻译。
+
+2011/09/19：完成第三章的翻译。
+
+2011/11/28：启动第四章的翻译，待完成。
+
+2012/06/23：完成lists.texi的翻译。
+Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998,
+1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011  Free Software
+Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with the Invariant Sections being ``GNU General Public
+     License,'' with the Front-Cover texts being ``A GNU Manual,'' and
+     with the Back-Cover Texts as in (a) below.  A copy of the license
+     is included in the section entitled ``GNU Free Documentation
+     License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have the freedom to copy
+     and modify this GNU manual.  Buying copies from the FSF supports
+     it in developing GNU and promoting software freedom.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<a name="%e5%a4%a7%e5%b0%8f%e5%86%99%e8%bd%ac%e6%8d%a2"></a>
+<a name="g_t_00e5_00a4_00a7_00e5_00b0_008f_00e5_0086_0099_00e8_00bd_00ac_00e6_008d_00a2"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="_00e5_00a4_00a7_00e5_00b0_008f_00e5_0086_0099_00e8_00a1_00a8.html#g_t_00e5_00a4_00a7_00e5_00b0_008f_00e5_0086_0099_00e8_00a1_00a8">大小写表</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="_00e6_00a0_00bc_00e5_00bc_008f_00e5_008c_0096_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2.html#g_t_00e6_00a0_00bc_00e5_00bc_008f_00e5_008c_0096_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2">格式化字符串</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e4_00b8_008e_00e5_00ad_0097_00e7_00ac_00a6.html#g_t_00e5_00ad_0097_00e7_00ac_00a6_00e4_00b8_00b2_00e4_00b8_008e_00e5_00ad_0097_00e7_00ac_00a6">字符串与字符</a>
+<hr>
+</div>
+
+<!-- node-name, next, previous, up -->
+<h3 class="section">4.8 Lisp中的大小写转换</h3>
+
+<p><a name="index-g_t_00e5_00a4_00a7_00e5_0086_0099-266"></a><a name="index-g_t_00e5_00b0_008f_00e5_0086_0099-267"></a><a name="index-g_t_00e5_00ad_0097_00e7_00ac_00a6_00e5_00a4_00a7_00e5_00b0_008f_00e5_0086_0099-268"></a><a name="index-Lisp_00e4_00b8_00ad_00e7_009a_0084_00e5_00a4_00a7_00e5_00b0_008f_00e5_0086_0099_00e8_00bd_00ac_00e6_008d_00a2-269"></a>
+  字符大小写转换函数改变单个字符或字符串内容的大小写。这些函数通常只转换字母（即字母&lsquo;<samp><span class="samp">A</span></samp>&rsquo;至&lsquo;<samp><span class="samp">Z</span></samp>&rsquo;以
+及&lsquo;<samp><span class="samp">a</span></samp>&rsquo;至&lsquo;<samp><span class="samp">z</span></samp>&rsquo;，还包括非<acronym>ASCII</acronym>字母）；其他字符不被替换。你可以通过指定一个大小写表，
+用来指定一个不同的大小写转换映射（see <a href="_00e5_00a4_00a7_00e5_00b0_008f_00e5_0086_0099_00e8_00a1_00a8.html#g_t_00e5_00a4_00a7_00e5_00b0_008f_00e5_0086_0099_00e8_00a1_00a8">大小写表</a>）。
+
+   <p>这些函数并不修改作为参数传递给它们的字符串。
+
+   <p>下面的例子使用&lsquo;<samp><span class="samp">X</span></samp>&rsquo;以及&lsquo;<samp><span class="samp">x</span></samp>&rsquo;，它们分别具有<acronym>ASCII</acronym>编码88以及120。
+
+<div class="defun">
+&mdash; Function: <b>downcase</b><var> string-or-char<a name="index-downcase-270"></a></var><br>
+<blockquote><p>此函数将或是字符串或是字符的<var>string-or-char</var>转换成小写形式。
+
+        <p>当<var>string-or-char</var>是一个字符串时，此函数返回一个参数字符串中大写字母均被转换成小写字母的新字符串。
+当<var>string-or-char</var>是一个字符时，此函数返回对应的小写字符（一个整数）；如果原始字符是小写的，或者
+不是一个字母，则返回值与原始字符相等。
+
+     <pre class="example">          (downcase "The cat in the hat")
+               &rArr; "the cat in the hat"
+          
+          (downcase ?X)
+               &rArr; 120
+</pre>
+        </blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>upcase</b><var> string-or-char<a name="index-upcase-271"></a></var><br>
+<blockquote><p>此函数将或是字符串或是字符的<var>string-or-char</var>转换成大写形式。
+
+        <p>当<var>string-or-char</var>是一个字符串时，此函数返回一个参数字符串中小写字母均被转换成大写字母的新字符串。
+当<var>string-or-char</var>是一个字符时，此函数返回对应的大写字符（一个整数）；如果原始字符是大写的，或者
+不是一个字母，则返回值与原始字符相等。
+
+     <pre class="example">          (upcase "The cat in the hat")
+               &rArr; "THE CAT IN THE HAT"
+          
+          (upcase ?x)
+               &rArr; 88
+</pre>
+        </blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>capitalize</b><var> string-or-char<a name="index-capitalize-272"></a></var><br>
+<blockquote><p><a name="index-g_t_00e5_00a4_00a7_00e5_0086_0099_00e5_00ad_0097_00e6_00af_008d_00e5_008c_0096-273"></a>此函数大写字母化字符串或字符。如果<var>string-or-char</var>是一个字符串，此函数返回一个新字符串，它的内容
+是<var>string-or-char</var>的一个拷贝，其中的每一个单词都被大写字母化。这意味着每一个单词的第一个字符都被
+转换成大写，其他字符被转换成小写。
+
+        <p>单词的定义是一个包含任意连续字符的序列，该序列被分配到当前语法表的单词组成语法类中（see <a href="Syntax-Class-Table.html#Syntax-Class-Table">Syntax Class Table</a>）。
+
+        <p>当<var>string-or-char</var>是一个字符时，此函数与<code>upcase</code>做相同的处理。
+
+     <pre class="example">          (capitalize "The cat in the hat")
+               &rArr; "The Cat In The Hat"
+          
+          (capitalize "THE 77TH-HATTED CAT")
+               &rArr; "The 77th-Hatted Cat"
+          
+          (capitalize ?x)
+               &rArr; 88
+</pre>
+        </blockquote></div>
+
+<div class="defun">
+&mdash; Function: <b>upcase-initials</b><var> string-or-char<a name="index-upcase_002dinitials-274"></a></var><br>
+<blockquote><p>如果<var>string-or-char</var>是一个字符串，此函数返回一个新字符串，除单词的初始字符外不替换其他字符，它的内容是<var>string-or-char</var>
+的一个拷贝，其中的每一个单词都的初始字母都被转换成大写形式。
+
+        <p>单词的定义是一个包含任意连续字符的序列，该序列被分配到当前语法表的单词组成语法类中（see <a href="Syntax-Class-Table.html#Syntax-Class-Table">Syntax Class Table</a>）。
+
+        <p>当<var>string-or-char</var>是一个字符时，此函数与<code>upcase</code>做相同的处理。
+
+     <pre class="example">          (upcase-initials "The CAT in the hAt")
+               &rArr; "The CAT In The HAt"
+</pre>
+        </blockquote></div>
+
+   <p>关于比较字符串的函数，See <a href="_00e6_0096_0087_00e6_009c_00ac_00e6_00af_0094_00e8_00be_0083.html#g_t_00e6_0096_0087_00e6_009c_00ac_00e6_00af_0094_00e8_00be_0083">文本比较</a>.；某些函数忽略大小写差异，或可以选择忽略大小写差异。
+
+   </body></html>
+

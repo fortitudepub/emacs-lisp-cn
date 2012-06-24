@@ -658,7 +658,7 @@ is just one matching completion, and the match is exact, it returns
 @code{t}.  Otherwise, it returns the longest initial sequence common
 to all possible matching completions.
 
-If @var{collection} is an alist (@pxref{Association Lists}), the
+If @var{collection} is an alist (@pxref{关联列表}), the
 permissible completions are the elements of the alist that are either
 strings, symbols, or conses whose @sc{car} is a string or symbol.
 Symbols are converted to strings using @code{symbol-name}.  Other
